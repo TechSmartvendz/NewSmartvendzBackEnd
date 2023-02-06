@@ -114,8 +114,7 @@ TableSchema.methods.generateAuthToken = async function () { //middleware for gen
         this.token=token;
         doc= await this.save()
         console.log("🚀 ~ file: m_user_info.js:115 ~ doc", doc)  
-        return token;// return token to middleware method call in server.js 
-   
+        return token;// return token to middleware method call in server.js   
 }
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
@@ -141,12 +140,17 @@ module.exports.getDataByIdFilterData = async (id,admin) => {
     const data = await Table.findOne({_id:id,admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 
 };
-module.exports.getDataCount = async (id,admin) => {
-    const data = await Table.findOne({_id:id,admin:admin}).count();
+module.exports.getDataCount = async (admin) => {
+    console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataCount= ~ admin", admin)
+    const data = await Table.findOne({admin:admin}).count();
     return data; 
 };
 module.exports.getAllData = async (admin) => {
     const data = await Table.find({admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
+    return data; 
+};
+module.exports.getDataList = async (admin) => {
+    const data = await Table.find({admin:admin},{id:1,user_id:1,user_last_name:1,user_first_name:1});
     return data; 
 };
 module.exports.updateById = async (id,newdata,admin) => {
@@ -154,28 +158,20 @@ module.exports.updateById = async (id,newdata,admin) => {
     //const data = await Table.find({admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 
 };
+module.exports.dataDeleteById = async (id,admin) => {
+    const data = await Table.findOneAndRemove({ _id:id ,admin:admin});
+   return data; 
+};
 
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-module.exports.updateRow = (id, newData, callback) => {
-    newData.last_update = Date.now();
-    Table.findByIdAndUpdate(id, { $set: newData }, callback);
-};
-
-module.exports.getData = callback => {
-    Table.find(callback);
-};
-
-
-
 module.exports.getDataByFieldName = (fieldName, fieldValue, callback) => {
     let query = {};
     query[fieldName] = fieldValue;
     Table.find(query, callback);
 };
-
 module.exports.getDataByFieldNames = (fieldNames, fieldValues, callback) => {
     let query = {};
     for (let i = 0; i < fieldNames.length; i++) {
@@ -184,46 +180,4 @@ module.exports.getDataByFieldNames = (fieldNames, fieldValues, callback) => {
         query[fieldName] = fieldValue;
     }
     Table.find(query, callback);
-};
-
-module.exports.deleteTableById = (id, callback) => {
-    Table.findById(id, (err, doc) => {
-        if (err) {
-            callback(err, null);
-        } else {
-            if (!doc) {
-                callback(err, doc);
-            } else {
-                const dataToDel = new OldTable(doc);
-                OldTable.insertMany(doc)
-                    .then(val => {
-                        Table.findByIdAndDelete(id, callback);
-                    })
-                    .catch(reason => {
-                        callback(reason, null);
-                    });
-            }
-        }
-    });
-};
-
-/**
- * custom functions
- */
-
-
-
-// function for updating value using user id
-module.exports.updateViaUser_idRow = (id, newData, callback) => {
-    newData.last_update = Date.now();
-    const filter = { user_id: id };
-    console.log(newData);
-    Table.findOneAndUpdate(filter,newData, callback);
-};
-
-module.exports.searchingModelforusername = (fieldName, fieldValue, callback) => {
-    let query = {};
-    query[fieldName] = fieldValue;
-    Table.find(query, callback);
-
 };

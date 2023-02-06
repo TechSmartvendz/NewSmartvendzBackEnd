@@ -19,7 +19,9 @@ const auth = asyncHandler(async (req, res, next) => {
             req.tokenid = verifyUser;
             //console.log(`auth ${user}`);
             if(user==null){
-                res.status(401).json({"error":"user not found"});
+                return rc.setResponse(res, {
+                    error:"Invalid Session : Please Try After LogIn"
+                });
             }else {
            //console.log(req.user);
             next();

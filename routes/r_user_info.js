@@ -43,7 +43,6 @@ router.post('/SuperAdminRegistration', asyncHandler(
     }
 )
 );
-
 router.post('/', auth, asyncHandler(
     async (req, res) => {
         if (req.user.role === "SuperAdmin") {
@@ -79,10 +78,10 @@ router.post('/', auth, asyncHandler(
     }
 )
 );
-
 router.get('/',auth, asyncHandler(
     async (req, res, next) => {
        const admin=req.user.id
+       
         const data = await TableModel.getAllData(admin);
         // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
         if (data) {
@@ -98,7 +97,24 @@ router.get('/',auth, asyncHandler(
         }
     }
 ));
-
+router.get('/DataList',auth, asyncHandler(
+    async (req, res, next) => {
+       const admin=req.user.id
+        const data = await TableModel.getDataList(admin);
+        // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
+        if (data) {
+            return rc.setResponse(res, {
+                success: true,
+                msg: 'Data Fetched',
+                data: data
+            });
+        } else {
+            return rc.setResponse(res, {
+                msg: "Data not Found"
+            })
+        }
+    }
+));
 router.get('/:id', auth, asyncHandler( 
     async (req, res, next) => {
         const admin=req.user.id
@@ -144,113 +160,32 @@ router.put('/:id', auth, asyncHandler(
        
     }
 ));
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-router.post('/byField',
-    // passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-        const fieldName = req.body.fieldName;
-        const fieldValue = req.body.fieldValue;
-        TableModel.getDataByFieldName(fieldName, fieldValue, (err, docs) => {
-            if (err) {
-                return rc.setResponse(res, {
-                    msg: err.message
-                })
-            } else {
+router.delete('/:id', auth, asyncHandler( 
+    async (req, res, next) => {
+        const admin=req.user.id
+        const id = req.params.id;
+        const count = await TableModel.getDataCount(id);
+        if(!count){
+            const data = await TableModel.dataDeleteById(id,admin);
+            if (data) {
                 return rc.setResponse(res, {
                     success: true,
                     msg: 'Data Fetched',
-                    data: docs
+                    data: data
                 });
-            }
-        })
-    }
-);
-
-router.post('/byFields',
-    //  passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-        const fieldNames = req.body.fieldNames;
-        const fieldValues = req.body.fieldValues;
-        TableModel.getDataByFieldNames(fieldNames, fieldValues, (err, docs) => {
-            if (err) {
-                return rc.setResponse(res, {
-                    msg: err.message
-                })
             } else {
                 return rc.setResponse(res, {
-                    success: true,
-                    msg: 'Data Fetched',
-                    data: docs
-                });
-            }
-        })
-    }
-);
-
-router.put('/update/:id',
-    //  passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-        TableModel.updateRow(req.params.id, req.body, (err, docs) => {
-            if (err) {
-                return rc.setResponse(res, {
-                    msg: err.message
+                    msg: "Data not Found"
                 })
-            } else {
-                return rc.setResponse(res, {
-                    success: true,
-                    msg: 'Data Updated',
-                    data: docs
-                });
             }
-        })
+        }else{
+            return rc.setResponse(res, {
+                msg: "Can't Delete this User: Delete all the Responsiable Resources First"
+            })
+        }
+       
     }
-);
+));
 
-router.delete('/byId/:id',
-    //  passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-        TableModel.deleteTableById(req.params.id, (err, docs) => {
-            if (err) {
-                return rc.setResponse(res, {
-                    msg: err.message
-                })
-            } else {
-                return rc.setResponse(res, {
-                    success: true,
-                    msg: 'Data Deleted',
-                    data: docs
-                });
-            }
-        })
-    }
-);
-
-/**
- * custom functions
- */
-
-// function for updating data via user_id
-
-router.put('/updateViaUserID/:id',
-    // passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-
-        console.log(req.body);
-        TableModel.updateViaUser_idRow(req.params.id, req.body, (err, docs) => {
-            if (err) {
-                return rc.setResponse(res, {
-                    msg: err.message
-                })
-            } else {
-                return rc.setResponse(res, {
-                    success: true,
-                    msg: 'Data Updated',
-                    data: docs
-                });
-            }
-        })
-    }
-);
 
 module.exports = router;
