@@ -54,10 +54,14 @@ app.use(express.urlencoded({ extended: true }));
 //TODO: import Routers
 const indexRouter = require("./routes/index");
 const userInformation = require("./routes/r_user_info");
+const Country = require("./routes/r_country");
+const State = require("./routes/r_state");
 
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
 app.use("/api/User", userInformation);
+app.use("/api/Country", Country);
+app.use("/api/State", State);
 
 //TODO:catch 404 and forward to error handler
 app.use(function (req, res, next) {
