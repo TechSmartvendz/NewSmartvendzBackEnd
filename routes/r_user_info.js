@@ -82,7 +82,7 @@ router.get('/',auth, asyncHandler(
     async (req, res, next) => {
        const admin=req.user.id
        
-        const data = await TableModel.getAllData(admin);
+        const data = await TableModel.getAllDataForTable(admin);
         // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
         if (data) {
             return rc.setResponse(res, {

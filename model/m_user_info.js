@@ -150,6 +150,10 @@ module.exports.getAllData = async (admin) => {
     const data = await Table.find({admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 
 };
+module.exports.getAllDataForTable  = async (admin) => {
+    const data = await Table.find({admin:admin},{user_id:1,display_name:1,role:1,admin:1});
+    return data; 
+};
 module.exports.getDataList = async (admin) => {
     const data = await Table.find({admin:admin},{id:1,user_id:1,user_last_name:1,user_first_name:1});
     return data; 
