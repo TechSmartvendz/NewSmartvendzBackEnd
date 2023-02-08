@@ -11,55 +11,56 @@ const TableSchema = mongoose.Schema({
         trim: true,
         unique: true
     },
-    user_first_name: {
+    first_name: {
         type: String,
         // required: true,
         trim: true
     },
-    user_middle_name: {
+    middle_name: {
          type: String,
         // required: true,
         trim: true    
     },
-    user_last_name: {
+    last_name: {
          type: String,
         // required: true,
         trim: true   
      },
-    user_display_name: {
+    display_name: {
         type: String,
     },
-    user_mobile: {
+    mobile: {
         type: Number,
     },
-    user_email: {
+    email: {
         type: String,
     },
-    user_alter_mobile: {
+    alter_mobile: {
         type: Number,
     },
-    user_curr_loc_lat: {
+    curr_loc_lat: {
         type: String,
     },
-    user_per_address: {
+    curr_loc_long: {
         type: String,
     },
-    user_current_address: {
+    per_address: {
         type: String,
     },
-    user_country: {
+    current_address: {
         type: String,
     },
-    user_state: {
+    country: {
         type: String,
     },
-    user_city: {
+    state: {
         type: String,
     },
-    user_curr_loc_long: {
+    city: {
         type: String,
     },
-    user_profile_pic: {
+    
+    profile_pic: {
         type: String,
         // default: 'defaultProfileImg.jpg'
     },
