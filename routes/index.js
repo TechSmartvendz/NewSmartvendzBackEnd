@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
  res.status(200).json({path:"/",status:"success"});
 });
 
-router.post('/Login', asyncHandler(
+router.post('/api/Login', asyncHandler(
     async (req, res) => {
         const user_id = req.body.user_id
         const password = req.body.password

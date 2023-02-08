@@ -1,7 +1,5 @@
 module.exports.setResponse = (res, { success, msg, data,error }) => {
     // console.log("🚀 ~ file: responseController.js:2 ~ error", error)
-    
-    
     let resp = {
         success: success ? success : false,
         msg: msg ? msg :"",
