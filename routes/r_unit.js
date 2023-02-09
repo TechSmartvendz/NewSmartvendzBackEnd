@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const TableModel = require('../model/m_country');
-const TableModelState = require('../model/m_state');
+const TableModel = require('../model/m_unit');
 const rc = require('../controllers/responseController');
 const { asyncHandler } = require('../middleware/asyncHandler');
 const auth = require('../middleware/auth');
@@ -74,7 +73,7 @@ router.get('/Datalist',auth, asyncHandler(//getDataListByQuery
     
     }
 ));
-router.get('/:id', auth, asyncHandler( //outdated//FIXME:Copy from User info
+router.get('/:id', auth, asyncHandler( //getDataByIdData
     async (req, res, next) => {
         const admin=req.user.id
         const id = req.params.id;
@@ -124,11 +123,11 @@ router.delete('/:id', auth, asyncHandler(
     async (req, res, next) => {
         const admin=req.user.id
         const country = req.params.id;
-        query={country:country}
+        // query={country:country}
         if (req.user.role === "SuperAdmin") {
-        const count = await TableModelState.getDataCountByQuery(query); 
-        if(!count){
-            console.log("🚀 ~ file: r_country.js:129 ~ count", count)
+        // const count = await TableModelState.getDataCountByQuery(query); 
+        // if(!count){
+            // console.log("🚀 ~ file: r_country.js:129 ~ count", count)
             query={_id:req.params.id}
             const data = await TableModel.dataDeleteByQuery(query);
             if (data) {
@@ -149,9 +148,9 @@ router.delete('/:id', auth, asyncHandler(
                 msg: "Can't Delete this Country It has State Data"
             })
         }
-    } else {
-        return rc.setResponse(res, { error: { code: 403 } });
-    }  
+    // } else {
+    //     return rc.setResponse(res, { error: { code: 403 } });
+    // }  
        
     }
 ));

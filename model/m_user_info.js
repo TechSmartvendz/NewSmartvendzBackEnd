@@ -59,7 +59,9 @@ const TableSchema = mongoose.Schema({
     city: {
         type: String,
     },
-    
+    area: {
+        type: String,
+    },
     profile_pic: {
         type: String,
         // default: 'defaultProfileImg.jpg'
@@ -141,6 +143,14 @@ module.exports.getDataByIdFilterData = async (id,admin) => {
     const data = await Table.findOne({_id:id,admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 
 };
+module.exports.getDataByQueryFilterDataOne = async (query) => {
+    console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataByQueryFilterDataOne= ~ query", query)
+    const data = await Table.findOne(
+      query,
+      { delete_status: 0,created_at:0,last_update:0,token:0,password:0,otp:0,admin:0,city:0,state:0,country:0,area:0, _id:0,__v: 0 }
+    );
+    return data;
+  };
 module.exports.getDataCount = async (admin) => {
     console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataCount= ~ admin", admin)
     const data = await Table.findOne({admin:admin}).count();
@@ -196,14 +206,17 @@ module.exports.getDataList = async (admin) => {
     return data; 
 };
 module.exports.updateById = async (id,newdata,admin) => {
+    newdata.last_update=Date.now()
      const data = await Table.findByIdAndUpdate(id, { $set: newdata });
+     const token = await data.generateAuthToken();
+     console.log("🚀 ~ file: m_user_info.js:211 ~ module.exports.updateById= ~ token", token)
     //const data = await Table.find({admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 
 };
-module.exports.dataDeleteById = async (id,admin) => {
-    const data = await Table.findOneAndRemove({ _id:id ,admin:admin});
-   return data; 
-};
+module.exports.dataDeleteByQuery = async (query) => {
+    const data = await Table.findOneAndRemove(query);
+    return data;
+  };
 
 
 

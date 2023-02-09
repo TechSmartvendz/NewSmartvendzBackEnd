@@ -3,4 +3,47 @@
     { "$match": { "$expr": { "$eq": [ "$userId", "$$userId" ] } } }
   ],
 
-  
+  1 country +>
+  2. State  +>
+  3. city  +>
+  4. Area  +>
+  5. unit  +>
+  6.user 
+  7 permission 
+  8.machine 
+  9.product 
+  10.employee 
+  11.transactions 
+  12.warehouse
+
+
+user update 
+ async (req, res, next) => {
+        const newData=req.body
+        const admin=req.user.id
+        const id = req.params.id;
+        const count = await TableModel.getDataCount(id,admin);
+        if(count){
+            const data = await TableModel.updateById(id,newData,admin);
+            if (data) {
+                return rc.setResponse(res, {
+                    success: true,
+                    msg: 'Data Fetched',
+                    data: data
+                });
+            } else {
+                return rc.setResponse(res, {
+                    msg: "Data not Found"
+                })
+            }
+        }else{
+            return rc.setResponse(res, {
+                msg: "Data not Found OR Permission Denied"
+            })
+        }
+       
+    }
+
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2U0Nzk2YjhlOTkwYmUzODUxMGIzOTIiLCJpYXQiOjE2NzU5Njk2MzB9.N07rltFZxxTiel5h-gne68BzCUqdCTRO_CQXnrDkahw
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2U0Nzk2YjhlOTkwYmUzODUxMGIzOTIiLCJpYXQiOjE2NzU5Njk2OTJ9.VSFDS5p-C9CHZAvaNYLAG7UtflSloK-Ai_5pHh0oDDc
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2U0Nzk2YjhlOTkwYmUzODUxMGIzOTIiLCJpYXQiOjE2NzU5MTc2NzV9.WddfqC_0uZX6LoPA6lPidsovnXyXsfuOaC8U2j1jKnA

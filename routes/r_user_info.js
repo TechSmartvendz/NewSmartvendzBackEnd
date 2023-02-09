@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const TableModel = require('../model/m_user_info');
+const TableModelCountry = require('../model/m_country');
+const TableModelState = require('../model/m_state');
+const TableModelCity = require('../model/m_city');
+const TableModelArea= require('../model/m_area');
 const rc = require('./../controllers/responseController');
 const { asyncHandler } = require('../middleware/asyncHandler');
 
@@ -49,8 +53,6 @@ router.post('/', auth, asyncHandler(
             if (req.body.password === req.body.cpassword) {
                 const hashpassword = await bcrypt.hash(req.body.password, 10);
                 let newRow = new TableModel(req.body);
-                newRow.password = hashpassword
-                newRow.admin=req.user.id
                 if (!newRow) {
                     return rc.setResponse(res, {
                         msg: 'No Data to insert'
@@ -67,6 +69,7 @@ router.post('/', auth, asyncHandler(
                         data: newRow.token
                     });
                 }
+            
             } else {
                 return rc.setResponse(res, {
                     error: "Password and Confirm Password Not Matched"
@@ -119,7 +122,12 @@ router.get('/:id', auth, asyncHandler(
     async (req, res, next) => {
         const admin=req.user.id
         const id = req.params.id;
-        const data = await TableModel.getDataByIdFilterData(id,admin);
+        if (req.user.role === "SuperAdmin") {
+        const query={
+            _id:id,
+            admin:admin
+        }
+        const data = await TableModel.getDataByQueryFilterDataOne(query);
         if (data) {
             return rc.setResponse(res, {
                 success: true,
@@ -131,42 +139,50 @@ router.get('/:id', auth, asyncHandler(
                 msg: "Data not Found"
             })
         }
+    } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+    }
     }
 ));
 router.put('/:id', auth, asyncHandler( 
-    async (req, res, next) => {
-        const newData=req.body
-        const admin=req.user.id
-        const id = req.params.id;
-        const count = await TableModel.getDataCount(id,admin);
-        if(count){
-            const data = await TableModel.updateById(id,newData,admin);
-            if (data) {
-                return rc.setResponse(res, {
-                    success: true,
-                    msg: 'Data Fetched',
-                    data: data
-                });
+    async (req, res) => {
+        if (req.user.role === "SuperAdmin") {
+            newData=req.body
+            id=req.params.id
+            if (req.body.password === req.body.cpassword) {
+                const hashpassword = await bcrypt.hash(req.body.password, 10);
+                newData.password = hashpassword
+                newData.admin=req.user.id
+                const data = await TableModel.updateById(id,newData);
+                if (data) {
+                    console.log("🚀 ~ file: r_user_info.js:156 ~ data", data)
+                    //FIXME:make email send on user created/
+                    // email.registerNotification(registered, req.body.password);
+                    return rc.setResponse(res, {
+                        success: true,
+                        msg: 'Data Inserted',
+                        data:data.user_id
+                    });
+                }
             } else {
                 return rc.setResponse(res, {
-                    msg: "Data not Found"
-                })
+                    error: "Password and Confirm Password Not Matched"
+                });
             }
-        }else{
-            return rc.setResponse(res, {
-                msg: "Data not Found OR Permission Denied"
-            })
+        } else {
+            return rc.setResponse(res, { error: { code: 403 } });
         }
-       
     }
 ));
 router.delete('/:id', auth, asyncHandler( 
     async (req, res, next) => {
-        const admin=req.user.id
-        const id = req.params.id;
-        const count = await TableModel.getDataCount(id);
+        if (req.user.role === "SuperAdmin") {
+       const query={
+        _id:req.params.id,
+       }
+        const count = await TableModel.getDataCount(req.params.id);
         if(!count){
-            const data = await TableModel.dataDeleteById(id,admin);
+            const data = await TableModel.dataDeleteByQuery(query);
             if (data) {
                 return rc.setResponse(res, {
                     success: true,
@@ -183,6 +199,9 @@ router.delete('/:id', auth, asyncHandler(
                 msg: "Can't Delete this User: Delete all the Responsiable Resources First"
             })
         }
+    } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+    }
        
     }
 ));
