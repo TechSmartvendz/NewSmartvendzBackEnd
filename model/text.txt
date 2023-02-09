@@ -1,0 +1,6 @@
+"pipeline": [
+    { "$addFields": { "userId": { "$toObjectId": "$userId" }}},
+    { "$match": { "$expr": { "$eq": [ "$userId", "$$userId" ] } } }
+  ],
+
+  
