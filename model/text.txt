@@ -9,12 +9,51 @@
   4. Area  +>
   5. unit  +>
   6.user 
+     a. user add +>
+     b. use edit +>
+     c. user delete +>
   7 permission 
-  8.machine 
-  9.product 
-  10.employee 
-  11.transactions 
-  12.warehouse
+     a. add permission
+     b. edit permisstion 
+     c. delete permission 
+     d. dynamic navigation on user login(2) 
+  8. company 
+     a. add company 
+     b. edit company 
+     c delete company 
+  9.machine 
+    a. add machine 
+    b. add machine slot
+    c. edit machine details and slot(2)
+    d. add machine configuraton 
+    e. edit machine configuration 
+    d.delete machine 
+  10.product 
+    a. add single product
+    b. update single product 
+    c. bulk product upload
+    d. bulk product update 
+    e. search product -> update & delete 
+  11.employee 
+    a. add single employee
+    b. update single employee 
+    c. CSV bulk employee upload
+    d. CSV bulk employee update 
+    e. search employee -> update & delete 
+  12.employee credit 
+    a. add single credit
+    b. update single credit 
+    c. CSV bulk credit upload
+    d. CSV bulk credit update 
+    e. search credit -> update & delete 
+  13.transactions 
+   a.search transaction -> modify to remove false transaction 
+   b.download transaction CSV report  
+  14.warehouse
+     a. add warehouse 
+     b. edit warehouse 
+     c. delete warehouse
+
 
 
 user update 
