@@ -53,11 +53,14 @@ router.post('/', auth, asyncHandler(
             if (req.body.password === req.body.cpassword) {
                 const hashpassword = await bcrypt.hash(req.body.password, 10);
                 let newRow = new TableModel(req.body);
-                if (!newRow) {
-                    return rc.setResponse(res, {
-                        msg: 'No Data to insert'
-                    });
-                }
+               
+                // if (!newRow) {
+                //     return rc.setResponse(res, {
+                //         msg: 'No Data to insert'
+                //     });
+                // }
+                newRow.password = hashpassword
+                newRow.admin=req.user.id
                 const token = await newRow.generateAuthToken();
                 const data = await TableModel.addRow(newRow);
                 if (data) {
