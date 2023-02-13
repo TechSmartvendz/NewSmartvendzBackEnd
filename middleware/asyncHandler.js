@@ -2,9 +2,9 @@ const rc = require('./../controllers/responseController');
 
 module.exports.asyncHandler =(fn)=>async(req,res,next)=>{
     console.log(req.originalUrl)
-    console.log("🚀 ~ file: asyncHandler.js:5 ~ module.exports.asyncHandler= ~ req.query", req.query)
-    console.log("🚀 ~ file: asyncHandler.js:5 ~ module.exports.asyncHandler= ~ req.params", req.params)
-    console.log("🚀 ~ file: asyncHandler.js:5 ~ module.exports.asyncHandler= ~ req.body", req.body) 
+    console.log("file:asyncHandler.js:5~req.query", req.query)
+    console.log("file:asyncHandler.js:6~req.params", req.params)
+    console.log("file:asyncHandler.js:7~req.body", req.body) 
     try{
         await fn(req,res,next)
     }catch(error){
@@ -17,10 +17,6 @@ module.exports.asyncHandler =(fn)=>async(req,res,next)=>{
 
 module.exports.asyncHandler2 =(fn)=>async(data)=>{
    console.log("🚀 ~ file: asyncHandler.js:18 ~ module.exports.asyncHandler2= ~ data", data)
-    // console.log(data)
-    // console.log("🚀 ~ file: asyncHandler.js:5 ~ module.exports.asyncHandler= ~ req.query", req.query)
-    // console.log("🚀 ~ file: asyncHandler.js:5 ~ module.exports.asyncHandler= ~ req.params", req.params)
-    // console.log("🚀 ~ file: asyncHandler.js:5 ~ module.exports.asyncHandler= ~ req.body", req.body) 
     try{
         await fn(data)
     }catch(error){

@@ -156,6 +156,11 @@ module.exports.getDataCount = async (admin) => {
     const data = await Table.findOne({admin:admin}).count();
     return data; 
 };
+module.exports.getDataCountByQuery = async (query) => {
+    
+    const data = await Table.findOne(query).count();
+    return data; 
+};
 module.exports.getAllData = async (admin) => {
     const data = await Table.find({admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 

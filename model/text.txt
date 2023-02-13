@@ -21,6 +21,12 @@
      a. add company 
      b. edit company 
      c delete company 
+  10.product 
+    a. add single product
+    b. update single product 
+    c. bulk product upload
+    d. bulk product update 
+    e. search product -> update & delete 
   9.machine 
     a. add machine 
     b. add machine slot
@@ -28,12 +34,6 @@
     d. add machine configuraton 
     e. edit machine configuration 
     d.delete machine 
-  10.product 
-    a. add single product
-    b. update single product 
-    c. bulk product upload
-    d. bulk product update 
-    e. search product -> update & delete 
   11.employee 
     a. add single employee
     b. update single employee 
