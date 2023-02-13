@@ -126,12 +126,14 @@ router.put('/:id', auth, asyncHandler(
         } 
     }
 ));
-router.delete('/:role', auth, asyncHandler( //FIXME:need to change country if required
+router.delete('/:id', auth, asyncHandler( //FIXME:need to change country if required
     async (req, res, next) => {
         const admin=req.user.id
         const id = req.params.id;
-        query={role:req.params.role}
+        query={_id:req.params.id}
         if (req.user.role === "SuperAdmin") {
+        const rdata = await TableModel.getDataByQueryFilterDataOne(query);
+        query={role:rdata.role}
         const count = await TableModelUser.getDataCountByQuery(query); 
         if(!count){
             const data = await TableModel.dataDeleteByQuery(query);
