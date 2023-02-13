@@ -79,6 +79,26 @@ async (req, res, next) => {
      }
  }
 ));
+router.get('/LoadMenu',auth, asyncHandler(
+    async (req, res, next) => {
+       const role=req.user.role
+       const query={
+           role:role
+       }
+        const data = await TableModel.getDataByQueryFilterDataOne(query);
+        if (data) {
+            return rc.setResponse(res, {
+                success: true,
+                msg: 'Data Fetched',
+                data: data
+            });
+        } else {
+            return rc.setResponse(res, {
+                msg: "Data not Found"
+            })
+        }
+    }
+));
 router.get('/:id',auth, asyncHandler(
     async (req, res, next) => {
        const role=req.params.id
@@ -99,6 +119,7 @@ router.get('/:id',auth, asyncHandler(
         }
     }
 ));
+
 router.put('/:id', auth, asyncHandler( 
     async (req, res, next) => {
         const newData=req.body
