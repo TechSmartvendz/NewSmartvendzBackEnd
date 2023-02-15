@@ -8,15 +8,15 @@
   3. city  +>
   4. Area  +>
   5. unit  +>
-  6.user 
+  6.user +>
      a. user add +>
      b. use edit +>
      c. user delete +>
-  7 permission 
-     a. add permission
-     b. edit permisstion 
-     c. delete permission 
-     d. dynamic navigation on user login(2) 
+  7 permission +>
+     a. add permission +>
+     b. edit permisstion +>
+     c. delete permission +>
+     d. dynamic navigation on user login(2) +>
   8. company 
      a. add company 
      b. edit company 
