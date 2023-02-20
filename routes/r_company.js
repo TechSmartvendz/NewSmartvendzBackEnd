@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const TableModelUser = require('../model/m_user_info');
+const TableModelUser= require('../model/m_user_info');
+const TableModelCompanyAdmin= require('../model/m_company_admin');
 const TableModelPermission = require('../model/m_permission');
 const TableModel = require('../model/m_company');
 // const TableModelCity = require('../model/m_city');
@@ -179,8 +180,88 @@ router.delete('/:id', auth, asyncHandler( //FIXME:need to change country if requ
     }
 ));
 //FIXME:Not Using right now
+router.post('/CompanyUsers', auth, asyncHandler(
+    async (req, res) => {
+        const query={
+            role:req.user.role
+           }
+        var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (pdata.addnewcompany) 
+        {
+            const query={
+                user_id:req.body.assign_user
+               }
+            var cdata = await TableModelUser.getDataByQueryFilterDataOne(query);
+            console.log("🚀 ~ file: r_company.js:195 ~ cdata", cdata)
+            if (!cdata) {
+                return rc.setResponse(res, {
+                    msg: 'User not Found'
+                });
+            }else {
+                var newRow =req.body
+                newRow.created_by=req.user.id
+                newRow.assign_user=cdata.id
+                 newRow = new TableModelCompanyAdmin(newRow);
+                 
+                if (!newRow) {
+                    return rc.setResponse(res, {
+                        msg: 'No Data to insert'
+                    });
+                }
+                const data = await TableModel.addRow(newRow);
+                if (data) {
+                    return rc.setResponse(res, {
+                        success: true,
+                        msg: 'Data Inserted',
+                        data: data
+                    });
+                }
+            }
+    } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+    }    
+}
+)
+);
 
+router.get('/CompanyUsers/:id', auth, asyncHandler(
+    async (req, res, next) => {
+        const query={
+            role:req.user.role
+           }
+        var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (cdata.listcompany) {
 
+            const query={
+                _id:req.params.id
+               }
+            var cdata = await TableModel.getDataByQueryFilterDataOne(query);
+            if (cdata.companyid) {
+        const companyid=cdata.companyid
+        const data = await TableModelCompanyAdmin.getDataforTable(companyid);
+        if (data) {
+            return rc.setResponse(res, {
+                success: true,
+                msg: 'Data Fetched',
+                data: data
+            });
+        } else {
+            return rc.setResponse(res, {
+                msg: "Data not Found"
+            })
+        }
+    } else {
+        return rc.setResponse(res, {
+            msg: "Data not Found"
+        })
+    }
+    }
+  else {
+    return rc.setResponse(res, { error: { code: 403 } });
+}    
+}
+)
+);
 
 
 module.exports = router;
