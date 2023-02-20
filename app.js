@@ -60,6 +60,7 @@ const City = require("./routes/r_city");
 const Area = require("./routes/r_area");
 const Unit = require("./routes/r_unit");
 const Permission = require("./routes/r_permission");
+const Company = require("./routes/r_company");
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
 app.use("/api/User", userInformation);
@@ -69,6 +70,7 @@ app.use("/api/City", City);
 app.use("/api/Area", Area);
 app.use("/api/Unit", Unit);
 app.use("/api/Permission", Permission);
+app.use("/api/Company", Company);
 
 //TODO:catch 404 and forward to error handler
 app.use(function (req, res, next) {

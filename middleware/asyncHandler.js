@@ -1,11 +1,12 @@
 const rc = require('./../controllers/responseController');
 
 module.exports.asyncHandler =(fn)=>async(req,res,next)=>{
-    console.log(req.originalUrl)
-    console.log("file:asyncHandler.js:5~req.query", req.query)
-    console.log("file:asyncHandler.js:6~req.params", req.params)
-    console.log("file:asyncHandler.js:7~req.body", req.body) 
+   
     try{
+        console.log(req.originalUrl)
+        console.log("file:asyncHandler.js:5~req.query", req.query)
+        console.log("file:asyncHandler.js:5~req.params", req.params)
+        console.log("file:asyncHandler.js:5~req.body", req.body)
         await fn(req,res,next)
     }catch(error){
        console.log("🚀 ~ file: asyncHandler.js:11 ~ module.exports.asyncHandler= ~ error", error)
