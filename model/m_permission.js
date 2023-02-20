@@ -49,6 +49,15 @@ const TableSchema = mongoose.Schema({
         default:false
      
     },
+    companyadmins: {
+      type: Boolean,
+         default:false
+      
+     },
+     companymachines: {
+      type: Boolean,
+         default:false
+        },
     managemachine: {
      type: Boolean,
         default:false
