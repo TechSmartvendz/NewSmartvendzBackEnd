@@ -142,7 +142,8 @@ module.exports.getDataforTable = async (companyid) => {
       $project: {
         _id:1,
         role:1,
-        "company id":1,
+        "company id":"$companyid",
+        "user type":"$output2.role",
         "assign user":"$output2.user_id",
         "created by":"$output.user_id",
         "created at":{
@@ -156,10 +157,71 @@ module.exports.getDataforTable = async (companyid) => {
     }
     }
   ])
+return data; 
+};
 
+module.exports.getDataForEditFormAssignUser = async (id) => {
+  console.log("🚀 ~ file: m_company_admin.js:164 ~ module.exports.getDataForEditFormAssignUser= ~ id", id)
+  id = mongoose.Types.ObjectId(id)
+  const data= Table.aggregate([
+    
+    {
+       "$match": { "_id":id }
+       
+    },
+      {
 
+        "$project": {
+            _id:1,
+            companyid:1,
+            companyname:1,
+            active_status:1,
+            assign_user: {
+              "$toObjectId": "$assign_user"
+            },
+          "admin": {
+            "$toObjectId": "$created_by"
+          },
+          created_at:1
+        }
+      },
+      {
+        "$lookup": {
+          "from": "user_infos",
+          "localField": "admin",
+          "foreignField": "_id",
+          "as": "output"
+        }
+      },
+      { $unwind: "$output" },
+      {
+        "$lookup": {
+          "from": "user_infos",
+          "localField": "assign_user",
+          "foreignField": "_id",
+          "as": "output2"
+        }
+      },
+      { $unwind: "$output2" },
+    {
+      $project: {
+        _id:1,
+        role:1,
+        "companyid":"$companyid",
+        "role":"$output2.role",
+        "assign_user":"$output2.user_id",
+        active_status:1,
+        // "created_by":"$output.user_id",
+        // "created_at":{
+        //   $dateToString: {
+        //     format: "%Y-%m-%d %H:%M:%S",
+        //     date: "$created_at",
+        //     timezone: "Asia/Kolkata"
+        //   }
+       // }
 
-
-
+    }
+    }
+  ])
 return data; 
 };

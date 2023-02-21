@@ -263,5 +263,39 @@ router.get('/CompanyUsers/:id', auth, asyncHandler(
 )
 );
 
+router.get('/CompanyUsers/:id/:assignid', auth, asyncHandler(
+    async (req, res, next) => {
+        const query={
+            role:req.user.role
+           }
+        var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (cdata.addnewcompany) {
+
+        
+               let assignid=req.params.assignid
+               console.log("🚀 ~ file: r_company.js:276 ~ assignid", assignid)
+        const data = await TableModelCompanyAdmin.getDataForEditFormAssignUser(assignid);
+        if (data) {
+            return rc.setResponse(res, {
+                success: true,
+                msg: 'Data Fetched',
+                data: data
+            });
+        } else {
+            return rc.setResponse(res, {
+                msg: "Data not Found"
+            })
+        }
+   
+    }
+  else {
+    return rc.setResponse(res, { error: { code: 403 } });
+}    
+}
+)
+);
+
+
+
 
 module.exports = router;
