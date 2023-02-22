@@ -8,12 +8,12 @@ const auth = asyncHandler(async (req, res, next) => {
     const bearerHeader = req.headers['authorization'];
    
     if (bearerHeader) {
-        console.log("barrer");
+        // console.log("barrer");
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         // console.log(bearerToken);
             const verifyUser = jwt.verify(bearerToken, process.env.SECRET_KEY);
-            console.log(verifyUser);
+            
             const user = await User.findOne({ _id:verifyUser._id },{password:0,otp:0,__v:0})
             req.user = user;
             req.tokenid = verifyUser;

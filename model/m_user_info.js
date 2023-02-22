@@ -111,12 +111,12 @@ const TableSchema = mongoose.Schema({
 
 //middleware for JWT TOken.....
 TableSchema.methods.generateAuthToken = async function () { //middleware for generate token and store this registration token in DB token array
-        console.log("generating token ")
+       // console.log("generating token ")
         const token = jwt.sign({ _id: this._id.toString() }, process.env.SECRET_KEY);//generate token by jwt.sign method.
-        console.log(token);
+       // console.log(token);
         this.token=token;
         doc= await this.save()
-        console.log("🚀 ~ file: m_user_info.js:115 ~ doc", doc)  
+       // console.log("🚀 ~ file: m_user_info.js:115 ~ doc", doc)  
         return token;// return token to middleware method call in server.js   
 }
 
@@ -144,7 +144,7 @@ module.exports.getDataByIdFilterData = async (id,admin) => {
     return data; 
 };
 module.exports.getDataByQueryFilterDataOne = async (query) => {
-    console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataByQueryFilterDataOne= ~ query", query)
+   //// console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataByQueryFilterDataOne= ~ query", query)
     const data = await Table.findOne(
       query,
       { delete_status: 0,created_at:0,last_update:0,token:0,password:0,otp:0,admin:0,city:0,state:0,country:0,area:0,__v: 0 }
@@ -152,7 +152,7 @@ module.exports.getDataByQueryFilterDataOne = async (query) => {
     return data;
   };
 module.exports.getDataCount = async (admin) => {
-    console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataCount= ~ admin", admin)
+  // // console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataCount= ~ admin", admin)
     const data = await Table.findOne({admin:admin}).count();
     return data; 
 };
@@ -166,7 +166,7 @@ module.exports.getAllData = async (admin) => {
     return data; 
 };
 module.exports.getAllDataForTable  = async (admin) => {
-    // const data = await Table.find({admin:admin},{user_id:1,display_name:1,role:1,admin:1});
+   // const data = await Table.find({admin:admin},{user_id:1,display_name:1,role:1,admin:1});
     const data= Table.aggregate([
         {
           $match: {
@@ -214,7 +214,7 @@ module.exports.updateById = async (id,newdata,admin) => {
     newdata.last_update=Date.now()
      const data = await Table.findByIdAndUpdate(id, { $set: newdata });
      const token = await data.generateAuthToken();
-     console.log("🚀 ~ file: m_user_info.js:211 ~ module.exports.updateById= ~ token", token)
+    // console.log("🚀 ~ file: m_user_info.js:211 ~ module.exports.updateById= ~ token", token)
     //const data = await Table.find({admin:admin},{delete_status:0,token:0,password:0,otp:0,__v:0});
     return data; 
 };

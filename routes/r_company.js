@@ -144,11 +144,11 @@ router.put('/:id', auth, asyncHandler(
 ));
 router.delete('/:id', auth, asyncHandler( //FIXME:need to change country if required
     async (req, res, next) => {
-      const query={
+      let query={
             role:req.user.role
            }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.listcompany) {
+        if (cdata.addnewcompany) {
         const id = req.params.id;
         query={_id:req.params.id}
         // const rdata = await TableModel.getDataByQueryFilterDataOne(query);
@@ -192,7 +192,7 @@ router.post('/CompanyUsers', auth, asyncHandler(
                 user_id:req.body.assign_user
                }
             var cdata = await TableModelUser.getDataByQueryFilterDataOne(query);
-            console.log("🚀 ~ file: r_company.js:195 ~ cdata", cdata)
+           // console.log("🚀 ~ file: r_company.js:195 ~ cdata", cdata)
             if (!cdata) {
                 return rc.setResponse(res, {
                     msg: 'User not Found'
@@ -216,6 +216,79 @@ router.post('/CompanyUsers', auth, asyncHandler(
                         data: data
                     });
                 }
+            }
+    } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+    }    
+}
+)
+);
+
+router.put('/CompanyUsers/:id', auth, asyncHandler(
+    async (req, res) => {
+        const query={
+            role:req.user.role
+           }
+        var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (pdata.addnewcompany) 
+        { let query={
+                user_id:req.body.assign_user
+               }
+            var cdata = await TableModelUser.getDataByQueryFilterDataOne(query);
+            if (!cdata) {
+                return rc.setResponse(res, {
+                    msg: 'User not Found'
+                });
+            }else {
+                var newRow =req.body
+                newRow.created_by=req.user.id
+                newRow.assign_user=cdata.id
+                query={
+                    _id:req.params.id
+                   }
+                var newRow = await TableModelCompanyAdmin.updateByQuery(query,newRow);
+                if (!newRow) {
+                    return rc.setResponse(res, {
+                        msg: 'No Data to update'
+                    });
+                }
+                const data = await TableModel.addRow(newRow);
+                if (data) {
+                    return rc.setResponse(res, {
+                        success: true,
+                        msg: 'Data Updated',
+                        data: data
+                    });
+                }
+            }
+    } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+    }    
+}
+)
+);
+
+router.delete('/CompanyUsers/:id', auth, asyncHandler(
+    async (req, res) => {
+        const query={
+            role:req.user.role
+           }
+        var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (pdata.addnewcompany) 
+        { let query={
+                _id:req.params.id
+               }
+            var data = await TableModelCompanyAdmin.dataDeleteByQuery(query);
+            if (!data) {
+                return rc.setResponse(res, {
+                    msg: 'Assign User not Found'
+                });
+            }else {
+                return rc.setResponse(res, {
+                    success: true,
+                    msg: 'Data Deleted',
+                    data: data
+                });
             }
     } else {
         return rc.setResponse(res, { error: { code: 403 } });

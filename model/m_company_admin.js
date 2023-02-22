@@ -93,8 +93,18 @@ module.exports.getDataListByQuery = async () => {
 };
 module.exports.updateByQuery = async (query,newdata) => {
   newdata.last_update=Date.now()
-  const data = await Table.findOneAndUpdate(query, { $set: newdata });
-  return data;
+  let assignid=newdata.companyid+newdata.assign_user
+  const cdata= await Table.findOne({assignid:assignid}).count()
+   if(!cdata){
+    newdata.assignid=assignid
+    const data = await Table.findOneAndUpdate(query, { $set: newdata });
+    return data;
+   }else{
+    throw "User already assign"
+   }
+   
+  
+  
 };
 module.exports.dataDeleteByQuery = async (query) => {
   const data = await Table.findOneAndRemove(query);
@@ -211,14 +221,6 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
         "role":"$output2.role",
         "assign_user":"$output2.user_id",
         active_status:1,
-        // "created_by":"$output.user_id",
-        // "created_at":{
-        //   $dateToString: {
-        //     format: "%Y-%m-%d %H:%M:%S",
-        //     date: "$created_at",
-        //     timezone: "Asia/Kolkata"
-        //   }
-       // }
 
     }
     }
