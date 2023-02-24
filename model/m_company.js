@@ -58,7 +58,7 @@ const TableSchema = mongoose.Schema({
 });
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
-const OldTable = mongoose.model("old" + TableName, TableSchema);
+//const OldTable = mongoose.model("old" + TableName, TableSchema);
 
 //TODO:
 module.exports.addRow = async (newRow) => {
@@ -145,8 +145,8 @@ module.exports.getDataforTable = async () => {
       $project: {
         _id:1,
         role:1,
-        companyid:1,
-            companyname:1,
+        "company id":"$companyid",
+            "company name":"$companyname",
         "created by":"$output.user_id",
         "created at":{
           $dateToString: {

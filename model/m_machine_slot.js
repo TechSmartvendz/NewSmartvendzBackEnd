@@ -1,70 +1,71 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-const TableName = "companyAdmin";
+const TableName = "machine_slot";
 
 const TableSchema = mongoose.Schema({
-
-   
-    companyid: {
+  machineid: {
         type: String,
         require: true,
     },
-    created_at: {
+    slot: {
+       type: String,
+       require:true,
+    },
+    maxquantity:{
+      type:Number,
+      require:true,
+    },
+    sloteid:{
+      type: String,
+      require: true,
+      default:generateslotId,
+      unique:true
+    },
+    active_status: {
+      type: Boolean,
+      default:false,
+      required: true,
+  },
+  created_at: {
       type: Date,
       default: Date.now
     },
-   created_by: {
+  created_by: {
       type: String,
       require:true,
       default:this.admin
-   },
-   last_update: {
+  },
+  last_update: {
       type: Date,
-   },
-   delete_status: {
+  },
+  delete_status: {
       type:Boolean,
       require:true,
       default:false
-   },
-   assign_user: {
+  },
+  admin:{
           type: String,
           required: true,
-  },
-  assignid:{
-    type: String,
-    require: true,
-    default:generateAsssirnId,
-    unique:true
-  },
-  active_status: {
-    type: Boolean,
-    default:false,
-    required: true,
-},
-  
+  }
 });
 
-//TODO: Internal user functions
-function generateAsssirnId(){
+function generateslotId(){
  
-  return this.companyid+this.assign_user
-} 
-
+  return this.slot+this.machineid
+}
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
-//const OldTable = mongoose.model("old" + TableName, TableSchema);
+// //const OldTable = mongoose.model("old" + TableName, TableSchema);
 
-//TODO:
+
 module.exports.addRow = async (newRow) => {
   const data = await newRow.save();
   return data;
 };
-//TODO:
 module.exports.getDataByIdData = async (id) => {
   const data = await Table.findOne({ _id: id},{ delete_status: 0,last_update:0, __v: 0 });
   return data;
 };
-//TODO:
 module.exports.getDataByQueryFilterData = async (query) => {
   const data = await Table.find(
     query,
@@ -79,7 +80,6 @@ module.exports.getDataByQueryFilterDataOne = async (query) => {
   );
   return data;
 };
-
 module.exports.getDataCountByQuery = async (query) => {
   const data = await Table.find(query).count();
   return data;
@@ -93,45 +93,41 @@ module.exports.getDataListByQuery = async () => {
 };
 module.exports.updateByQuery = async (query,newdata) => {
   newdata.last_update=Date.now()
-  let assignid=newdata.companyid+newdata.assign_user
-  const cdata= await Table.findOne({assignid:assignid})
+  let sloteid=newdata.slot+newdata.machineid
+  const cdata= await Table.findOne({sloteid:sloteid})
    if(!cdata){
-    
-      newdata.assignid=assignid
+      newdata.sloteid=sloteid
       const data = await Table.findOneAndUpdate(query, { $set: newdata });
       return data;
-    
-    
    }else{
     if(cdata._id==newdata._id){
-      newdata.assignid=assignid
+      newdata.sloteid=sloteid
       const data = await Table.findOneAndUpdate(query, { $set: newdata });
       return data;
     }
-    throw "User already assign"
+    throw "Slot already created.."
    }
-   
-  
-  
-};
+  };
 module.exports.dataDeleteByQuery = async (query) => {
   const data = await Table.findOneAndRemove(query);
   return data;
 };
-module.exports.getDataforTable = async (companyid) => {
-  const data= Table.aggregate([
+module.exports.getDataforTable = async (machineid) => {
+ //console.log("🚀 ~ file: m_machine_slot.js:104 ~ module.exports.getDataforTable= ~ machineid", machineid)
+ 
+    const data= Table.aggregate([
     {
 
-      $match : { companyid : companyid } },
+      $match : { machineid : machineid } },
       {
 
         "$project": {
             _id:1,
-            companyid:1,
-            companyname:1,
-            assign_user: {
-              "$toObjectId": "$assign_user"
+            machineid: {
+              "$toObjectId": "$machineid"
             },
+            slot:1,
+            maxquantity:1,
           "admin": {
             "$toObjectId": "$created_by"
           },
@@ -149,8 +145,8 @@ module.exports.getDataforTable = async (companyid) => {
       { $unwind: "$output" },
       {
         "$lookup": {
-          "from": "user_infos",
-          "localField": "assign_user",
+          "from": "machines",
+          "localField": "machineid",
           "foreignField": "_id",
           "as": "output2"
         }
@@ -160,9 +156,9 @@ module.exports.getDataforTable = async (companyid) => {
       $project: {
         _id:1,
         role:1,
-        "company id":"$companyid",
-        "user type":"$output2.role",
-        "assign user":"$output2.display_name",
+        "machine id":"$output2.machineid",
+        slot:1,
+        "max quantity":"$maxquantity",
         "created by":"$output.display_name",
         "created at":{
           $dateToString: {
@@ -179,7 +175,7 @@ return data;
 };
 
 module.exports.getDataForEditFormAssignUser = async (id) => {
-  console.log("🚀 ~ file: m_company_admin.js:164 ~ module.exports.getDataForEditFormAssignUser= ~ id", id)
+  //console.log("🚀 ~ file: m_company_admin.js:164 ~ module.exports.getDataForEditFormAssignUser= ~ id", id)
   id = mongoose.Types.ObjectId(id)
   const data= Table.aggregate([
     
@@ -190,48 +186,45 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
       {
 
         "$project": {
-            _id:1,
-            companyid:1,
-            companyname:1,
-            active_status:1,
-            assign_user: {
-              "$toObjectId": "$assign_user"
-            },
-          "admin": {
-            "$toObjectId": "$created_by"
+          _id:1,
+          machineid: {
+            "$toObjectId": "$machineid"
           },
-          created_at:1
-        }
-      },
-      {
-        "$lookup": {
-          "from": "user_infos",
-          "localField": "admin",
-          "foreignField": "_id",
-          "as": "output"
-        }
-      },
-      { $unwind: "$output" },
-      {
-        "$lookup": {
-          "from": "user_infos",
-          "localField": "assign_user",
-          "foreignField": "_id",
-          "as": "output2"
-        }
-      },
-      { $unwind: "$output2" },
+          slot:1,
+          maxquantity:1,
+          active_status:1,
+      }
+    },
+    // {
+    //   "$lookup": {
+    //     "from": "user_infos",
+    //     "localField": "admin",
+    //     "foreignField": "_id",
+    //     "as": "output"
+    //   }
+    // },
+    // { $unwind: "$output" },
     {
-      $project: {
-        _id:1,
-        role:1,
-        "companyid":"$companyid",
-        "role":"$output2.role",
-        "assign_user":"$output2.user_id",
-        active_status:1,
+      "$lookup": {
+        "from": "machines",
+        "localField": "machineid",
+        "foreignField": "_id",
+        "as": "output2"
+      }
+    },
+    { $unwind: "$output2" },
+  {
+    $project: {
+      _id:1,
+      role:1,
+      "machineid":"$output2.machineid",
+      slot:1,
+    
+      maxquantity:1,
+      active_status:1,
 
-    }
-    }
-  ])
+  }
+  }
+])
 return data; 
 };

@@ -121,7 +121,7 @@ TableSchema.methods.generateAuthToken = async function () { //middleware for gen
 }
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
-const OldTable = mongoose.model("old" + TableName, TableSchema);
+//const OldTable = mongoose.model("old" + TableName, TableSchema);
 //TODO:THIS IS USING at /SuperAdminRegistration
 module.exports.addRow = async (newRow) => {
     const data = await  newRow.save();

@@ -35,7 +35,7 @@ const TableSchema = mongoose.Schema({
 });
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
-const OldTable = mongoose.model("old" + TableName, TableSchema);
+//const OldTable = mongoose.model("old" + TableName, TableSchema);
 //TODO:
 module.exports.addRow = async (newRow) => {
   const data = await newRow.save();

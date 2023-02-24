@@ -2,12 +2,19 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const TableModelUser= require('../model/m_user_info');
-const TableModelCompanyAdmin= require('../model/m_company_admin');
+const TableModelMachineSlot= require('../model/m_machine_slot');
 const TableModelPermission = require('../model/m_permission');
-const TableModel = require('../model/m_company');
+const TableModelCompany = require('../model/m_company');
+const TableModel = require('../model/m_machine');
 const rc = require('../controllers/responseController');
 const { asyncHandler } = require('../middleware/asyncHandler');
 const auth = require('../middleware/auth');
+
+//permissions 
+//machineconfiguration
+//listmachine
+//managemachine
+//addnewmachine
 
 router.post('/', auth, asyncHandler(
     async (req, res) => {
@@ -15,7 +22,7 @@ router.post('/', auth, asyncHandler(
             role:req.user.role
            }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.addnewcompany) {
+        if (cdata.addnewmachine) {
                  newRow = new TableModel(req.body);
                   newRow.admin=req.user._id
                 // newRow.country=cdata.id
@@ -89,7 +96,7 @@ router.get('/:id',auth, asyncHandler(
             role:req.user.role
            }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.companymanage) {
+        if (cdata.addnewmachine) {
        const role=req.params.id
        const query={
            _id:role
@@ -177,35 +184,36 @@ router.delete('/:id', auth, asyncHandler( //FIXME:need to change country if requ
     }
 ));
 //FIXME:Not Using right now
-router.post('/CompanyUsers', auth, asyncHandler(
+router.post('/Slot', auth, asyncHandler(
     async (req, res) => {
         const query={
             role:req.user.role
            }
         var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (pdata.addnewcompany) 
+        if (pdata.addnewmachine) 
         {
             const query={
-                user_id:req.body.assign_user
+                machineid:req.body.machineid
                }
-            var cdata = await TableModelUser.getDataByQueryFilterDataOne(query);
+            var cdata = await TableModel.getDataByQueryFilterDataOne(query);
            // console.log("🚀 ~ file: r_company.js:195 ~ cdata", cdata)
             if (!cdata) {
                 return rc.setResponse(res, {
-                    msg: 'User not Found'
+                    msg: 'Machine not Found'
                 });
             }else {
                 var newRow =req.body
                 newRow.created_by=req.user.id
-                newRow.assign_user=cdata.id
-                 newRow = new TableModelCompanyAdmin(newRow);
+                newRow.machineid=cdata.id
+                newRow.admin=req.user.id
+                 newRow = new TableModelMachineSlot(newRow);
                  
                 if (!newRow) {
                     return rc.setResponse(res, {
                         msg: 'No Data to insert'
                     });
                 }
-                const data = await TableModelCompanyAdmin.addRow(newRow);
+                const data = await TableModelMachineSlot.addRow(newRow);
                 if (data) {
                     return rc.setResponse(res, {
                         success: true,
@@ -220,30 +228,30 @@ router.post('/CompanyUsers', auth, asyncHandler(
 }
 )
 );
-
-router.put('/CompanyUsers/:id', auth, asyncHandler(
+router.put('/Slot/:id', auth, asyncHandler(
     async (req, res) => {
         const query={
             role:req.user.role
            }
         var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (pdata.addnewcompany) 
-        { let query={
-                user_id:req.body.assign_user
+        if (pdata.addnewmachine) 
+        {   let query={
+            machineid:req.body.machineid
                }
-            var cdata = await TableModelUser.getDataByQueryFilterDataOne(query);
+            var cdata = await TableModel.getDataByQueryFilterDataOne(query);
+            console.log("🚀 ~ file: r_machine.js:242 ~ cdata:", cdata)
             if (!cdata) {
                 return rc.setResponse(res, {
-                    msg: 'User not Found'
+                    msg: 'Machine not Found'
                 });
             }else {
                 var newRow =req.body
                 newRow.created_by=req.user.id
-                newRow.assign_user=cdata.id
+                newRow.machineid=cdata.id
                 query={
                     _id:req.params.id
                    }
-                var newRow = await TableModelCompanyAdmin.updateByQuery(query,newRow);
+                var newRow = await TableModelMachineSlot.updateByQuery(query,newRow);
                 if (!newRow) {
                     return rc.setResponse(res, {
                         msg: 'No Data to update'
@@ -252,7 +260,7 @@ router.put('/CompanyUsers/:id', auth, asyncHandler(
                 else {
                     return rc.setResponse(res, {
                         success: true,
-                        msg: 'Data Updated',
+                        msg: 'Machine Updated',
                         data: newRow
                     });
                 }
@@ -264,20 +272,20 @@ router.put('/CompanyUsers/:id', auth, asyncHandler(
 )
 );
 
-router.delete('/CompanyUsers/:id', auth, asyncHandler(
+router.delete('/Slot/:id', auth, asyncHandler(
     async (req, res) => {
         const query={
             role:req.user.role
            }
         var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (pdata.addnewcompany) 
+        if (pdata.addnewmachine) 
         { let query={
                 _id:req.params.id
                }
-            var data = await TableModelCompanyAdmin.dataDeleteByQuery(query);
+            var data = await TableModelMachineSlot.dataDeleteByQuery(query);
             if (!data) {
                 return rc.setResponse(res, {
-                    msg: 'Assign User not Found'
+                    msg: 'Slot not Found'
                 });
             }else {
                 return rc.setResponse(res, {
@@ -293,21 +301,21 @@ router.delete('/CompanyUsers/:id', auth, asyncHandler(
 )
 );
 
-router.get('/CompanyUsers/:id', auth, asyncHandler(
+router.get('/Slot/:id', auth, asyncHandler(
     async (req, res, next) => {
         const query={
             role:req.user.role
            }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.listcompany) {
+        if (cdata.addnewmachine) {
 
             const query={
                 _id:req.params.id
                }
             var cdata = await TableModel.getDataByQueryFilterDataOne(query);
-            if (cdata.companyid) {
-        const companyid=cdata.companyid
-        const data = await TableModelCompanyAdmin.getDataforTable(companyid);
+            if (cdata.machineid) {
+        const machineid=cdata.id
+        const data = await TableModelMachineSlot.getDataforTable(machineid);
         if (data) {
             return rc.setResponse(res, {
                 success: true,
@@ -331,19 +339,18 @@ router.get('/CompanyUsers/:id', auth, asyncHandler(
 }
 )
 );
-
-router.get('/CompanyUsers/:id/:assignid', auth, asyncHandler(
+router.get('/Slot/:id/:slotid', auth, asyncHandler(
     async (req, res, next) => {
         const query={
             role:req.user.role
            }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.addnewcompany) {
+        if (cdata.addnewmachine) {
 
         
-               let assignid=req.params.assignid
-               console.log("🚀 ~ file: r_company.js:276 ~ assignid", assignid)
-        const data = await TableModelCompanyAdmin.getDataForEditFormAssignUser(assignid);
+               let _id=req.params.slotid
+               console.log("🚀 ~ file: r_company.js:276 ~ slote _id", _id)
+        const data = await TableModelMachineSlot.getDataForEditFormAssignUser(_id);
         if (data) {
             return rc.setResponse(res, {
                 success: true,
