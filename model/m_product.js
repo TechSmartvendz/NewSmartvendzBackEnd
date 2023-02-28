@@ -168,7 +168,6 @@ module.exports.getDataforTable = async () => {
 
   return data;
 };
-
 module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,query) => {
   console.log("🚀 ~ file: m_product.js:172 ~ module.exports.getDataforTablePaginationWithQuery= ~ query:", query)
   const skipdata = page * dataperpage - dataperpage;
@@ -251,9 +250,6 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
  
  
 };
-  
-
-
 module.exports.getDataforTablePagination = async (page, dataperpage) => {
   const skipdata = page * dataperpage - dataperpage;
   const dp = parseInt(dataperpage);
@@ -324,3 +320,4 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
 
   return jsonData;
 };
+

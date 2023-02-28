@@ -16,6 +16,8 @@ const auth = require('../middleware/auth');
 //bulkproductupload
 //productlist
 //products
+
+
 router.post('/Search/:page/:dataperpage', auth, asyncHandler(
     async (req, res) => {
         const query={
@@ -74,7 +76,6 @@ router.post('/', auth, asyncHandler(
 }
 )
 );
-
 router.get('/Table/:page/:dataperpage',auth, asyncHandler(
    
     async (req, res, next) => {
@@ -216,6 +217,9 @@ router.delete('/:id', auth, asyncHandler( //FIXME:need to change country if requ
        
     }
 ));
+
+
+
 //FIXME:Not Using right now
 router.post('/Slot', auth, asyncHandler(
     async (req, res) => {
