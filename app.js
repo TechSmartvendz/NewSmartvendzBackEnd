@@ -62,6 +62,7 @@ const Unit = require("./routes/r_unit");
 const Permission = require("./routes/r_permission");
 const Company = require("./routes/r_company");
 const Machine = require("./routes/r_machine");
+const Product = require("./routes/r_product");
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
 app.use("/api/User", userInformation);
@@ -73,6 +74,7 @@ app.use("/api/Unit", Unit);
 app.use("/api/Permission", Permission);
 app.use("/api/Company", Company);
 app.use("/api/Machine", Machine);
+app.use("/api/Product", Product);
 
 //TODO:catch 404 and forward to error handler
 app.use(function (req, res, next) {
