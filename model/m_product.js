@@ -251,7 +251,7 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
  
 };
 module.exports.getDataforCSVWithQuery = async (query) => {
-  const data = await Table.find(query, { id: 1, companyid: 1});
+  const data = await Table.find(query, { _id: 0,admin:0,delete_status:0,last_update:0,created_at:0,created_by:0,__v:0});
   return data;
  
 };
