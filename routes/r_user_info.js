@@ -8,7 +8,6 @@ const TableModelCity = require('../model/m_city');
 const TableModelArea= require('../model/m_area');
 const rc = require('./../controllers/responseController');
 const { asyncHandler } = require('../middleware/asyncHandler');
-
 const auth = require('../middleware/auth');
 
 

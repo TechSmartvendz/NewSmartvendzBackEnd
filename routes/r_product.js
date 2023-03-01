@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const CsvParser = require("json2csv").Parser;
+
+const rc = require('../controllers/responseController');
+const { asyncHandler } = require('../middleware/asyncHandler');
+const auth = require('../middleware/auth');
+
+
 const TableModelUser= require('../model/m_user_info');
 const TableModelMachineSlot= require('../model/m_machine_slot');
 const TableModelPermission = require('../model/m_permission');
 const TableModelCompany = require('../model/m_company');
 const TableModel = require('../model/m_product');
-const rc = require('../controllers/responseController');
-const { asyncHandler } = require('../middleware/asyncHandler');
-const auth = require('../middleware/auth');
+
 
 //permissions
 //updatebulkproduct
@@ -17,7 +22,111 @@ const auth = require('../middleware/auth');
 //productlist
 //products
 
-
+router.get('/SampleCSV',auth, asyncHandler(
+    async (req, res, next) => {
+        const page=req.params.page
+        const dataperpage=req.params.dataperpage
+        const query={
+            role:req.user.role
+           }
+        var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (cdata.updatebulkproduct) {
+            const j = {
+                "productid": "",
+                "productname": "",
+                "description":"",
+                "materialtype": "",
+                "sellingprice": "",
+                "mass": "",
+                "unit":""
+            }
+            const csvFields = ["productid", "productname", "description", "materialtype", "sellingprice", "mass","unit"];
+            const csvParser = new CsvParser({ csvFields });
+            const csvdata = csvParser.parse(j);
+            res.setHeader("Content-Type", "text/csv");
+            res.setHeader("Content-Disposition", "attachment; filename=Product_List.csv");
+            res.status(200).end(csvdata);
+    }
+  else {
+    return rc.setResponse(res, { error: { code: 403 } });
+}    
+}
+));
+router.post('/ExportCSV',auth, asyncHandler(
+    async (req, res) => {
+        const query={
+            role:req.user.role
+           }
+        var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (cdata.bulkproductupload) {
+            const page=req.params.page
+            const dataperpage=req.params.dataperpage
+            const query=req.body
+            const data = await TableModel.getDataforTablePaginationWithQuery(page,dataperpage,query);
+            console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
+            if (data) {
+                return rc.setResponse(res, {
+                    success: true,
+                    msg: 'Data Fetched',
+                    data: data
+                });
+            } else {
+                return rc.setResponse(res, {
+                    msg: "Data not Found"
+                })
+            } 
+    } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+    }    
+}
+));
+router.get('/Datalist',auth, asyncHandler(//getDataListByQuery
+async (req, res, next) => {
+     const query={
+        admin:req.user.id
+     }
+     const data = await TableModel.getDataListByQuery(query);
+     if (data) {
+         return rc.setResponse(res, {
+             success: true,
+             msg: 'Data Fetched',
+             data: data
+         });
+     } else {
+         return rc.setResponse(res, {
+             msg: "Data not Found"
+         })
+     }
+ }
+));
+router.get('/Table/:page/:dataperpage',auth, asyncHandler(
+    async (req, res, next) => {
+        const page=req.params.page
+        const dataperpage=req.params.dataperpage
+        const query={
+            role:req.user.role
+           }
+        var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+        if (cdata.productlist) {
+        const admin=req.user.id
+        const data = await TableModel.getDataforTablePagination(page,dataperpage);
+        if (data) {
+            return rc.setResponse(res, {
+                success: true,
+                msg: 'Data Fetched',
+                data: data
+            });
+        } else {
+            return rc.setResponse(res, {
+                msg: "Data not Found"
+            })
+        }
+    }
+  else {
+    return rc.setResponse(res, { error: { code: 403 } });
+}    
+}
+));
 router.post('/Search/:page/:dataperpage', auth, asyncHandler(
     async (req, res) => {
         const query={
@@ -76,54 +185,6 @@ router.post('/', auth, asyncHandler(
 }
 )
 );
-router.get('/Table/:page/:dataperpage',auth, asyncHandler(
-   
-    async (req, res, next) => {
-        const page=req.params.page
-        const dataperpage=req.params.dataperpage
-        const query={
-            role:req.user.role
-           }
-        var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.productlist) {
-        const admin=req.user.id
-        const data = await TableModel.getDataforTablePagination(page,dataperpage);
-        if (data) {
-            return rc.setResponse(res, {
-                success: true,
-                msg: 'Data Fetched',
-                data: data
-            });
-        } else {
-            return rc.setResponse(res, {
-                msg: "Data not Found"
-            })
-        }
-    }
-  else {
-    return rc.setResponse(res, { error: { code: 403 } });
-}    
-}
-));
-router.get('/Datalist',auth, asyncHandler(//getDataListByQuery
-async (req, res, next) => {
-     const query={
-        admin:req.user.id
-     }
-     const data = await TableModel.getDataListByQuery(query);
-     if (data) {
-         return rc.setResponse(res, {
-             success: true,
-             msg: 'Data Fetched',
-             data: data
-         });
-     } else {
-         return rc.setResponse(res, {
-             msg: "Data not Found"
-         })
-     }
- }
-));
 router.get('/:id',auth, asyncHandler(
     async (req, res, next) => {
         const query={

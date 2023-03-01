@@ -250,6 +250,11 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
  
  
 };
+module.exports.getDataforCSVWithQuery = async (query) => {
+  const data = await Table.find(query, { id: 1, companyid: 1});
+  return data;
+ 
+};
 module.exports.getDataforTablePagination = async (page, dataperpage) => {
   const skipdata = page * dataperpage - dataperpage;
   const dp = parseInt(dataperpage);
