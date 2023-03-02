@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const e = require("express");
 
-const TableName = "product";
+const TableName = "employee";
 
 const TableSchema = mongoose.Schema({
-  productid: {
+   employeeid: {
     type: String,
     require: true,
     unique: true,
+    default:generateEmployeeId
   },
   productname: {
     type: String,
@@ -59,6 +60,11 @@ const TableSchema = mongoose.Schema({
     required: true,
   },
 });
+
+function generateEmployeeId(){
+
+  return this.slot+this.machineid
+}
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
 // //const OldTable = mongoose.model("old" + TableName, TableSchema);
