@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const e = require("express");
 
-const TableName = "employee";
+const TableName = "logic";
 
 const TableSchema = mongoose.Schema({
    empid: {
@@ -74,7 +74,7 @@ const TableSchema = mongoose.Schema({
 
 function generateEmployeeId(){
 
-  return this.logicid+this.cardnumber
+  return this.slot+this.machineid
 }
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
@@ -114,12 +114,11 @@ module.exports.getDataCountByQuery = async (query) => {
   return data;
 };
 module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, cardnumber:1,employeename:1});
+  const data = await Table.find({}, { id: 1, productname:1,productid:1});
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
   newdata.last_update = Date.now();
-  newdata.empid=newdata.logicid+newdata.cardnumber
   const data = await Table.findOneAndUpdate(query, { $set: newdata });
   return data;
 };
@@ -198,68 +197,63 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
       $match: query
     
   },
-  { $sort: { created_at: -1 } },
-  {
-    $facet: {
-      metadata: [
-        { $count: "count" },
-        {
-          $addFields: { start: skipdata + 1, end: end, page: parseInt(page) },
-        },
-      ],
-      data: [
-        { $skip: skipdata },
-        { $limit: dp },
-        {
-          $project: {
-            _id: 1,
-            logicid: 1,
-            cardnumber: 1,
-            employeeid: 1,
-            employeename: 1,
-            email: 1,
-            manageremail: 1,
-            costcenter:1,
-            department:1,
-            admin: {
-              $toObjectId: "$admin",
+    { $sort: { created_at: -1 } },
+    {
+      $facet: {
+        metadata: [
+          { $count: "count" },
+          {
+            $addFields: { start: skipdata + 1, end: end, page: parseInt(page) },
+          },
+        ],
+        data: [
+          { $skip: skipdata },
+          { $limit: dp },
+          {
+            $project: {
+              _id: 1,
+              productid: 1,
+              productname: 1,
+              materialtype: 1,
+              sellingprice: 1,
+              mass: 1,
+              unit: 1,
+              admin: {
+                $toObjectId: "$admin",
+              },
+              created_at: 1,
             },
-            created_at: 1,
           },
-        },
-        {
-          $lookup: {
-            from: "user_infos",
-            localField: "admin",
-            foreignField: "_id",
-            as: "output",
+          {
+            $lookup: {
+              from: "user_infos",
+              localField: "admin",
+              foreignField: "_id",
+              as: "output",
+            },
           },
-        },
-        { $unwind: "$output" },
-        {
-          $project: {
-            _id: 1,
-            "logic id": "$logicid",
-            "card number": "$cardnumber",
-            "employee id": "$employeeid",
-             "employee name": "$employeename",
-            email: "$email",
-            "manager email": "$manageremail",
-            "cost center": "$costcenter",
-            department: "$department",
-            "created by": "$output.user_id",
-            "created at": {
-              $dateToString: {
-                format: "%Y-%m-%d %H:%M:%S",
-                date: "$created_at",
-                timezone: "Asia/Kolkata",
+          { $unwind: "$output" },
+          {
+            $project: {
+              _id: 1,
+              "product id": "$productid",
+              "product name": "$productname",
+              "material type": "$materialtype",
+              price: "$sellingprice",
+              unit: "$mass" + "$unit",
+              "created by": "$output.user_id",
+              "created at": {
+                $dateToString: {
+                  format: "%Y-%m-%d %H:%M:%S",
+                  date: "$created_at",
+                  timezone: "Asia/Kolkata",
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  }
   ]);
   const jsonData = {
     metadata: data[0].metadata[0],
@@ -274,7 +268,6 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
  
 };
 module.exports.getDataforCSVWithQuery = async (query) => {
-  console.log("🚀 ~ file: m_employee.js:277 ~ module.exports.getDataforCSVWithQuery= ~ query:", query)
   const data = await Table.find(query, { _id: 0,admin:0,delete_status:0,last_update:0,created_at:0,created_by:0,__v:0});
   return data;
  
@@ -299,14 +292,12 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           {
             $project: {
               _id: 1,
-              logicid: 1,
-              cardnumber: 1,
-              employeeid: 1,
-              employeename: 1,
-              email: 1,
-              manageremail: 1,
-              costcenter:1,
-              department:1,
+              productid: 1,
+              productname: 1,
+              materialtype: 1,
+              sellingprice: 1,
+              mass: 1,
+              unit: 1,
               admin: {
                 $toObjectId: "$admin",
               },
@@ -325,14 +316,11 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           {
             $project: {
               _id: 1,
-              "logic id": "$logicid",
-              "card number": "$cardnumber",
-              "employee id": "$employeeid",
-               "employee name": "$employeename",
-              email: "$email",
-              "manager email": "$manageremail",
-              "cost center": "$costcenter",
-              department: "$department",
+              "product id": "$productid",
+              "product name": "$productname",
+              "material type": "$materialtype",
+              price: "$sellingprice",
+              unit: "$mass" + "$unit",
               "created by": "$output.user_id",
               "created at": {
                 $dateToString: {
@@ -345,7 +333,7 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           },
         ],
       },
-    }
+    },
   ]);
   const jsonData = {
     metadata: data[0].metadata[0],
