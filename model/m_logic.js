@@ -5,50 +5,50 @@ const e = require("express");
 const TableName = "logic";
 
 const TableSchema = mongoose.Schema({
-   empid: {
+
+  logicid:{
     type: String,
     require: true,
-    unique: true,
-    default:generateEmployeeId
+    unique:true 
   },
   logicid:{
     type: String,
     require: true,
-  
+    unique:true 
   },
-  cardnumber: {
+  logictype:{
     type: String,
     require: true,
   },
-  employeeid: {
+  companyid:{
     type: String,
-    default:"N/A"
-   
+    require:true
   },
-  employeename: {
+  machineid:{
     type: String,
-    default:"N/A"
+    require:true
   },
-  email: {
-    type: String,
-    default: "N/A",
+  creditenable:{
+   type:Boolean,
+   require:true, 
+   default:false,
+
   },
-  manageremail: {
-    type: String,
-    default: "N/A",
-  },
-  costcenter:{
-    type: String,
-    default: "N/A",
-  },
-  costcentermanagername:{
-    type: String,
-    default: "N/A",
-  },
-  department:{
-    type: String,
-    default: "N/A",
-  },
+  credittype:{
+    type:String,
+    require:true, 
+    default:"N/A",
+   },
+   creditamount:{
+    type:Number,
+    require:true, 
+    default:0,
+   },
+   creditautorenew:{
+    type:Boolean,
+    require:true, 
+    default:false,
+   },
   created_at: {
     type: Date,
     default: Date.now,
@@ -72,9 +72,9 @@ const TableSchema = mongoose.Schema({
   },
 });
 
-function generateEmployeeId(){
+function generateLogicId(){
 
-  return this.slot+this.machineid
+  return this.companyid+this.machineid
 }
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));
@@ -197,64 +197,90 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
       $match: query
     
   },
-    { $sort: { created_at: -1 } },
-    {
-      $facet: {
-        metadata: [
-          { $count: "count" },
-          {
-            $addFields: { start: skipdata + 1, end: end, page: parseInt(page) },
-          },
-        ],
-        data: [
-          { $skip: skipdata },
-          { $limit: dp },
-          {
-            $project: {
-              _id: 1,
-              productid: 1,
-              productname: 1,
-              materialtype: 1,
-              sellingprice: 1,
-              mass: 1,
-              unit: 1,
-              admin: {
-                $toObjectId: "$admin",
-              },
-              created_at: 1,
+  { $sort: { created_at: -1 } },
+  {
+    $facet: {
+      metadata: [
+        { $count: "count" },
+        {
+          $addFields: { start: skipdata + 1, end: end, page: parseInt(page) },
+        },
+      ],
+      data: [
+        { $skip: skipdata },
+        { $limit: dp },
+        {
+          $project: {
+            _id: 1,
+            logicid: 1,
+            logictype: 1,
+            creditenable: 1,
+            credittype: 1,
+            creditamount: 1,
+            creditautorenew: 1,
+            admin: {
+              $toObjectId: "$admin",
             },
-          },
-          {
-            $lookup: {
-              from: "user_infos",
-              localField: "admin",
-              foreignField: "_id",
-              as: "output",
+            companyid: {
+              $toObjectId: "$companyid",
             },
+            machineid: {
+              $toObjectId: "$machineid",
+            }
           },
-          { $unwind: "$output" },
-          {
-            $project: {
-              _id: 1,
-              "product id": "$productid",
-              "product name": "$productname",
-              "material type": "$materialtype",
-              price: "$sellingprice",
-              unit: "$mass" + "$unit",
-              "created by": "$output.user_id",
-              "created at": {
-                $dateToString: {
-                  format: "%Y-%m-%d %H:%M:%S",
-                  date: "$created_at",
-                  timezone: "Asia/Kolkata",
-                },
-              },
-            },
+        },
+        {
+          $lookup: {
+            from: "user_infos",
+            localField: "admin",
+            foreignField: "_id",
+            as: "output",
           },
-        ],
-      },
+        },
+        { $unwind: "$output" },
+        {
+          $lookup: {
+            from: "companies",
+            localField: "companyid",
+            foreignField: "_id",
+            as: "output2",
+          },
+        },
+        { $unwind: "$output2" },
+        {
+          $lookup: {
+            from: "machines",
+            localField: "machineid",
+            foreignField: "_id",
+            as: "output3",
+          },
+        },
+        { $unwind: "$output3" },
+        {
+          $project: {
+            _id: 1,
+            "logic id": "$logicid",
+            "company id": "$output2.companyid",
+            "machine id": "$output3.machineid",
+            logictype: "$logictype",
+            "credit enable": "$creditenable",
+            "credit type": "$credittype",
+            "credit amount": "$creditamount",
+            "credit autorenew": "$creditautorenew",
+            "created by": "$output.user_id",
+            // "created at": {
+            //   $dateToString: {
+            //     format: "%Y-%m-%d %H:%M:%S",
+            //     date: "$created_at",
+            //     timezone: "Asia/Kolkata",
+            //   },
+            // },
+          },
+        },
+      ],
     },
-  ]);
+  },
+]);
   const jsonData = {
     metadata: data[0].metadata[0],
     data: data[0].data,
@@ -292,16 +318,21 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           {
             $project: {
               _id: 1,
-              productid: 1,
-              productname: 1,
-              materialtype: 1,
-              sellingprice: 1,
-              mass: 1,
-              unit: 1,
+              logicid: 1,
+              logictype: 1,
+              creditenable: 1,
+              credittype: 1,
+              creditamount: 1,
+              creditautorenew: 1,
               admin: {
                 $toObjectId: "$admin",
               },
-              created_at: 1,
+              companyid: {
+                $toObjectId: "$companyid",
+              },
+              machineid: {
+                $toObjectId: "$machineid",
+              }
             },
           },
           {
@@ -314,21 +345,42 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           },
           { $unwind: "$output" },
           {
+            $lookup: {
+              from: "companies",
+              localField: "companyid",
+              foreignField: "_id",
+              as: "output2",
+            },
+          },
+          { $unwind: "$output2" },
+          {
+            $lookup: {
+              from: "machines",
+              localField: "machineid",
+              foreignField: "_id",
+              as: "output3",
+            },
+          },
+          { $unwind: "$output3" },
+          {
             $project: {
               _id: 1,
-              "product id": "$productid",
-              "product name": "$productname",
-              "material type": "$materialtype",
-              price: "$sellingprice",
-              unit: "$mass" + "$unit",
+              "logic id": "$logicid",
+              "company id": "$output2.companyid",
+              "machine id": "$output3.machineid",
+              logictype: "$logictype",
+              "credit enable": "$creditenable",
+              "credit type": "$credittype",
+              "credit amount": "$creditamount",
+              "credit autorenew": "$creditautorenew",
               "created by": "$output.user_id",
-              "created at": {
-                $dateToString: {
-                  format: "%Y-%m-%d %H:%M:%S",
-                  date: "$created_at",
-                  timezone: "Asia/Kolkata",
-                },
-              },
+              // "created at": {
+              //   $dateToString: {
+              //     format: "%Y-%m-%d %H:%M:%S",
+              //     date: "$created_at",
+              //     timezone: "Asia/Kolkata",
+              //   },
+              // },
             },
           },
         ],

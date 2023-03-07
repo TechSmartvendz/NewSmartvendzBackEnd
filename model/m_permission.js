@@ -98,6 +98,31 @@ const TableSchema = mongoose.Schema({
         default:false
      
     },
+    countrymanage: {
+      type: Boolean,
+         default:false
+      
+     },
+     statemanage: {
+      type: Boolean,
+         default:false
+      
+     },
+     citymanage: {
+      type: Boolean,
+         default:false
+      
+     },
+     areamanage: {
+      type: Boolean,
+         default:false
+      
+     },
+     unitmanage: {
+      type: Boolean,
+         default:false
+      
+     },
     refillermanager:{
      type: Boolean,
         default:false
@@ -143,6 +168,27 @@ const TableSchema = mongoose.Schema({
         default:false
      
     },
+    refillermanage:{
+      type: Boolean,
+         default:false
+      
+     },
+    refillerrequest:{
+      type: Boolean,
+         default:false
+     },
+     refillerdc:{
+      type: Boolean,
+         default:false
+     },
+     refillerdcaccept:{
+      type: Boolean,
+         default:false
+     },
+     transactions:{
+      type: Boolean,
+         default:false
+     },
     created_at: {
         type: Date,
         default: Date.now,
