@@ -94,7 +94,7 @@ module.exports.getDataCountByQuery = async (query) => {
 module.exports.getDataListByQuery = async () => {
   const data = await Table.find(
     {},
-    { id: 1,companyid:1 }
+    { id: 1,machineid:1 }
   );
   return data;
 };
