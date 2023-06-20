@@ -196,6 +196,7 @@ router.post('/Slot', auth, asyncHandler(
                 machineid:req.body.machineid
                }
             var cdata = await TableModel.getDataByQueryFilterDataOne(query);
+            console.log(cdata)
            // console.log("🚀 ~ file: r_company.js:195 ~ cdata", cdata)
             if (!cdata) {
                 return rc.setResponse(res, {
@@ -206,6 +207,7 @@ router.post('/Slot', auth, asyncHandler(
                 newRow.created_by=req.user.id
                 newRow.machineid=cdata.id
                 newRow.admin=req.user.id
+                newRow.machineName=cdata.machineid
                  newRow = new TableModelMachineSlot(newRow);
                  
                 if (!newRow) {
