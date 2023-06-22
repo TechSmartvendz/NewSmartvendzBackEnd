@@ -208,6 +208,7 @@ router.post('/Slot', auth, asyncHandler(
                 newRow.machineid=cdata.id
                 newRow.admin=req.user.id
                 newRow.machineName=cdata.machineid
+                // newRow.
                  newRow = new TableModelMachineSlot(newRow);
                  
                 if (!newRow) {

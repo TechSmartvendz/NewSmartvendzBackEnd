@@ -56,11 +56,18 @@ const TableSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  closingStock: { type: String, default: null },
-  currentStock: { type: String, default: null },
-  refillQuantity: { type: String, default: null },
-  saleQuantity: { type: String, default: null },
+  closingStock: {
+    type: Number,
+    max: maxquantity
+  },
+  currentStock: { type: Number, default: 0 },
+  refillQuantity: { type: Number, default: 0 },
+  saleQuantity: { type: Number, default: 0 },
 });
+
+function maxquantity() {
+  return this.maxquantity; // Set the max value to the value of maxQuantity
+}
 
 function generateslotId() {
   return this.slot + this.machineid;

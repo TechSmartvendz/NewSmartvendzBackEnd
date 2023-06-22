@@ -180,11 +180,12 @@ router.post(
 
       let data;
       let approveddata;
+      let updatedClosingStock;
       const updaterdata = await refillerrequest.findOneAndUpdate(
         { refillRequestNumber: pararms.refillRequestNumber },
         { pendingstatus: true }
       );
-      // console.log(updaterdata);
+      console.log(updaterdata);
       if (rdata[0].pendingstatus === true) {
         for (let i = 0; i < rdata[0].machineSlot.length; i++) {
           // console.log(rdata[0].machineSlot[i].slotid)
@@ -206,11 +207,15 @@ router.post(
           };
           data = await machineslot.updateOne(filter, update, options);
 
+          updatedClosingStock =  rdata[0].machineSlot[i].currentStock + rdata[0].machineSlot[i].refillQuantity
+          console.log(updatedClosingStock)
+          console.log( rdata[0].machineSlot[i].currentStock)
+          console.log(rdata[0].machineSlot[i].refillQuantity)
           approveddata = await machineslot.updateOne(
             { sloteid: rdata[0].machineSlot[i].slotid },
             {
               $set: {
-                closingStock: rdata[0].machineSlot[i].closingStock,
+                closingStock: updatedClosingStock,
                 currentStock: rdata[0].machineSlot[i].currentStock,
                 refillQuantity: rdata[0].machineSlot[i].refillQuantity,
                 saleQuantity: rdata[0].machineSlot[i].saleQuantity,
@@ -220,13 +225,15 @@ router.post(
             options
           );
         }
+        
         if(approveddata){
-          return rc.setResponse(res, {
+        return rc.setResponse(res, {
             success: true,
             msg: "data updated",
           });
         }
-      } else {
+      } 
+      else {
         return rc.setResponse(res, {
           success: false,
           msg: "not approved",
