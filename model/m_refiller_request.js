@@ -9,10 +9,10 @@ const refillrequest = new Schema(
     machineSlot: [
       {
         slot: { type: String, default: false },
-        closingStock: { type: String, default: null },
-        currentStock: { type: String, default: null },
-        refillQuantity: { type: String, default: null },
-        saleQuantity: { type: String, default: null },
+        closingStock: { type: Number, default: 0 },
+        currentStock: { type: Number, default: 0 },
+        refillQuantity: { type: Number, default: 0 },
+        saleQuantity: { type: Number, default: 0 },
         materialName: { type: String, default: false },
         slotid: {type: String, default: false}
       },
