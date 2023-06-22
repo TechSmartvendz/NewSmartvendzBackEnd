@@ -14,7 +14,11 @@ const user_infos = require("../model/m_user_info");
 router.get("/getallmachines", asyncHandler(async (req, res) => {
   const allmachine = await machines.find().select("machineid companyid");
   // console.log(allmachine);
-  return res.send(allmachine);
+  return rc.setResponse(res, {
+    success: true,
+    msg: "Data fetched",
+    data: allmachine,
+  });
 }));
 
 //------------------------get all slot details by machine Name------------------//
@@ -27,7 +31,7 @@ router.get("/getallmachineslots", asyncHandler(async (req, res) => {
     machineID: data[0].machineid,
     machineName: data[0].machineName,
     admin: data[0].admin,
-    slots: data,
+    machineSlot: data,
   };
   // console.log(machinedata)
   // return res.send(machinedata);
@@ -105,27 +109,38 @@ router.post(
 //-------------------all refilling request---------------------------------//
 
 router.get("/allrefillingrequest", asyncHandler(async (req, res) => {
-  const data = await refillerrequest
+  const allRefillerRequest = await refillerrequest
     .find()
     .select(
       "id refillerID refillRequestNumber machineId pendingstatus isDeleted createdAt updatedAt"
     )
     .populate("refillerID", ["_id", "first_name", "user_id"]);
-  return res.send(data);
+  // return res.send(data);
+  return rc.setResponse(res, {
+    success: true,
+    msg: "Data fetched",
+    data: allRefillerRequest,
+  });
+  
 }));
 
 //------------------refilling request by id--------------------------------//
 
 router.get("/allrefillingrequestbyid", asyncHandler(async (req, res) => {
   const id = req.query.id;
-  const data = await refillerrequest
+  const refillerRequestById = await refillerrequest
     .find({ _id: id })
     .select(
       "id refillerID refillRequestNumber machineId machineSlot status isDeleted"
     )
     .populate("refillerID", ["_id", "first_name", "user_id"]);
     // console.log(data[0])
-  return res.send(data[0]);
+  // return res.send(data[0]);
+  return rc.setResponse(res, {
+    success: true,
+    msg: "Data fetched",
+    data: refillerRequestById[0],
+  });
 }));
 
 
