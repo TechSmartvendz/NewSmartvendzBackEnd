@@ -128,6 +128,7 @@ router.put('/:id', auth, asyncHandler(
             if (req.body.role) {
             const query={_id:req.params.id}
             const data = await TableModel.updateByQuery(query,newData);
+            console.log(data)
             if (data) {
                 return rc.setResponse(res, {
                     success: true,
