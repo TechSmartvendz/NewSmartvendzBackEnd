@@ -58,7 +58,9 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listWarehouse) {
-      const data = await warehouseTable.find().select('_id wareHouseName city contactPerson ');
+      const data = await warehouseTable
+        .find()
+        .select("_id wareHouseName city contactPerson ");
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -77,7 +79,7 @@ router.get(
 );
 
 router.get(
-  "/getWarehouse/:id",
+  "/getWarehouse/:_id",
   auth,
   asyncHandler(async (req, res, next) => {
     const query = {
@@ -85,7 +87,7 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listWarehouse) {
-      const data = await warehouseTable.findOne({_id: req.params.id});
+      const data = await warehouseTable.findOne({ _id: req.params._id });
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -171,6 +173,33 @@ router.put(
 
         const data = await warehouseTable.findOneAndUpdate(query, newRow);
       }
+    }
+  })
+);
+
+// Update warehouse
+router.put(
+  "/updateWareHouse/:_id",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (!cdata) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "no permission to update warehouse",
+      });
+    } else {
+      const rid = req.params._id;
+      const pararms = req.body;
+      const updatedata = await warehouseTable.findByIdAndUpdate(rid, pararms);
+      return rc.setResponse(res, {
+        success: true,
+        msg: "data updated",
+        data: updatedata,
+      });
     }
   })
 );
