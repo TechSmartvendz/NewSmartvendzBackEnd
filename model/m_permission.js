@@ -163,7 +163,11 @@ const TableSchema = mongoose.Schema({
   },
   listWarehouse: {
     type: Boolean,
-    default: false
+    default: false,
+  },
+  addStock: {
+    type: Boolean,
+    default: false,
   },
   created_at: {
     type: Date,
