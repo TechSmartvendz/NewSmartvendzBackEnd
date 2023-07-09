@@ -68,6 +68,7 @@ const Logic = require("./routes/r_logic");
 
 const machine_Stock = require("./routes/r_machine_stock");
 const warehouse = require("./routes/r_warehouse");
+const supplier = require("./routes/r_suppllier");
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
 app.use("/api/User", userInformation);
@@ -85,6 +86,7 @@ app.use("/api/Logic", Logic);
 
 app.use('/api', machine_Stock);
 app.use('/api',warehouse);
+app.use('/api',supplier);
 //TODO:catch 404 and forward to error handler
 app.use(function (req, res, next) {
    // next(createError(404));
