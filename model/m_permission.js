@@ -185,6 +185,10 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  purchaseStockList:{
+    type: Boolean,
+    default: false,
+  },
   created_at: {
     type: Date,
     default: Date.now,
