@@ -210,10 +210,9 @@ router.get(
     if (cdata.listStock) {
       const data = await warehouseStock
         .find({ isDeleted: false })
-        .select(
-          "wareHouseId productName productQuantity sellingPrice invoiceNumber GRN_Number"
-        )
-        .populate("wareHouseId");
+        .select("warehouse product productQuantity sellingPrice ")
+        .populate("warehouse")
+        .populate("product");
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -244,10 +243,9 @@ router.get(
       const data = await warehouseStock.findOne(
         { _id: req.params._id },
         { isDeleted: false }
-          .select(
-            "wareHouseId productName productQuantity sellingPrice invoiceNumber GRN_Number"
-          )
-          .populate("wareHouseId")
+          .select("warehouse product productQuantity sellingPrice ")
+          .populate("warehouse")
+          .populate("product")
       );
       if (data) {
         return rc.setResponse(res, {
@@ -400,6 +398,7 @@ router.post(
   })
 );
 
+// get purchase stock list
 router.get(
   "/purchasestocklist",
   auth,
@@ -411,10 +410,36 @@ router.get(
     if (cdata.purchaseStockList) {
       const data = await purchaseStock
         .find()
-        .populate("warehouse", ["wareHouseName","email","address","state","city","country","phoneNumber","contactPerson","pincode"])
-        .populate("product", ["productid","productname","description","materialtype","sellingprice",])
-        .populate("supplier",["supplierName","supplierEmail","supplierPhone","supplierAddress","contactPerson","area","state","city","country","pincode"]
-        );
+        .populate("warehouse", [
+          "wareHouseName",
+          "email",
+          "address",
+          "state",
+          "city",
+          "country",
+          "phoneNumber",
+          "contactPerson",
+          "pincode",
+        ])
+        .populate("product", [
+          "productid",
+          "productname",
+          "description",
+          "materialtype",
+          "sellingprice",
+        ])
+        .populate("supplier", [
+          "supplierName",
+          "supplierEmail",
+          "supplierPhone",
+          "supplierAddress",
+          "contactPerson",
+          "area",
+          "state",
+          "city",
+          "country",
+          "pincode",
+        ]);
       // console.log(data);
       if (data) {
         return rc.setResponse(res, {
@@ -431,7 +456,7 @@ router.get(
     }
   })
 );
-
+// get purchase stock list by id
 router.get(
   "/purchasestocklist/:id",
   auth,
@@ -442,11 +467,37 @@ router.get(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.purchaseStockList) {
       const data = await purchaseStock
-        .find({_id: req.params.id})
-        .populate("warehouse", ["wareHouseName","email","address","state","city","country","phoneNumber","contactPerson","pincode"])
-        .populate("product", ["productid","productname","description","materialtype","sellingprice",])
-        .populate("supplier",["supplierName","supplierEmail","supplierPhone","supplierAddress","contactPerson","area","state","city","country","pincode"]
-        );
+        .find({ _id: req.params.id })
+        .populate("warehouse", [
+          "wareHouseName",
+          "email",
+          "address",
+          "state",
+          "city",
+          "country",
+          "phoneNumber",
+          "contactPerson",
+          "pincode",
+        ])
+        .populate("product", [
+          "productid",
+          "productname",
+          "description",
+          "materialtype",
+          "sellingprice",
+        ])
+        .populate("supplier", [
+          "supplierName",
+          "supplierEmail",
+          "supplierPhone",
+          "supplierAddress",
+          "contactPerson",
+          "area",
+          "state",
+          "city",
+          "country",
+          "pincode",
+        ]);
       // console.log(data);
       if (data) {
         return rc.setResponse(res, {
