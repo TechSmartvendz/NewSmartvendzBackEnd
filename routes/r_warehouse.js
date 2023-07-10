@@ -167,63 +167,6 @@ router.put(
   })
 );
 
-// router.post(
-//   "/warehouseStock",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const query = {
-//       role: req.user.role,
-//     };
-//     let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-//     if (!cdata) {
-//       return rc.setResponse(res, {
-//         success: false,
-//         msg: "no permission to update warehouse",
-//       });
-//     } else {
-
-//     }
-//   })
-// );
-
-// router.post(
-//   "/addWarehouseStock",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const query = {
-//       role: req.user.role,
-//     };
-//     var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-//     if (pdata.addStock) {
-//       const cdata = await warehouseStock.find(req.body);
-//       if (!cdata) {
-//         return rc.setResponse(res, {
-//           msg: "Warehouse not Found",
-//         });
-//       } else {
-//         var newRow = req.body;
-//         query = {
-//           _id: req.params.id,
-//         };
-//         var newRow = await warehouseTable.findOneAndUpdate(query, {
-//           $set: newRow,
-//         });
-//         if (!newRow) {
-//           return rc.setResponse(res, {
-//             msg: "No Data to update",
-//           });
-//         } else {
-//           return rc.setResponse(res, {
-//             success: true,
-//             msg: "Warehouse Stock Updated",
-//             data: newRow,
-//           });
-//         }
-//       }
-//     }
-//   })
-// );
-
 // add warehouse stock
 router.post(
   "/addWarehouseStock",
@@ -379,7 +322,6 @@ router.put(
 );
 
 // purchase stocks
-
 router.post(
   "/purchaseStock",
   auth,
@@ -389,8 +331,6 @@ router.post(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.purchaseStock) {
-      // condition to update warehouse stock here
-      // then after that will make purchase request
       const existingStock = await warehouseStock
         .findOne(
           { warehouse: req.body.warehouse },
@@ -398,9 +338,13 @@ router.post(
         )
         .select("productQuantity sellingPrice admin warehouse product")
         .populate("warehouse product");
-      console.log("-----------------------existingstock---------------------------");
+      console.log(
+        "-----------------------existingstock---------------------------"
+      );
       console.log(existingStock);
-      console.log("-----------------------existingstock---------------------------");
+      console.log(
+        "-----------------------existingstock---------------------------"
+      );
       if (existingStock) {
         console.log("---------------");
         existingStock.productQuantity += req.body.productQuantity;
@@ -420,28 +364,24 @@ router.post(
             msg: "No Data to insert",
           });
         }
-        const data = await warehouseStock.addRow(newstock);
-        if (data) {
-          rc.setResponse(res, {
-            success: true,
-            msg: "Data Inserted",
-            data: data,
-          });
-        }
+        const warehousedata = await warehouseStock.addRow(newstock);
+        // if (warehousedata) {
+        //   rc.setResponse(res, {
+        //     success: true,
+        //     msg: "Data Inserted",
+        //     data: warehousedata,
+        //   });
         // }
-
-
-        // here i have to stop this else condition or else will get error because of this it is not saving purchase request
-
-        let newRow = new purchaseStock(req.body);
-        newRow.admin = req.user._id;
-        if (!newRow) {
-          return rc.setResponse(res, {
-            msg: "No Data to insert",
-          });
-        }
-        console.log(newRow);
+        console.log("------------------data inserted---------------");
       }
+      let newRow = new purchaseStock(req.body);
+      newRow.admin = req.user._id;
+      if (!newRow) {
+        return rc.setResponse(res, {
+          msg: "No Data to insert",
+        });
+      }
+      console.log(newRow);
       const data = await purchaseStock.addRow(newRow);
       console.log(data);
       if (data) {
@@ -454,6 +394,70 @@ router.post(
     } else {
       return rc.setResponse(res, {
         msg: "no permission to purchase",
+        error: { code: 403 },
+      });
+    }
+  })
+);
+
+router.get(
+  "/purchasestocklist",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.purchaseStockList) {
+      const data = await purchaseStock
+        .find()
+        .populate("warehouse", ["wareHouseName","email","address","state","city","country","phoneNumber","contactPerson","pincode"])
+        .populate("product", ["productid","productname","description","materialtype","sellingprice",])
+        .populate("supplier",["supplierName","supplierEmail","supplierPhone","supplierAddress","contactPerson","area","state","city","country","pincode"]
+        );
+      // console.log(data);
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "data fetched",
+          data: data,
+        });
+      }
+    } else {
+      return rc.setResponse(res, {
+        msg: "no permission to see purchase list",
+        error: { code: 403 },
+      });
+    }
+  })
+);
+
+router.get(
+  "/purchasestocklist/:id",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.purchaseStockList) {
+      const data = await purchaseStock
+        .find({_id: req.params.id})
+        .populate("warehouse", ["wareHouseName","email","address","state","city","country","phoneNumber","contactPerson","pincode"])
+        .populate("product", ["productid","productname","description","materialtype","sellingprice",])
+        .populate("supplier",["supplierName","supplierEmail","supplierPhone","supplierAddress","contactPerson","area","state","city","country","pincode"]
+        );
+      // console.log(data);
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "data fetched",
+          data: data,
+        });
+      }
+    } else {
+      return rc.setResponse(res, {
+        msg: "no permission to see purchase list",
         error: { code: 403 },
       });
     }
