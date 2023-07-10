@@ -173,6 +173,18 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  addSupplier: {
+    type: Boolean,
+    default: false,
+  },
+  listSupplier: {
+    type: Boolean,
+    default: false,
+  },
+  purchaseStock: {
+    type: Boolean,
+    default: false,
+  },
   created_at: {
     type: Date,
     default: Date.now,

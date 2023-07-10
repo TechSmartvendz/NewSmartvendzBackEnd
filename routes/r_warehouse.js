@@ -3,6 +3,7 @@ const router = express.Router();
 const TableModelPermission = require("../model/m_permission");
 const warehouseTable = require("../model/m_warehouse");
 const warehouseStock = require("../model/m_warehouse_Stock");
+const purchaseStock = require("../model/m_purchase_stocks");
 const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
@@ -223,7 +224,6 @@ router.put(
 //   })
 // );
 
-
 // add warehouse stock
 router.post(
   "/addWarehouseStock",
@@ -233,7 +233,7 @@ router.post(
       role: req.user.role,
     };
     var pdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if (pdata.addStock) {
+    if (pdata.addStockl) {
       newRow = new warehouseStock(req.body);
       newRow.admin = req.user._id;
       if (!newRow) {
@@ -257,117 +257,207 @@ router.post(
 
 // get all warehouseStock
 router.get(
-    "/getAllWarehouseStocks",
-    auth,
-    asyncHandler(async (req, res, next) => {
-      const query = {
-        role: req.user.role,
-      };
-      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (cdata.listStock) {
-        const data = await warehouseStock
-          .find({ isDeleted: false })
-        if (data) {
-          return rc.setResponse(res, {
-            success: true,
-            msg: "Data Fetched",
-            data: data,
-          });
-        } else {
-          return rc.setResponse(res, {
-            msg: "Data not Found",
-          });
-        }
+  "/getAllWarehouseStocks",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.listStock) {
+      const data = await warehouseStock
+        .find({ isDeleted: false })
+        .select(
+          "wareHouseId productName productQuantity sellingPrice invoiceNumber GRN_Number"
+        )
+        .populate("wareHouseId");
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data Fetched",
+          data: data,
+        });
       } else {
-        return rc.setResponse(res, { error: { code: 403 } });
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
       }
-    })
-  );
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
 
-  // get warehouseStocks by id
+// get warehouseStocks by id
 router.get(
-    "/getWarehouseStock/:_id",
-    auth,
-    asyncHandler(async (req, res, next) => {
-      const query = {
-        role: req.user.role,
-      };
-      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (cdata.listWarehouse) {
-        const data = await warehouseStock.findOne(
-          { _id: req.params._id },
-          { isDeleted: false }
-        );
-        if (data) {
+  "/getWarehouseStock/:_id",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.listWarehouse) {
+      const data = await warehouseStock.findOne(
+        { _id: req.params._id },
+        { isDeleted: false }
+          .select(
+            "wareHouseId productName productQuantity sellingPrice invoiceNumber GRN_Number"
+          )
+          .populate("wareHouseId")
+      );
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data Fetched",
+          data: data,
+        });
+      } else {
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
+      }
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
+// Update warehouseStock
+router.put(
+  "/updateWareHouseStock/:_id",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (!cdata) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "no permission to update warehouse",
+      });
+    } else {
+      const rid = req.params._id;
+      const pararms = req.body;
+      const updatedata = await warehouseStock.findByIdAndUpdate(rid, pararms);
+      return rc.setResponse(res, {
+        success: true,
+        msg: "data updated",
+        data: updatedata,
+      });
+    }
+  })
+);
+
+// deleteWarehouse Stock
+router.put(
+  "/deleteWareHouseStock/:_id",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (!cdata) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "no permission to delete warehouse",
+      });
+    } else {
+      const rid = req.params._id;
+      // const pararms = req.body;
+      const updatedata = await warehouseStock.findByIdAndUpdate(rid, {
+        isDeleted: true,
+      });
+      return rc.setResponse(res, {
+        success: true,
+        msg: "WarehouseStock deleted",
+      });
+    }
+  })
+);
+
+// purchase stocks
+
+router.post(
+  "/purchaseStock",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.purchaseStock) {
+      // condition to update warehouse stock here
+      // then after that will make purchase request
+      const existingStock = await warehouseStock
+        .findOne(
+          { warehouse: req.body.warehouse },
+          { product: req.body.product }
+        )
+        .select("productQuantity sellingPrice admin warehouse product")
+        .populate("warehouse product");
+      console.log("-----------------------existingstock---------------------------");
+      console.log(existingStock);
+      console.log("-----------------------existingstock---------------------------");
+      if (existingStock) {
+        console.log("---------------");
+        existingStock.productQuantity += req.body.productQuantity;
+        await existingStock.save();
+        console.log("-------------------stock Updated--------------------");
+      } else {
+        const stock = {
+          warehouse: req.body.warehouse,
+          product: req.body.product,
+          productQuantity: req.body.productQuantity,
+          sellingPrice: req.body.sellingPrice,
+        };
+        let newstock = new warehouseStock(stock);
+        newstock.admin = req.user._id;
+        if (!newstock) {
           return rc.setResponse(res, {
-            success: true,
-            msg: "Data Fetched",
-            data: data,
-          });
-        } else {
-          return rc.setResponse(res, {
-            msg: "Data not Found",
+            msg: "No Data to insert",
           });
         }
-      } else {
-        return rc.setResponse(res, { error: { code: 403 } });
-      }
-    })
-  );
+        const data = await warehouseStock.addRow(newstock);
+        if (data) {
+          rc.setResponse(res, {
+            success: true,
+            msg: "Data Inserted",
+            data: data,
+          });
+        }
+        // }
 
-  // Update warehouseStock
-router.put(
-    "/updateWareHouseStock/:_id",
-    auth,
-    asyncHandler(async (req, res) => {
-      const query = {
-        role: req.user.role,
-      };
-      let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (!cdata) {
-        return rc.setResponse(res, {
-          success: false,
-          msg: "no permission to update warehouse",
-        });
-      } else {
-        const rid = req.params._id;
-        const pararms = req.body;
-        const updatedata = await warehouseStock.findByIdAndUpdate(rid, pararms);
+
+        // here i have to stop this else condition or else will get error because of this it is not saving purchase request
+
+        let newRow = new purchaseStock(req.body);
+        newRow.admin = req.user._id;
+        if (!newRow) {
+          return rc.setResponse(res, {
+            msg: "No Data to insert",
+          });
+        }
+        console.log(newRow);
+      }
+      const data = await purchaseStock.addRow(newRow);
+      console.log(data);
+      if (data) {
         return rc.setResponse(res, {
           success: true,
-          msg: "data updated",
-          data: updatedata,
+          msg: "Data Inserted",
+          data: data,
         });
       }
-    })
-  );
-
-  // deleteWarehouse Stock
-router.put(
-    "/deleteWareHouseStock/:_id",
-    auth,
-    asyncHandler(async (req, res) => {
-      const query = {
-        role: req.user.role,
-      };
-      let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (!cdata) {
-        return rc.setResponse(res, {
-          success: false,
-          msg: "no permission to delete warehouse",
-        });
-      } else {
-        const rid = req.params._id;
-        // const pararms = req.body;
-        const updatedata = await warehouseStock.findByIdAndUpdate(rid, {
-          isDeleted: true,
-        });
-        return rc.setResponse(res, {
-          success: true,
-          msg: "WarehouseStock deleted",
-        });
-      }
-    })
-  );
+    } else {
+      return rc.setResponse(res, {
+        msg: "no permission to purchase",
+        error: { code: 403 },
+      });
+    }
+  })
+);
 
 module.exports = router;
