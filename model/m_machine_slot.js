@@ -16,10 +16,7 @@ const TableSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  materialName: {
-    type: String,
-    require: true,
-  },
+  product: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
   maxquantity: {
     type: Number,
     require: true,
@@ -60,7 +57,7 @@ const TableSchema = mongoose.Schema({
     type: Number,
     max: maxquantity
   },
-  currentStock: { type: Number, default: 0 },
+  currentStock: { type: Number, default: 0, minimum: 0 },
   refillQuantity: { type: Number, default: 0 },
   saleQuantity: { type: Number, default: 0 },
 });

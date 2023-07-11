@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const WarehouseStockTransferRequest = new mongoose.Schema(
+const WarehouseToWarehouseStockTransferRequest = new mongoose.Schema(
   {
     fromWarehouseId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -23,9 +23,9 @@ const WarehouseStockTransferRequest = new mongoose.Schema(
   }
 );
 
-const warehouseStockTransferRequest = mongoose.model(
-  "warehouseStockTransferRequest",
-  WarehouseStockTransferRequest
+const warehousetowarehouseStockTransferRequest = mongoose.model(
+  "warehouseToWarehouseStockTransferRequest",
+  WarehouseToWarehouseStockTransferRequest
 );
 
-module.exports = warehouseStockTransferRequest;
+module.exports = warehousetowarehouseStockTransferRequest;

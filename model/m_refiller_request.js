@@ -13,7 +13,7 @@ const refillrequest = new Schema(
         currentStock: { type: Number, default: 0 },
         refillQuantity: { type: Number, default: 0 },
         saleQuantity: { type: Number, default: 0 },
-        materialName: { type: String, default: false },
+        product: { type: Schema.Types.ObjectId, ref: "product" },
         slotid: {type: String, default: false}
       },
     ],
