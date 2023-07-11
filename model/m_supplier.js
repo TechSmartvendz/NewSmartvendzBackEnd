@@ -15,6 +15,7 @@ const supplier = new Schema(
     pincode: { type: Number, default: 0 },
     // gstNumber: { type: Number, default: 0 },
     // panNumber: { type: String, default: null },
+    warehouse: { type: Schema.Types.ObjectId, ref: "warehouse" },
     admin: { type: String, default: null },
     isDeleted: { type: Boolean, default: false },
   },

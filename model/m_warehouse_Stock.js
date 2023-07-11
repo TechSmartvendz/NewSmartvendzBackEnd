@@ -5,8 +5,8 @@ const warehouseStock = new Schema(
   {
     warehouse: { type: Schema.Types.ObjectId, ref: "warehouse" },
     product: { type: Schema.Types.ObjectId, ref: "product" },
-    wareHouseId: { type: String, default: null },
-    productId: { type: String, default: null },
+    // wareHouseId: { type: String, default: null },
+    // productId: { type: String, default: null },
     productQuantity: { type: Number, default: 0 },
     sellingPrice: { type: Number, default: 0 },
     admin: { type: String, default: null },
