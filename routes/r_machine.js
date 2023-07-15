@@ -6,6 +6,7 @@ const TableModelMachineSlot = require("../model/m_machine_slot");
 const TableModelPermission = require("../model/m_permission");
 const TableModelCompany = require("../model/m_company");
 const TableModel = require("../model/m_machine");
+const product = require("../model/m_product");
 const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
@@ -218,12 +219,13 @@ router.post(
           msg: "Machine not Found",
         });
       } else {
+        const productdata = await product.findOne({productname: req.body.product})
         var newRow = req.body;
         newRow.created_by = req.user.id;
         newRow.machineid = cdata.id;
         newRow.admin = req.user.id;
         newRow.machineName = cdata.machineid;
-        // newRow.
+        newRow.product = productdata.productname
         newRow = new TableModelMachineSlot(newRow);
 
         if (!newRow) {
@@ -264,9 +266,11 @@ router.put(
           msg: "Machine not Found",
         });
       } else {
+        const productdata = await product.findOne({productname: req.body.product})
         var newRow = req.body;
         newRow.created_by = req.user.id;
         newRow.machineid = cdata.id;
+        newRow.product = productdata.productname
         query = {
           _id: req.params.id,
         };
