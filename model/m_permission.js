@@ -157,6 +157,10 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  warehouseManage: {
+    type: Boolean,
+    default: false,
+  },
   addWareHouse: {
     type: Boolean,
     default: false,
@@ -165,11 +169,19 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  stockManage: {
+    type: Boolean,
+    default: false,
+  },
   addStock: {
     type: Boolean,
     default: false,
   },
   listStock: {
+    type: Boolean,
+    default: false,
+  },
+  supplierManage: {
     type: Boolean,
     default: false,
   },

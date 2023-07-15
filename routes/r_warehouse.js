@@ -53,7 +53,7 @@ router.post(
 
 // list all warehouses
 router.get(
-  "/getAllWarehouses",
+  "/getAllWarehouses/Datalist",
   auth,
   asyncHandler(async (req, res, next) => {
     const query = {
@@ -63,7 +63,8 @@ router.get(
     if (cdata.listWarehouse) {
       const data = await warehouseTable
         .find({ isDeleted: false })
-        .select("_id wareHouseName city contactPerson ");
+        .select("_id wareHouseName city contactPerson machine ")
+        .populate('machine')
       if (data) {
         return rc.setResponse(res, {
           success: true,

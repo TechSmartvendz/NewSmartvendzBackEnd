@@ -21,7 +21,7 @@ router.post(
           { supplierEmail: req.body.supplierEmail },
         ],
       });
-      if (checkSupplier) {
+      if (checkSupplier[0]) {
         return rc.setResponse(res, {
           msg: "Already registered",
         });
@@ -60,7 +60,7 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listSupplier) {
-      const data = await supplier.find({ isDeleted: false });
+      const data = await supplier.find({ isDeleted: false }).select("supplierName supplierEmail supplierPhone warehouse");
       return rc.setResponse(res, {
         success: true,
         msg: "data fetched",
