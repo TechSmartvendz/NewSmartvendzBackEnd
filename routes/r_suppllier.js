@@ -5,6 +5,7 @@ const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
 const supplier = require("../model/m_supplier");
+const warehouse = require("../model/m_warehouse")
 
 router.post(
   "/addSupplier",
@@ -26,8 +27,10 @@ router.post(
           msg: "Already registered",
         });
       } else {
+        const warehousedata = await warehouse.findOne({wareHouseName:req.body.warehouse});
         newRow = new supplier(req.body);
         newRow.admin = req.user._id;
+        newrow.warehouse = warehousedata._id
         if (!newRow) {
           return rc.setResponse(res, {
             msg: "No Data to insert",
