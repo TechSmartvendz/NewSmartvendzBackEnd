@@ -3,10 +3,19 @@ const { Schema } = mongoose;
 
 const refillrequest = new Schema(
   {
-    refillerID: { type: Schema.Types.ObjectId, ref: "user_info", require: true  },
-    refillRequestNumber: { type: String, default: false, unique: true },
-    machineId: { type: String, default: false },
-    machineSlot: [
+    refillerID: {
+      type: Schema.Types.ObjectId,
+      ref: "user_info",
+      require: true,
+    },
+    warehouse: { type: String, default: null, required: true },
+    refillRequestNumber: { type: String, default: null, unique: true },
+    machineId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "machine",
+      required: true,
+    },
+    machineSlots: [
       {
         slot: { type: String, default: false },
         closingStock: { type: Number, default: 0 },
@@ -14,11 +23,11 @@ const refillrequest = new Schema(
         refillQuantity: { type: Number, default: 0 },
         saleQuantity: { type: Number, default: 0 },
         product: { type: Schema.Types.ObjectId, ref: "product" },
-        slotid: {type: String, default: false}
+        sloteid: { type: String, default: false },
       },
     ],
-    oldmachineData: [{ type: String, default: false }],
-    pendingstatus: { type: Boolean, default: false },
+    // oldmachineData: [{ type: String, default: null }],
+    status: { type: String, enum: ["Pending", "Approved", "Rejected"] },
     isDeleted: { type: Boolean, default: false },
   },
   {
