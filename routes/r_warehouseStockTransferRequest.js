@@ -6,6 +6,8 @@ const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
 
 const warehouseStock = require("../model/m_warehouse_Stock");
+const warehouseTable = require("../model/m_warehouse");
+const productTable = require("../model/m_product");
 const WarehouseStockTransferRequest = require("../model/m_warehouseToWarehouse_Stock_TransferRequest");
 const machine = require("../model/m_machine_slot");
 const warehouseToMachineStockTransferRequest = require("../model/m_warehouseToMachine_Stock_TransferRequest");
@@ -16,15 +18,22 @@ router.post(
   "/sendStockTransferRequest",
   auth,
   asyncHandler(async (req, res) => {
-    const { fromWarehouseId, toWarehouseId, productId, quantity } = req.body;
+    const { fromWarehouse, toWarehouse, productName, quantity } = req.body;
     try {
       // Perform any necessary validation or business logic here before creating the request
 
       // Create a new stock transfer request in the database
-      const warehouse = await warehouseStock.findOne({
-        warehouse: fromWarehouseId,
+      const fromwarehouse = await warehouseTable.findOne({
+        wareHouseName: fromWarehouse,
       });
-      console.log(warehouse.productQuantity);
+      const towarehouse = await warehouseTable.findOne({
+        wareHouseName: toWarehouse,
+      });
+      const product = await productTable.findOne({ productname: productName });
+      const warehouse = await warehouseStock.findOne({
+        warehouse: fromwarehouse._id,
+      });
+      // console.log(warehouse.productQuantity);
       if (warehouse.productQuantity < quantity) {
         return rc.setResponse(res, {
           success: false,
@@ -32,17 +41,23 @@ router.post(
         });
       }
       const transferRequest = new WarehouseStockTransferRequest({
-        fromWarehouseId,
-        toWarehouseId,
-        productId,
+        fromWarehouseId: fromwarehouse._id,
+        toWarehouseId: towarehouse._id,
+        productId: product._id,
         quantity,
         status: "Pending",
       });
       await transferRequest.save();
-
-      res.status(200).json({ message: "Stock transfer request sent." });
+      return rc.setResponse(res, {
+        success: true,
+        msg: "Stock transfer request sent.",
+        // data: d
+      });
     } catch (error) {
-      res.status(500).json({ error: "Failed to send stock transfer request." });
+      return rc.setResponse(res, {
+        error,
+        msg: "Failed to send stock transfer request.",
+      });
     }
   })
 );
@@ -191,13 +206,11 @@ router.post(
 //   })
 // );
 
-
-// New refiller request 
+// New refiller request
 router.post(
   "/refill/request",
   auth,
   asyncHandler(async (req, res) => {
-
     try {
       const { machineId, machineSlots } = req.body;
       const refillerid = req.user.id;
@@ -215,7 +228,7 @@ router.post(
 
       return res.status(200).json({ message: "Refill request sent." });
     } catch (error) {
-        console.log(error)
+      console.log(error);
       return res.status(500).json({ error: "Failed to send refill request." });
     }
   })
