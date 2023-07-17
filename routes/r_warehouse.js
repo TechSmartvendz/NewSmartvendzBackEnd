@@ -438,54 +438,54 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.purchaseStockList) {
-      const data = await purchaseStock.find();
-      // const data = purchaseStock.aggregate([
-      //   {
-      //     $lookup: {
-      //       from: "warehouse",  // Name of the collection to join
-      //       localField: "wareHouseName",  // Field from the "orders" collection
-      //       foreignField: "_id",  // Field from the "users" collection
-      //       as: "warehouse"  // Name of the field to store the joined user information
-      //     }
-      //   }
-      // ])
-      // const warehousedata = await warehouseTable.findOne();
-      // .populate("warehouse", [
-      //   "wareHouseName",
-      //   "email",
-      //   "address",
-      //   "state",
-      //   "city",
-      //   "country",
-      //   "phoneNumber",
-      //   "contactPerson",
-      //   "pincode",
-      // ])
-      // .populate("product", [
-      //   "productid",
-      //   "productname",
-      //   "description",
-      //   "materialtype",
-      //   "sellingprice",
-      // ])
-      // .populate("supplier", [
-      //   "supplierName",
-      //   "supplierEmail",
-      //   "supplierPhone",
-      //   "supplierAddress",
-      //   "contactPerson",
-      //   "area",
-      //   "state",
-      //   "city",
-      //   "country",
-      //   "pincode",
-      // ]);
-      // console.log(data);
+      const data = await purchaseStock.find()
+      .populate("warehouse", [
+        "wareHouseName",
+        "email",
+        "address",
+        "state",
+        "city",
+        "country",
+        "phoneNumber",
+        "contactPerson",
+        "pincode",
+      ])
+      .populate("product", [
+        "productid",
+        "productname",
+        "description",
+        "materialtype",
+        "sellingprice",
+      ])
+      .populate("supplier", [
+        "supplierName",
+        "supplierEmail",
+        "supplierPhone",
+        "supplierAddress",
+        "contactPerson",
+        "area",
+        "state",
+        "city",
+        "country",
+        "pincode",
+      ]);
+      let sendData = [];
+      for(let i=0;i<data.length;i++){
+        sendData.push({
+          productName: data[i].product.productname,
+          productQuantity: data[i].productQuantity,
+          sellingPrice: data[i].sellingPrice,
+          totalPrice: data[i].totalPrice,
+          invoiceNumber: data[i].invoiceNumber,
+          GRN_Number: data[i].GRN_Number
+      })
+      }
+      // console.log(sendData);
       if (data) {
         return rc.setResponse(res, {
           success: true,
           msg: "data fetched",
-          data: data,
+          data: sendData,
         });
       }
     } else {

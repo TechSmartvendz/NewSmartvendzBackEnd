@@ -201,6 +201,14 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  transferStock: {
+    type: Boolean,
+    default: false,
+  },
+  listTransferStock: {
+    type: Boolean,
+    default: false,
+  },
   created_at: {
     type: Date,
     default: Date.now,
