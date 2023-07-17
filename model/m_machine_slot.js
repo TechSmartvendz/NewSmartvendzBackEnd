@@ -17,9 +17,9 @@ const TableSchema = mongoose.Schema({
     require: true,
   },
   product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "product",
+    type: String,
     require: true,
+    default:null
   },
   maxquantity: {
     type: Number,

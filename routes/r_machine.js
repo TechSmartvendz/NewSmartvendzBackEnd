@@ -225,7 +225,7 @@ router.post(
         newRow.machineid = cdata.id;
         newRow.admin = req.user.id;
         newRow.machineName = cdata.machineid;
-        newRow.product = productdata.productname
+        newRow.product = productdata._id
         newRow = new TableModelMachineSlot(newRow);
 
         if (!newRow) {
