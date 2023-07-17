@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const WarehouseToWarehouseStockTransferRequest = new mongoose.Schema(
   {
-    fromWarehouseId: {
+    fromWarehouse: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "warehouseStock",
     },
-    toWarehouseId: {
+    toWarehouse: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "warehouseStock",
     },
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+    productName: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
     quantity: { type: Number, default: 0, minimum: 0 },
     status: {
       type: String,
