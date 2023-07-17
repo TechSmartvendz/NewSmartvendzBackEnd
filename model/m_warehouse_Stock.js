@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 
 const warehouseStock = new Schema(
   {
-    warehouse: { type: Schema.Types.ObjectId, ref: "warehouse" },
-    product: { type: Schema.Types.ObjectId, ref: "product" },
+    warehouse: { type: String, default: null, required: true },
+    product: { type: String, default: null, required: true },
     // wareHouseId: { type: String, default: null },
     // productId: { type: String, default: null },
     productQuantity: { type: Number, default: 0 },

@@ -7,6 +7,8 @@ const purchaseStock = require("../model/m_purchase_stocks");
 const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
+const productTable = require("../model/m_product");
+const supplierTable = require("../model/m_supplier");
 
 // add warehouse
 router.post(
@@ -329,6 +331,7 @@ router.post(
       role: req.user.role,
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    // console.log(cdata);
     if (cdata.purchaseStock) {
       const existingStock = await warehouseStock
         .findOne(
@@ -350,9 +353,15 @@ router.post(
         await existingStock.save();
         console.log("-------------------stock Updated--------------------");
       } else {
+        const warehouseid = await warehouseTable.findOne({wareHouseName: req.body.warehouse})
+        // console.log("warehouseID",warehouseid._id)
+        const productid = await productTable.findOne({productname: req.body.product})
+        // console.log("productId",productid._id)
+        const supplierid = await supplierTable.findOne({supplierName: req.body.supplier})
+        // console.log("supplierID",supplierid)
         const stock = {
-          warehouse: req.body.warehouse,
-          product: req.body.product,
+          warehouse: warehouseid._id,
+          product: productid._id,
           productQuantity: req.body.productQuantity,
           sellingPrice: req.body.sellingPrice,
         };
@@ -373,8 +382,20 @@ router.post(
         // }
         console.log("------------------data inserted---------------");
       }
-      let newRow = new purchaseStock(req.body);
-      newRow.admin = req.user._id;
+
+      const purchaseStockData = {
+        warehouse: warehouseid._id,
+        product: productid._id,
+        supplier: supplierid._id,
+        productQuantity: req.body.productQuantity,
+        sellingPrice: req.body.sellingPrice,
+        totalPrice: req.body.totalPrice,
+        invoiceNumber: req.body.invoiceNumber,
+        GRN_Number: req.body.GRN_Number,
+        admin: req.user._id
+      }
+      let newRow = new purchaseStock(purchaseStockData);
+      // newRow.admin = req.user._id;
       if (!newRow) {
         return rc.setResponse(res, {
           msg: "No Data to insert",
