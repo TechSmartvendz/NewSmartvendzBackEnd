@@ -41,10 +41,10 @@ router.post(
         });
       }
       const transferRequest = new WarehouseStockTransferRequest({
-        fromWarehouseId: fromwarehouse._id,
-        toWarehouseId: towarehouse._id,
-        productId: product._id,
-        quantity,
+        fromWarehouse: fromwarehouse._id,
+        toWarehouse: towarehouse._id,
+        productName: product._id,
+        productQuantity: quantity,
         status: "Pending",
       });
       await transferRequest.save();

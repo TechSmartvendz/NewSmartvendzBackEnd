@@ -11,7 +11,7 @@ const WarehouseToWarehouseStockTransferRequest = new mongoose.Schema(
       ref: "warehouseStock",
     },
     productName: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
-    quantity: { type: Number, default: 0, minimum: 0 },
+    productQuantity: { type: Number, default: 0, minimum: 0 },
     status: {
       type: String,
       enum: ["Pending", "Accepted", "Rejected"],
