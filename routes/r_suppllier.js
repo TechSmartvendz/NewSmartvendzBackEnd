@@ -30,7 +30,7 @@ router.post(
         const warehousedata = await warehouse.findOne({wareHouseName:req.body.warehouse});
         newRow = new supplier(req.body);
         newRow.admin = req.user._id;
-        newrow.warehouse = warehousedata._id
+        newRow.warehouse = warehousedata._id
         if (!newRow) {
           return rc.setResponse(res, {
             msg: "No Data to insert",
@@ -55,7 +55,7 @@ router.post(
 );
 
 router.get(
-  "/listSupplier",
+  "/listSupplier/Datalist",
   auth,
   asyncHandler(async (req, res) => {
     const query = {

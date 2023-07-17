@@ -66,7 +66,7 @@ router.get(
       const data = await warehouseTable
         .find({ isDeleted: false })
         .select("_id wareHouseName city contactPerson machine ")
-        .populate('machine')
+        .populate("machine");
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -333,32 +333,40 @@ router.post(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     // console.log(cdata);
     if (cdata.purchaseStock) {
+      const warehouseidcheck = await warehouseTable.findOne({wareHouseName: req.body.warehouse});
+      const productidcheck = await productTable.findOne({productname: req.body.product});
       const existingStock = await warehouseStock
         .findOne(
-          { warehouse: req.body.warehouse },
-          { product: req.body.product }
+          { warehouse: warehouseidcheck._id },
+          { product: productidcheck._id }
         )
         .select("productQuantity sellingPrice admin warehouse product")
         .populate("warehouse product");
       console.log(
         "-----------------------existingstock---------------------------"
       );
-      console.log(existingStock);
+      // console.log(existingStock);
       console.log(
         "-----------------------existingstock---------------------------"
       );
+      const warehouseid = await warehouseTable.findOne({
+        wareHouseName: req.body.warehouse,
+      });
+      // console.log("warehouseID",warehouseid._id)
+      const productid = await productTable.findOne({
+        productname: req.body.product,
+      });
+      // console.log("productId",productid._id)
+      const supplierid = await supplierTable.findOne({
+        supplierName: req.body.supplier,
+      });
+      // console.log("supplierID",supplierid)
       if (existingStock) {
         console.log("---------------");
-        existingStock.productQuantity += req.body.productQuantity;
+        existingStock.productQuantity += parseInt(req.body.productQuantity);
         await existingStock.save();
         console.log("-------------------stock Updated--------------------");
       } else {
-        const warehouseid = await warehouseTable.findOne({wareHouseName: req.body.warehouse})
-        // console.log("warehouseID",warehouseid._id)
-        const productid = await productTable.findOne({productname: req.body.product})
-        // console.log("productId",productid._id)
-        const supplierid = await supplierTable.findOne({supplierName: req.body.supplier})
-        // console.log("supplierID",supplierid)
         const stock = {
           warehouse: warehouseid._id,
           product: productid._id,
@@ -392,8 +400,8 @@ router.post(
         totalPrice: req.body.totalPrice,
         invoiceNumber: req.body.invoiceNumber,
         GRN_Number: req.body.GRN_Number,
-        admin: req.user._id
-      }
+        admin: req.user._id,
+      };
       let newRow = new purchaseStock(purchaseStockData);
       // newRow.admin = req.user._id;
       if (!newRow) {
@@ -430,38 +438,48 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.purchaseStockList) {
-      const data = await purchaseStock
-        .find()
-        .populate("warehouse", [
-          "wareHouseName",
-          "email",
-          "address",
-          "state",
-          "city",
-          "country",
-          "phoneNumber",
-          "contactPerson",
-          "pincode",
-        ])
-        .populate("product", [
-          "productid",
-          "productname",
-          "description",
-          "materialtype",
-          "sellingprice",
-        ])
-        .populate("supplier", [
-          "supplierName",
-          "supplierEmail",
-          "supplierPhone",
-          "supplierAddress",
-          "contactPerson",
-          "area",
-          "state",
-          "city",
-          "country",
-          "pincode",
-        ]);
+      const data = await purchaseStock.find();
+      // const data = purchaseStock.aggregate([
+      //   {
+      //     $lookup: {
+      //       from: "warehouse",  // Name of the collection to join
+      //       localField: "wareHouseName",  // Field from the "orders" collection
+      //       foreignField: "_id",  // Field from the "users" collection
+      //       as: "warehouse"  // Name of the field to store the joined user information
+      //     }
+      //   }
+      // ])
+      // const warehousedata = await warehouseTable.findOne();
+      // .populate("warehouse", [
+      //   "wareHouseName",
+      //   "email",
+      //   "address",
+      //   "state",
+      //   "city",
+      //   "country",
+      //   "phoneNumber",
+      //   "contactPerson",
+      //   "pincode",
+      // ])
+      // .populate("product", [
+      //   "productid",
+      //   "productname",
+      //   "description",
+      //   "materialtype",
+      //   "sellingprice",
+      // ])
+      // .populate("supplier", [
+      //   "supplierName",
+      //   "supplierEmail",
+      //   "supplierPhone",
+      //   "supplierAddress",
+      //   "contactPerson",
+      //   "area",
+      //   "state",
+      //   "city",
+      //   "country",
+      //   "pincode",
+      // ]);
       // console.log(data);
       if (data) {
         return rc.setResponse(res, {
