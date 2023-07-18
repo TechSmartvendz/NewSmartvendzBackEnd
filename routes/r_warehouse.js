@@ -9,6 +9,7 @@ const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
 const productTable = require("../model/m_product");
 const supplierTable = require("../model/m_supplier");
+const gstTable = require("../model/m_gst");
 
 // add warehouse
 router.post(
@@ -333,8 +334,12 @@ router.post(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     // console.log(cdata);
     if (cdata.purchaseStock) {
-      const warehouseidcheck = await warehouseTable.findOne({wareHouseName: req.body.warehouse});
-      const productidcheck = await productTable.findOne({productname: req.body.product});
+      const warehouseidcheck = await warehouseTable.findOne({
+        wareHouseName: req.body.warehouse,
+      });
+      const productidcheck = await productTable.findOne({
+        productname: req.body.product,
+      });
       const existingStock = await warehouseStock
         .findOne(
           { warehouse: warehouseidcheck._id },
@@ -360,6 +365,7 @@ router.post(
       const supplierid = await supplierTable.findOne({
         supplierName: req.body.supplier,
       });
+      const gstID = await gstTable.findOne({ gstName: req.body.gstName });
       // console.log("supplierID",supplierid)
       if (existingStock) {
         console.log("---------------");
@@ -390,7 +396,6 @@ router.post(
         // }
         console.log("------------------data inserted---------------");
       }
-
       const purchaseStockData = {
         warehouse: warehouseid._id,
         product: productid._id,
@@ -398,6 +403,7 @@ router.post(
         productQuantity: req.body.productQuantity,
         sellingPrice: req.body.sellingPrice,
         totalPrice: req.body.totalPrice,
+        gst: gstID._id,
         invoiceNumber: req.body.invoiceNumber,
         GRN_Number: req.body.GRN_Number,
         admin: req.user._id,
@@ -438,47 +444,54 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.purchaseStockList) {
-      const data = await purchaseStock.find()
-      .populate("warehouse", [
-        "wareHouseName",
-        "email",
-        "address",
-        "state",
-        "city",
-        "country",
-        "phoneNumber",
-        "contactPerson",
-        "pincode",
-      ])
-      .populate("product", [
-        "productid",
-        "productname",
-        "description",
-        "materialtype",
-        "sellingprice",
-      ])
-      .populate("supplier", [
-        "supplierName",
-        "supplierEmail",
-        "supplierPhone",
-        "supplierAddress",
-        "contactPerson",
-        "area",
-        "state",
-        "city",
-        "country",
-        "pincode",
-      ]);
+      const data = await purchaseStock
+        .find()
+        .populate("warehouse", [
+          "wareHouseName",
+          "email",
+          "address",
+          "state",
+          "city",
+          "country",
+          "phoneNumber",
+          "contactPerson",
+          "pincode",
+        ])
+        .populate("product", [
+          "productid",
+          "productname",
+          "description",
+          "materialtype",
+          "sellingprice",
+        ])
+        .populate("supplier", [
+          "supplierName",
+          "supplierEmail",
+          "supplierPhone",
+          "supplierAddress",
+          "contactPerson",
+          "area",
+          "state",
+          "city",
+          "country",
+          "pincode",
+        ])
+        .populate("gst", [
+          "gstName",
+          "gstRate"
+        ]);
       let sendData = [];
-      for(let i=0;i<data.length;i++){
+      for (let i = 0; i < data.length; i++) {
         sendData.push({
           productName: data[i].product.productname,
           productQuantity: data[i].productQuantity,
           sellingPrice: data[i].sellingPrice,
           totalPrice: data[i].totalPrice,
           invoiceNumber: data[i].invoiceNumber,
-          GRN_Number: data[i].GRN_Number
-      })
+          GRN_Number: data[i].GRN_Number,
+          gstName: data[i].gst.gstName,
+          gstRate: data[i].gst.gstRate,
+        });
       }
       // console.log(sendData);
       if (data) {
