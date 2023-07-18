@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const tax = new Schema(
+const gst = new Schema(
   {
     gstName: { type: String, default: null },
     gstRate: { type: Number, default: 0 },
@@ -13,10 +13,10 @@ const tax = new Schema(
   }
 );
 
-tax.set("toJSON");
-tax.set("toObject");
+gst.set("toJSON");
+gst.set("toObject");
 
-module.exports = mongoose.model("tax", tax);
+module.exports = mongoose.model("gst", gst);
 
 module.exports.addRow = async (newRow) => {
   const data = await newRow.save();

@@ -39,9 +39,12 @@ router.get(
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
       const data = await m_gst.find({ isDeleted: false });
-      const sendData = {
-        gstName: data.gstName,
-        gstRate: data.gstRate
+      let sendData = [];
+      for(let i=0;i<data.length;i++){
+        sendData.push({
+          gstName: data[i].gstName,
+          gstRate: data[i].gstRate
+        })
       }
       if (data) {
         return rc.setResponse(res, {
@@ -70,9 +73,13 @@ router.get(
         { _id: req.params.id },
         { isDeleted: false }
       );
-      const sendData = {
-        gstName: data.gstName,
-        gstRate: data.gstRate
+      let sendData = [];
+      for(let i=0;i<data.length;i++){
+        sendData.push({
+          _id: data[i]._id,
+          gstName: data[i].gstName,
+          gstRate: data[i].gstRate
+        })
       }
       if (data) {
         return rc.setResponse(res, {
