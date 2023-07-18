@@ -39,11 +39,15 @@ router.get(
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
       const data = await m_gst.find({ isDeleted: false });
+      const sendData = {
+        gstName: data.gstName,
+        gstRate: data.gstRate
+      }
       if (data) {
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
-          data: data,
+          data: sendData,
         });
       } else {
         return rc.setResponse(res, {
@@ -66,11 +70,15 @@ router.get(
         { _id: req.params.id },
         { isDeleted: false }
       );
+      const sendData = {
+        gstName: data.gstName,
+        gstRate: data.gstRate
+      }
       if (data) {
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
-          data: data,
+          data: sendData,
         });
       } else {
         return rc.setResponse(res, {
