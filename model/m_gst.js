@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 
 const tax = new Schema(
   {
-    taxName: { type: String, default: null },
-    taxRate: { type: Number, default: 0 },
+    gstName: { type: String, default: null },
+    gstRate: { type: Number, default: 0 },
     admin: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
   },

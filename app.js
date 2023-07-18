@@ -1,14 +1,14 @@
-require('dotenv').config();
+require("dotenv").config();
 
 var express = require("express");
 const cookieParser = require("cookie-parser");
 const CsvParser = require("json2csv").Parser;
 const multer = require("multer");
-const csv = require('csv-parser');
-const fs = require('fs');
-const cors = require('cors');
+const csv = require("csv-parser");
+const fs = require("fs");
+const cors = require("cors");
 const cjs = require("crypto-js");
-const mongoose =require("mongoose");
+const mongoose = require("mongoose");
 var path = require("path");
 
 //TODO:import inital configuration and connection checks
@@ -18,18 +18,18 @@ const port = process.env.PORT || 80;
 
 //TODO:import local modules and middlewares
 const auth = require("./middleware/auth");
-const rc = require('./controllers/responseController');
+const rc = require("./controllers/responseController");
 
 //TODO:setup app
 var app = express();
 
 //TODO:if it not using delete this ejs setupy
-// view engine setup ejs 
-// app.set("views", path.join(__dirname, "views")); 
+// view engine setup ejs
+// app.set("views", path.join(__dirname, "views"));
 // app.set("view engine", "ejs");
 
 //TODO:if it not using delete this hbs setup
-// view engine setup hbs 
+// view engine setup hbs
 // const staticPath = path.join(__dirname, "/src");
 // console.log(staticPath);
 // const templatePath = path.join(__dirname, "/templates/views");
@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-//TODO: API route for file upload handler multer 
+//TODO: API route for file upload handler multer
 // const file = require("./routes/file");
 // app.use("/api/file", file);
 
@@ -70,6 +70,7 @@ const machine_Stock = require("./routes/r_machine_stock");
 const warehouse = require("./routes/r_warehouse");
 const supplier = require("./routes/r_suppllier");
 const warestocktransferrequest = require("./routes/r_warehouseStockTransferRequest");
+const gst = require("./routes/r_gst");
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
 app.use("/api/User", userInformation);
@@ -85,17 +86,19 @@ app.use("/api/Product", Product);
 app.use("/api/Employee", Employee);
 app.use("/api/Logic", Logic);
 
-app.use('/api', machine_Stock);
-app.use('/api',warehouse);
-app.use('/api',supplier);
-app.use('/api', warestocktransferrequest);
+app.use("/api", machine_Stock);
+app.use("/api", warehouse);
+app.use("/api", supplier);
+app.use("/api", warestocktransferrequest);
+app.use("/api", gst);
 //TODO:catch 404 and forward to error handler
 app.use(function (req, res, next) {
-   // next(createError(404));
-   return rc.setResponse(res, {
-    msg: "API not Found:404"
-})
+  // next(createError(404));
+  return rc.setResponse(res, {
+    msg: "API not Found:404",
   });
+});
 
-
-app.listen(port, () => { console.log(`connection is setup at ${port}`); })
+app.listen(port, () => {
+  console.log(`connection is setup at ${port}`);
+});
