@@ -480,6 +480,7 @@ router.get(
           "gstName",
           "gstRate"
         ]);
+        console.log(data)
       let sendData = [];
       for (let i = 0; i < data.length; i++) {
         sendData.push({
@@ -490,7 +491,7 @@ router.get(
           invoiceNumber: data[i].invoiceNumber,
           GRN_Number: data[i].GRN_Number,
           gstName: data[i].gst.gstName,
-          gstRate: data[i].gst.gstRate,
+          gstRate: data[i].gst.gstRate
         });
       }
       // console.log(sendData);
