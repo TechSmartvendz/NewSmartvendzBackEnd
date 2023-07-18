@@ -3,21 +3,22 @@ const router = express.Router();
 const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
-const m_tax = require("../model/m_tax");
+const m_gst = require("../model/m_gst");
 
+// add gst
 router.post(
   "/addtax",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
-      let newRow = new m_tax(req.body);
+      let newRow = new m_gst(req.body);
       newRow.admin = req.user.id;
       if (!newRow) {
         return rc.setResponse(res, {
           msg: "No Data to insert",
         });
       }
-      const data = await m_tax.addRow(newRow);
+      const data = await m_gst.addRow(newRow);
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -31,12 +32,13 @@ router.post(
   })
 );
 
+// get gst
 router.get(
   "/AllTax",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
-      const data = await m_tax.find({ isDeleted: false });
+      const data = await m_gst.find({ isDeleted: false });
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -54,12 +56,13 @@ router.get(
   })
 );
 
+// get gst by id
 router.get(
   "/tax/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
-      const data = await m_tax.findOne(
+      const data = await m_gst.findOne(
         { _id: req.params.id },
         { isDeleted: false }
       );
@@ -80,12 +83,13 @@ router.get(
   })
 );
 
+// edit gst
 router.put(
   "/edittax/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
-      const data = await m_tax.findOneAndUpdate(
+      const data = await m_gst.findOneAndUpdate(
         { _id: req.params.id },
         { $set: newdata }
       );
@@ -106,12 +110,13 @@ router.put(
   })
 );
 
+// soft delete gst
 router.put(
   "/deletetax/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
-      const data = await m_tax.findOneAndUpdate(
+      const data = await m_gst.findOneAndUpdate(
         { _id: req.params.id },
         { isDeleted: true }
       );
@@ -132,27 +137,28 @@ router.put(
   })
 );
 
+// delete permanentely
 router.delete(
-    "/deletetaxpermanentely/:id",
-    auth,
-    asyncHandler(async (req, res) => {
-      if (req.user.role === "SuperAdmin") {
-        const data = await m_tax.findOneAndRemove(
-          { _id: req.params.id }
-        );
-        if (data) {
-          return rc.setResponse(res, {
-            success: true,
-            msg: "Data Deleted permantely",
-            data: data,
-          });
-        } else {
-          return rc.setResponse(res, {
-            msg: "Data not Found",
-          });
-        }
+  "/deletetaxpermanentely/:id",
+  auth,
+  asyncHandler(async (req, res) => {
+    if (req.user.role === "SuperAdmin") {
+      const data = await m_gst.findOneAndRemove({ _id: req.params.id });
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data Deleted permantely",
+          data: data,
+        });
       } else {
-        return rc.setResponse(res, { error: { code: 403 } });
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
       }
-    })
-  );
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
+module.exports = router;
