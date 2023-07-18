@@ -484,17 +484,21 @@ router.get(
       let sendData = [];
       for (let i = 0; i < data.length; i++) {
         sendData.push({
+          _id: data[i]._id,
           productName: data[i].product.productname,
+          warehouse: data[i].warehouse.wareHouseName,
+          supplier: data[i].supplier.supplierName,
           productQuantity: data[i].productQuantity,
           sellingPrice: data[i].sellingPrice,
           totalPrice: data[i].totalPrice,
           invoiceNumber: data[i].invoiceNumber,
           GRN_Number: data[i].GRN_Number,
-          gstName: data[i].gst.gstName,
+          date: data[i].createdAt.toLocaleDateString(),
+          gst: data[i].gst.gstName,
           gstRate: data[i].gst.gstRate
         });
       }
-      // console.log(sendData);
+      // console.log(data[0].gst);
       if (data) {
         return rc.setResponse(res, {
           success: true,

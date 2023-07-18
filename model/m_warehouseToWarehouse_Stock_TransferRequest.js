@@ -4,11 +4,11 @@ const WarehouseToWarehouseStockTransferRequest = new mongoose.Schema(
   {
     fromWarehouse: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "warehouseStock",
+      ref: "warehouse",
     },
     toWarehouse: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "warehouseStock",
+      ref: "warehouse",
     },
     productName: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
     productQuantity: { type: Number, default: 0, minimum: 0 },
@@ -17,6 +17,7 @@ const WarehouseToWarehouseStockTransferRequest = new mongoose.Schema(
       enum: ["Pending", "Accepted", "Rejected"],
       default: "Pending",
     },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
