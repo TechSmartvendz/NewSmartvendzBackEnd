@@ -4,7 +4,7 @@ const router = express.Router();
 const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
-
+const TableModelPermission = require("../model/m_permission");
 const warehouseStock = require("../model/m_warehouse_Stock");
 const warehouseTable = require("../model/m_warehouse");
 const productTable = require("../model/m_product");
@@ -81,17 +81,17 @@ router.post(
       if (transferRequest.status === "Pending") {
         await warehouseStock.updateOne(
           {
-            warehouse: transferRequest.fromWarehouseId,
-            product: transferRequest.productId,
+            warehouse: transferRequest.fromWarehouse,
+            product: transferRequest.productName,
           },
-          { $inc: { productQuantity: -transferRequest.quantity } }
+          { $inc: { productQuantity: -transferRequest.productQuantity } }
         );
         await warehouseStock.updateOne(
           {
-            warehouse: transferRequest.toWarehouseId,
-            product: transferRequest.productId,
+            warehouse: transferRequest.toWarehouse,
+            product: transferRequest.productName,
           },
-          { $inc: { productQuantity: transferRequest.quantity } },
+          { $inc: { productQuantity: transferRequest.productQuantity } },
           { upsert: true }
         );
 
@@ -112,6 +112,52 @@ router.post(
       res
         .status(500)
         .json({ error: "Failed to accept stock transfer request." });
+    }
+  })
+);
+
+// get alltransfer stock request
+router.get(
+  "/alltransferRequest/Datalist",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.listTransferStock) {
+      const data = await WarehouseStockTransferRequest.find({
+        isDeleted: false,
+      })
+        .populate("fromWarehouse")
+        .populate("toWarehouse")
+        .populate("productName");
+      // console.log("data", data);
+      let sendData = [];
+      for (let i = 0; i < data.length; i++) {
+        sendData.push({
+          id: data[i]._id,
+          fromWarehouse: data[i].fromWarehouse.wareHouseName,
+          towarehouse: data[i].toWarehouse.wareHouseName,
+          product: data[i].productName.productname,
+          productQuantity: data[i].productQuantity,
+          status: data[i].status,
+        });
+      }
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data fetched",
+          data: sendData,
+        });
+      } else {
+        return rc.setResponse(res, {
+          msg: "Data not found",
+        });
+      }
+      // console.log(sendData);
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
     }
   })
 );
