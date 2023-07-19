@@ -217,11 +217,12 @@ router.get(
         .select("warehouse product productQuantity sellingPrice ")
         .populate("warehouse")
         .populate("product");
-        console.log(data);
+        // console.log(data);
         let sendData = [];
       if (data) {
         for(let i=0;i<data.length;i++){
           sendData.push({
+            _id: data[i]._id,
             product: data[i].product.productname,
             warehouse: data[i].warehouse.wareHouseName,
             productQuantity: data[i].productQuantity,
