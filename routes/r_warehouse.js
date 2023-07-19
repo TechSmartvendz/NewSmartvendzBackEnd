@@ -217,11 +217,21 @@ router.get(
         .select("warehouse product productQuantity sellingPrice ")
         .populate("warehouse")
         .populate("product");
+        console.log(data);
+        let sendData = [];
       if (data) {
+        for(let i=0;i<data.length;i++){
+          sendData.push({
+            product: data[i].product.productname,
+            warehouse: data[i].warehouse.wareHouseName,
+            productQuantity: data[i].productQuantity,
+            sellingPrice: data[i].sellingPrice
+          });
+        }
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
-          data: data,
+          data: sendData,
         });
       } else {
         return rc.setResponse(res, {
