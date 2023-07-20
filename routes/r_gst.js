@@ -34,7 +34,7 @@ router.post(
 
 // get gst
 router.get(
-  "/AllTax",
+  "/AllTax/Datalist",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
