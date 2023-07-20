@@ -270,7 +270,7 @@ router.put(
         var newRow = req.body;
         newRow.created_by = req.user.id;
         newRow.machineid = cdata.id;
-        newRow.product = productdata.productname
+        newRow.product = productdata._id
         query = {
           _id: req.params.id,
         };
@@ -339,6 +339,7 @@ router.get(
       if (cdata.machineid) {
         const machineid = cdata.id;
         const data = await TableModelMachineSlot.getDataforTable(machineid);
+        // console.log(data);
         if (data) {
           return rc.setResponse(res, {
             success: true,

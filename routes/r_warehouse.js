@@ -217,16 +217,16 @@ router.get(
         .select("warehouse product productQuantity sellingPrice ")
         .populate("warehouse")
         .populate("product");
-        // console.log(data);
-        let sendData = [];
+      // console.log(data);
+      let sendData = [];
       if (data) {
-        for(let i=0;i<data.length;i++){
+        for (let i = 0; i < data.length; i++) {
           sendData.push({
             _id: data[i]._id,
             product: data[i].product.productname,
             warehouse: data[i].warehouse.wareHouseName,
             productQuantity: data[i].productQuantity,
-            sellingPrice: data[i].sellingPrice
+            sellingPrice: data[i].sellingPrice,
           });
         }
         return rc.setResponse(res, {
@@ -487,11 +487,8 @@ router.get(
           "country",
           "pincode",
         ])
-        .populate("gst", [
-          "gstName",
-          "gstRate"
-        ]);
-        console.log(data)
+        .populate("gst", ["gstName", "gstRate"]);
+      console.log(data);
       let sendData = [];
       for (let i = 0; i < data.length; i++) {
         sendData.push({
@@ -506,7 +503,7 @@ router.get(
           GRN_Number: data[i].GRN_Number,
           date: data[i].createdAt.toLocaleDateString(),
           gst: data[i].gst.gstName,
-          gstRate: data[i].gst.gstRate
+          gstRate: data[i].gst.gstRate,
         });
       }
       // console.log(data[0].gst);

@@ -19,7 +19,7 @@ const TableSchema = mongoose.Schema({
   product: {
     type: String,
     require: true,
-    default:null
+    default: null,
   },
   maxquantity: {
     type: Number,
@@ -148,6 +148,9 @@ module.exports.getDataforTable = async (machineid) => {
           $toObjectId: "$machineid",
         },
         slot: 1,
+        product: {
+          $toObjectId: "$product",
+        },
         maxquantity: 1,
         admin: {
           $toObjectId: "$created_by",
@@ -174,6 +177,15 @@ module.exports.getDataforTable = async (machineid) => {
     },
     { $unwind: "$output2" },
     {
+      $lookup: {
+        from: "products",
+        localField: "product",
+        foreignField: "_id",
+        as: "productresult",
+      },
+    },
+    { $unwind: "$productresult" },
+    {
       $project: {
         _id: 1,
         role: 1,
@@ -181,6 +193,7 @@ module.exports.getDataforTable = async (machineid) => {
         slot: 1,
         "max quantity": "$maxquantity",
         "created by": "$output.display_name",
+        "product": "$productresult.productname",
         "created at": {
           $dateToString: {
             format: "%Y-%m-%d %H:%M:%S",
@@ -207,6 +220,9 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
         machineid: {
           $toObjectId: "$machineid",
         },
+        product: {
+          $toObjectId: "$product",
+        },
         slot: 1,
         maxquantity: 1,
         active_status: 1,
@@ -231,12 +247,21 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
     },
     { $unwind: "$output2" },
     {
+      $lookup: {
+        from: "products",
+        localField: "product",
+        foreignField: "_id",
+        as: "productresult",
+      },
+    },
+    { $unwind: "$productresult" },
+    {
       $project: {
         _id: 1,
         role: 1,
         machineid: "$output2.machineid",
         slot: 1,
-
+        "product": "$productresult.productname",
         maxquantity: 1,
         active_status: 1,
       },
