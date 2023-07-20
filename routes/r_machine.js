@@ -1,16 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+
+const rc = require("../controllers/responseController");
+const auth = require("../middleware/auth");
+const CsvParser = require("json2csv").Parser;
+const csv = require("csv-parser");
+const fs = require('fs')
+
+const { upload } = require("../middleware/fileUpload");
+const { asyncHandler } = require("../middleware/asyncHandler");
+
 const TableModelUser = require("../model/m_user_info");
 const TableModelMachineSlot = require("../model/m_machine_slot");
 const TableModelPermission = require("../model/m_permission");
 const TableModelCompany = require("../model/m_company");
 const TableModel = require("../model/m_machine");
 const product = require("../model/m_product");
-const rc = require("../controllers/responseController");
-const { asyncHandler } = require("../middleware/asyncHandler");
-const auth = require("../middleware/auth");
-
 //permissions
 //machineconfiguration
 //listmachine
@@ -219,14 +225,17 @@ router.post(
           msg: "Machine not Found",
         });
       } else {
-        const productdata = await product.findOne({productname: req.body.product})
+        const productdata = await product.findOne({
+          productname: req.body.product,
+        });
         var newRow = req.body;
         newRow.created_by = req.user.id;
         newRow.machineid = cdata.id;
         newRow.admin = req.user.id;
         newRow.machineName = cdata.machineid;
-        newRow.product = productdata._id
+        newRow.product = productdata._id;
         newRow = new TableModelMachineSlot(newRow);
+        console.log(newRow);
 
         if (!newRow) {
           return rc.setResponse(res, {
@@ -266,16 +275,19 @@ router.put(
           msg: "Machine not Found",
         });
       } else {
-        const productdata = await product.findOne({productname: req.body.product})
-        var newRow = req.body;
+        const productdata = await product.findOne({
+          productname: req.body.product,
+        });
+        let newRow = req.body;
         newRow.created_by = req.user.id;
         newRow.machineid = cdata.id;
-        newRow.product = productdata._id
+        newRow.product = productdata._id;
+        console.log(newRow);
         query = {
           _id: req.params.id,
         };
-        var newRow = await TableModelMachineSlot.updateByQuery(query, newRow);
-        if (!newRow) {
+        let data = await TableModelMachineSlot.updateByQuery(query, newRow);
+        if (!data) {
           return rc.setResponse(res, {
             msg: "No Data to update",
           });

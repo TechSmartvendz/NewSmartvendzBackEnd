@@ -61,9 +61,9 @@ const TableSchema = mongoose.Schema({
     type: Number,
     max: maxquantity,
   },
-  currentStock: { type: Number, default: 0, minimum: 0, required: true },
-  refillQuantity: { type: Number, default: 0, required: true },
-  saleQuantity: { type: Number, default: 0, required: true },
+  currentStock: { type: Number, default: 0, minimum: 0 },
+  refillQuantity: { type: Number, default: 0 },
+  saleQuantity: { type: Number, default: 0 },
 });
 
 function maxquantity() {
@@ -193,7 +193,7 @@ module.exports.getDataforTable = async (machineid) => {
         slot: 1,
         "max quantity": "$maxquantity",
         "created by": "$output.display_name",
-        "product": "$productresult.productname",
+        product: "$productresult.productname",
         "created at": {
           $dateToString: {
             format: "%Y-%m-%d %H:%M:%S",
@@ -261,7 +261,7 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
         role: 1,
         machineid: "$output2.machineid",
         slot: 1,
-        "product": "$productresult.productname",
+        product: "$productresult.productname",
         maxquantity: 1,
         active_status: 1,
       },
