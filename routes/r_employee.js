@@ -32,6 +32,7 @@ router.get('/SampleCSV', auth, asyncHandler( //TODO: WOrking
         const query = {
             role: req.user.role
         }
+        console.log("----------------xdxdxgxg--------")
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
         if (cdata.updatebulkproduct) {
             const j = {

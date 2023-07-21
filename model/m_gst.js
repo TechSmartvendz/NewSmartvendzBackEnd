@@ -5,6 +5,11 @@ const gst = new Schema(
   {
     gstName: { type: String, default: null },
     gstRate: { type: Number, default: 0 },
+    // hsnNumber:{ type: Number, default: 0 },
+    // igst: { type: Number, default: 0 },
+    // cgst: { type: Number, default: 0 },
+    // sgst: { type: Number, default: 0 },
+    // cess: { type: Number, default: 0 },
     admin: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
   },
