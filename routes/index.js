@@ -15,14 +15,19 @@ router.post(
   asyncHandler(async (req, res) => {
     const user_id = req.body.user_id;
     const password = req.body.password;
-    const data = await TableModel.getLoginData(user_id);
-    if (data) {
-      const passwordmatch = await bcrypt.compare(password, data.password);
+    const sendData = await TableModel.getLoginData(user_id);
+    console.log(sendData);
+    if (sendData) {
+      const passwordmatch = await bcrypt.compare(password, sendData.password);
+      const data = {
+        username: sendData.first_name,
+        token: sendData.token
+      };
       if (passwordmatch) {
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
-          data: data.token,
+          data: data,
         });
       } else {
         return rc.setResponse(res, {
