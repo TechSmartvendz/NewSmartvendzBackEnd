@@ -22,7 +22,7 @@ router.post(
       const data = {
         username: sendData.first_name,
         token: sendData.token
-      }
+      };
       if (passwordmatch) {
         return rc.setResponse(res, {
           success: true,
