@@ -37,6 +37,10 @@ const TableSchema = mongoose.Schema({
   remark: {
     type: String,
   },
+  HSN_code: {
+    type: String,
+    
+  },
   created_at: {
     type: Date,
     default: Date.now,

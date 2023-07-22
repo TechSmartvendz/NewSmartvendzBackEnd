@@ -43,8 +43,12 @@ router.get(
       for (let i = 0; i < data.length; i++) {
         sendData.push({
           _id: data[i]._id,
-          gstName: data[i].gstName,
-          gstRate: data[i].gstRate,
+          hsn_Code: data[i].hsn_Code,
+          hsn_description: data[i].hsn_description,
+          cgst: data[i].cgst,
+          sgst: data[i].sgst,
+          igst: data[i].igst,
+          cess: data[i].cess,
         });
       }
       if (data) {
@@ -78,8 +82,12 @@ router.get(
       for (let i = 0; i < data.length; i++) {
         sendData.push({
           _id: data[i]._id,
-          gstName: data[i].gstName,
-          gstRate: data[i].gstRate,
+          hsn_Code: data[i].hsn_Code,
+          hsn_description: data[i].hsn_description,
+          cgst: data[i].cgst,
+          sgst: data[i].sgst,
+          igst: data[i].igst,
+          cess: data[i].cess,
         });
       }
       if (data) {
