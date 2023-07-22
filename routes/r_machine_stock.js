@@ -370,26 +370,20 @@ router.get(
     // console.log(cdata);
     if (cdata.updatebulkproduct) {
       const j = {
-        MachineId: "",
-        Slot: "",
-        Max_Quantity: "",
-        Product: "",
+        machineid: "",
+        slot: "",
+        maxquantity: "",
+        product: "",
       };
       const csvFields = [
-        "productid",
-        "productname",
-        "description",
-        "materialtype",
-        "sellingprice",
-        "mass",
-        "unit",
+        "machineid","slot", "maxquantity", "product"
       ];
       const csvParser = new CsvParser({ csvFields });
       const csvdata = csvParser.parse(j);
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",
-        "attachment; filename=Product_List.csv"
+        "attachment; filename=SampleImportMachineSLot.csv"
       );
       res.status(200).end(csvdata);
     } else {
@@ -541,5 +535,87 @@ router.post(
     }
   })
 );
+
+// Export all slots of machine
+router.get('/MachineSlot/ExportCSV', auth, asyncHandler(
+  async (req, res) => {
+      var trans = [];
+      function transaction(x) {
+          if (x) {
+              trans.push(x);
+          }
+          return trans;
+      }
+      const query = {
+          role: req.user.role
+      }
+      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+      if (cdata.bulkproductupload) {
+          let data = await machineslot.find({machineName: req.query.machine});
+          // console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
+          if (!(data.length == 0)) {
+            for (i = 0; i < data.length; i++) {
+                let productdata = await product.findOne({_id: data[i].product})
+                let admin = await user_infos.findOne({_id:data[i].admin})
+                // console.log("productdata",productdata)
+                  const j = {
+                      "machineName": data[i].machineName,
+                      "slot": data[i].slot,
+                      "product":productdata.productname,
+                      "maxquantity": data[i].maxquantity,
+                      "admin":admin.first_name,
+                      "closingStock": data[i].closingStock,
+                      "currentStock": data[i].currentStock,
+                      "saleQuantity": data[i].saleQuantity
+                  }
+                  //  console.log(j);
+                  transaction(j);
+                  // console.log(trans);
+              }
+              const csvFields = ["machineName", "slot", "product", "maxquantity", "admin", "closingStock","currentStock", "saleQuantity"];
+              const csvParser = new CsvParser({ csvFields });
+              const csvData = csvParser.parse(trans);
+              res.setHeader("Content-Type", "text/csv");
+              res.setHeader("Content-Disposition", "attachment; filename=MachineSlots.csv");
+              res.status(200).end(csvData);
+          } else {
+              return rc.setResponse(res, {
+                  msg: "Data not Found"
+              })
+          }
+      } else {
+          return rc.setResponse(res, { error: { code: 403 } });
+      }
+  }
+));
+
+router.get('/MachineSlot/:page/:dataperpage', auth, asyncHandler(
+  async (req, res, next) => {
+      const page = req.params.page
+      const dataperpage = req.params.dataperpage
+      const query = {
+          role: req.user.role
+      }
+      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+      if (cdata.productlist) {
+          const admin = req.user.id
+          const data = await machineslot.getDataforTablePagination(page, dataperpage);
+          if (data) {
+              return rc.setResponse(res, {
+                  success: true,
+                  msg: 'Data Fetched',
+                  data: data
+              });
+          } else {
+              return rc.setResponse(res, {
+                  msg: "Data not Found"
+              })
+          }
+      }
+      else {
+          return rc.setResponse(res, { error: { code: 403 } });
+      }
+  }
+));
 
 module.exports = router;

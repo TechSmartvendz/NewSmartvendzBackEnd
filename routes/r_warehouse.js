@@ -9,7 +9,7 @@ const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
 const productTable = require("../model/m_product");
 const supplierTable = require("../model/m_supplier");
-const gstTable = require("../model/m_gst");
+const gstTable = require("../model/gst");
 
 // add warehouse
 router.post(

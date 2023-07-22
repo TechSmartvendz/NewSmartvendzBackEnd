@@ -24,7 +24,7 @@ const TableSchema = mongoose.Schema({
   },
   sellingprice: {
     type: Number,
-    default:0,
+    default: 0,
   },
   mass: {
     type: String,
@@ -39,7 +39,7 @@ const TableSchema = mongoose.Schema({
   },
   HSN_code: {
     type: String,
-    
+    require: true,
   },
   created_at: {
     type: Date,
@@ -101,7 +101,7 @@ module.exports.getDataCountByQuery = async (query) => {
   return data;
 };
 module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, productname:1,productid:1});
+  const data = await Table.find({}, { id: 1, productname: 1, productid: 1 });
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
@@ -172,18 +172,23 @@ module.exports.getDataforTable = async () => {
 
   return data;
 };
-module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,query) => {
-  console.log("🚀 ~ file: m_product.js:172 ~ module.exports.getDataforTablePaginationWithQuery= ~ query:", query)
+module.exports.getDataforTablePaginationWithQuery = async (
+  page,
+  dataperpage,
+  query
+) => {
+  console.log(
+    "🚀 ~ file: m_product.js:172 ~ module.exports.getDataforTablePaginationWithQuery= ~ query:",
+    query
+  );
   const skipdata = page * dataperpage - dataperpage;
   const dp = parseInt(dataperpage);
   let end = skipdata + parseInt(dataperpage);
-  var myMatch = {
-  };
+  var myMatch = {};
   const data = await Table.aggregate([
     {
-      $match: query
-    
-  },
+      $match: query,
+    },
     { $sort: { created_at: -1 } },
     {
       $facet: {
@@ -246,18 +251,23 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
     metadata: data[0].metadata[0],
     data: data[0].data,
   };
-  if(jsonData.metadata){
+  if (jsonData.metadata) {
     return jsonData;
-  }else{
-    throw "Data Not found"
+  } else {
+    throw "Data Not found";
   }
- 
- 
 };
 module.exports.getDataforCSVWithQuery = async (query) => {
-  const data = await Table.find(query, { _id: 0,admin:0,delete_status:0,last_update:0,created_at:0,created_by:0,__v:0});
+  const data = await Table.find(query, {
+    _id: 0,
+    admin: 0,
+    delete_status: 0,
+    last_update: 0,
+    created_at: 0,
+    created_by: 0,
+    __v: 0,
+  });
   return data;
- 
 };
 module.exports.getDataforTablePagination = async (page, dataperpage) => {
   const skipdata = page * dataperpage - dataperpage;
@@ -329,4 +339,3 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
 
   return jsonData;
 };
-

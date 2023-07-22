@@ -42,9 +42,10 @@ router.get('/SampleCSV', auth, asyncHandler(
                 "materialtype": "",
                 "sellingprice": "",
                 "mass": "",
-                "unit": ""
+                "unit": "",
+                "HSN_code":""
             }
-            const csvFields = ["productid", "productname", "description", "materialtype", "sellingprice", "mass", "unit"];
+            const csvFields = ["productid", "productname", "description", "materialtype", "sellingprice", "mass", "unit", "HSN_code"];
             const csvParser = new CsvParser({ csvFields });
             const csvdata = csvParser.parse(j);
             res.setHeader("Content-Type", "text/csv");
@@ -82,13 +83,14 @@ router.post('/ExportCSV', auth, asyncHandler(
                         "materialtype": data[i].materialtype,
                         "sellingprice":data[i].sellingprice,
                         "mass": data[i].mass,
-                        "unit": data[i].unit
+                        "unit": data[i].unit,
+                        "HSN_code": data[i].HSN_code
                     }
                      console.log(j);
                     transaction(j);
                     console.log(trans);
                 }
-                const csvFields = ["productid", "productname", "description", "materialtype", "sellingprice", "mass","unit"];
+                const csvFields = ["productid", "productname", "description", "materialtype", "sellingprice", "mass","unit", "HSN_code"];
                 const csvParser = new CsvParser({ csvFields });
                 const csvData = csvParser.parse(trans);
                 res.setHeader("Content-Type", "text/csv");
