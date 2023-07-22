@@ -3,7 +3,7 @@ const router = express.Router();
 const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
-const m_gst = require("../model/m_gst");
+const m_gst = require("../model/gst");
 
 // add gst
 router.post(

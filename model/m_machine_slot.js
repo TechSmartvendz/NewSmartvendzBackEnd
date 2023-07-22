@@ -269,3 +269,74 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
   ]);
   return data;
 };
+
+module.exports.getDataforTablePagination = async (page, dataperpage) => {
+  const skipdata = page * dataperpage - dataperpage;
+  const dp = parseInt(dataperpage);
+  let end = skipdata + parseInt(dataperpage);
+  console.log(skipdata);
+  console.log(dp);
+  console.log(end)
+  const data = await Table.aggregate([
+    { $sort: { created_at: -1 } },
+    {
+      $facet: {
+        metadata: [
+          { $count: "count" },
+          {
+            $addFields: { start: skipdata + 1, end: end, page: parseInt(page) },
+          },
+        ],
+        data: [
+          { $skip: skipdata },
+          { $limit: dp },
+          {
+            $project: {
+              _id: 1,
+              slot: 1,
+              machineid: 1,
+              maxquantity: 1,
+              created_by: 1,
+              product: {
+                $toObjectId: "$product",
+              },
+              created_at: 1,
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "product",
+              foreignField: "_id",
+              as: "output",
+            },
+          },
+          { $unwind: "$output" },
+          {
+            $project: {
+              _id: 1,
+              slot: 1,
+              machineid: 1,
+              maxquantity: 1,
+              created_by: 1,
+              "product": "$output.productname",
+              "created at": {
+                $dateToString: {
+                  format: "%Y-%m-%d %H:%M:%S",
+                  date: "$created_at",
+                  timezone: "Asia/Kolkata",
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  ]);
+  const jsonData = {
+    metadata: data[0].metadata[0],
+    data: data[0].data,
+  };
+
+  return jsonData;
+};
