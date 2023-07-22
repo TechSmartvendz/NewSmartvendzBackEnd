@@ -9,6 +9,13 @@ const machines = require("../model/m_machine");
 const refillerrequest = require("../model/m_refiller_request");
 const user_infos = require("../model/m_user_info");
 const warehouseStock = require("../model/m_warehouse_Stock");
+const TableModelPermission = require("../model/m_permission");
+const product = require("../model/m_product");
+
+const CsvParser = require("json2csv").Parser;
+const csv = require("csv-parser");
+const fs = require("fs");
+const { upload } = require("../middleware/fileUpload");
 
 //------------------------removed auth for now---------------------------------//
 
@@ -346,5 +353,193 @@ router.get(
 //     });
 //   })
 // );
+
+// Sample csv file for bulk upload slots
+
+// sample csv file for bulk upload slots
+router.get(
+  "/SampleCSVfile",
+  auth,
+  asyncHandler(async (req, res) => {
+    console.log("----------------xdxdxgxg--------");
+    const query = {
+      role: req.user.role,
+    };
+    // console.log(query);
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    // console.log(cdata);
+    if (cdata.updatebulkproduct) {
+      const j = {
+        MachineId: "",
+        Slot: "",
+        Max_Quantity: "",
+        Product: "",
+      };
+      const csvFields = [
+        "productid",
+        "productname",
+        "description",
+        "materialtype",
+        "sellingprice",
+        "mass",
+        "unit",
+      ];
+      const csvParser = new CsvParser({ csvFields });
+      const csvdata = csvParser.parse(j);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=Product_List.csv"
+      );
+      res.status(200).end(csvdata);
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
+// bulk Upload Slots
+router.post(
+  "/ImportMachineSlots",
+  auth,
+  upload.single("file"),
+  asyncHandler(async (req, res) => {
+    const results = [];
+    var rejectdata = [];
+
+    function reject(x) {
+      if (x) {
+        rejectdata.push(x);
+      }
+      return rejectdata;
+    }
+
+    var storeddata = [];
+
+    function succ(x) {
+      if (x) {
+        storeddata.push(x);
+      }
+      return storeddata;
+    }
+    const query = { role: req.user.role };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+
+    if (cdata.bulkproductupload) {
+      var path = `public/${req.file.filename}`;
+      fs.createReadStream(path)
+        .pipe(csv({}))
+        .on("data", async (data) => results.push(data))
+
+        .on("end", async () => {
+          console.log("result", results);
+          for (i = 0; i < results.length; i++) {
+            if (
+              results[i].machineid == "" ||
+              results[i].machineid == "NA" ||
+              results[i].machineid == "#N/A"
+            ) {
+              console.log(`MachineId is not available`);
+              console.log(results[i]);
+              results[i].error = "MachineId is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].slot == "" ||
+              results[i].slot == "NA" ||
+              results[i].slot == "#N/A"
+            ) {
+              console.log(`Slot is not available`);
+              console.log(results[i]);
+              results[i].error = "Slot is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].maxquantity == "" ||
+              results[i].maxquantity == "NA" ||
+              results[i].maxquantity == "#N/A"
+            ) {
+              console.log(`Max_Quantity is not available`);
+              console.log(results[i]);
+              results[i].error = "Max_Quantity is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].product == "" ||
+              results[i].product == "NA" ||
+              results[i].product == "#N/A"
+            ) {
+              console.log(`Product is not available`);
+              console.log(results[i]);
+              results[i].error = "Product is missing";
+              const r = reject(results[i]);
+            } else {
+              try {
+                // const machineslotdata = await machineslot.find({ $and:[{machineid: results[i].machineid}, {slot: results[i].slot}]})
+                // console.log("machineslotdata",machineslotdata.length);
+                // if(machineslotdata.length > 0){
+                //   return res.status(500).send("Slot is already created");
+                // }
+
+                // let newRow = new machineslot(results[i]);
+
+                const productdata = await product.findOne({
+                  productname: results[i].product,
+                });
+                const machinedata = await machines.findOne({
+                  machineid: results[i].machineid,
+                });
+                let newRow = {
+                  machineid: machinedata._id,
+                  slot: results[i].slot,
+                  maxquantity: results[i].maxquantity,
+                  product: productdata._id,
+                  machineName: machinedata.machineid,
+                  created_by : req.user.id,
+                  admin : req.user.id
+                };
+                const newData = await machineslot(newRow);
+                await newData.save();
+                if (newData) {
+                  const r = succ(results[i]);
+                }
+              } catch (e) {
+                console.log(e);
+                if (e.code == 11000) {
+                  results[i].error = "Duplicate Entry";
+                  const r = reject(results[i]);
+                } else {
+                  results[i].error = e;
+                  const r = reject(results[i]);
+                }
+              }
+            }
+          }
+          // const r= reject();
+          console.log("storeddata.length", storeddata.length);
+          console.log("rejectdata", rejectdata);
+          console.log("rejectdata.length", rejectdata.length);
+
+          if (rejectdata.length > 0) {
+            return rc.setResponse(res, {
+              success: true,
+              msg: "Data Fetched",
+              data: {
+                dataupload: "partial upload",
+                reject_data: rejectdata,
+                stored_data: storeddata.length,
+              },
+            });
+            // res.status(200).json({ "dataupload": "error", "reject_data": rejectdata, "stored_data": storeddata.length });
+          } else {
+            return rc.setResponse(res, {
+              success: true,
+              msg: "Data Fetched",
+              data: { dataupload: "success", stored_data: storeddata.length },
+            });
+          }
+        });
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
 
 module.exports = router;

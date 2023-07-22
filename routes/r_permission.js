@@ -86,13 +86,6 @@ router.get('/LoadMenu',auth, asyncHandler(
            role:role
        }
         const data = await TableModel.getDataByQueryFilterDataOne(query);
-        // console.log(data)
-        // const username = await TableModelUser.findOne({_id:data.admin});
-        // console.log(username)
-        // let sendData = {
-        //     data:data,
-        //     username: username.first_name
-        // }
         if (data) {
             return rc.setResponse(res, {
                 success: true,
