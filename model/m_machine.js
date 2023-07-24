@@ -18,6 +18,10 @@ const TableSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  warehouse: {
+    type: String,
+    require: true
+  },
   building: {
     type: String,
     default: "N/A",
@@ -120,6 +124,9 @@ module.exports.getDataforTable = async () => {
         machinename: 1,
         location: 1,
         totalslots: 1,
+        warehouse: {
+          "$toObjectId": "warehouse"
+        },
         // admin: {
         //   "$toObjectId": "$country"
         // },
@@ -138,6 +145,15 @@ module.exports.getDataforTable = async () => {
       },
     },
     { $unwind: "$output" },
+    {
+      $lookup: {
+        from: "warehouses",
+        localField: "warehouse",
+        foreignField: "_id",
+        as: "warehouseoutput",
+      },
+    },
+    { $unwind: "$warehouseoutput" },
     // {
     //   "$lookup": {
     //     "from": "countries",
@@ -155,6 +171,7 @@ module.exports.getDataforTable = async () => {
         "machine name": "$machinename",
         "company id": "$companyid",
         location: "$location",
+        "warehouseoutput": "$warehouseoutput.wareHouseName",
         "created by": "$output.user_id",
         "created at": {
           $dateToString: {

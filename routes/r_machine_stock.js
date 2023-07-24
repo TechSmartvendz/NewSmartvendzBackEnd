@@ -602,7 +602,7 @@ router.get(
 
 // get request pagination machineslots data
 router.get(
-  "/MachineSlot/Table/:machineid/:page/:dataperpage",
+  "/Machine/Slot/Table/:machineid/:page/:dataperpage",
   auth,
   asyncHandler(async (req, res, next) => {
     const page = req.params.page;

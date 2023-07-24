@@ -12,6 +12,7 @@ const TableModelPermission = require("../model/m_permission");
 const TableModelCompany = require("../model/m_company");
 const TableModel = require("../model/m_machine");
 const product = require("../model/m_product");
+const warehouse = require("../model/m_warehouse");
 //permissions
 //machineconfiguration
 //listmachine
@@ -27,8 +28,10 @@ router.post(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
+      const warehousedata = await warehouse.findOne({wareHouseName: req.body.warehouse});
       newRow = new TableModel(req.body);
       newRow.admin = req.user._id;
+      newRow.warehouse = warehousedata._id
       // newRow.country=cdata.id
       if (!newRow) {
         return rc.setResponse(res, {
@@ -133,8 +136,10 @@ router.put(
   "/:id",
   auth,
   asyncHandler(async (req, res, next) => {
+    const warehousedata = await warehouse.findOne({wareHouseName: req.body.warehouse});
     const newData = req.body;
     newData.admin = req.user.id;
+    newData.warehouse = warehousedata._id
     const query = {
       role: req.user.role,
     };
