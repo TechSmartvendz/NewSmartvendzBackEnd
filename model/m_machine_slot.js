@@ -270,14 +270,21 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
   return data;
 };
 
-module.exports.getDataforTablePagination = async (page, dataperpage) => {
+module.exports.getDataforTablePagination = async (
+  machinedata,
+  page,
+  dataperpage
+) => {
   const skipdata = page * dataperpage - dataperpage;
   const dp = parseInt(dataperpage);
   let end = skipdata + parseInt(dataperpage);
   console.log(skipdata);
   console.log(dp);
-  console.log(end)
+  console.log(end);
   const data = await Table.aggregate([
+    {
+      $match: { machineName: machinedata },
+    },
     { $sort: { created_at: -1 } },
     {
       $facet: {
@@ -294,9 +301,13 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
             $project: {
               _id: 1,
               slot: 1,
-              machineid: 1,
+              machineid: {
+                $toObjectId: "$machineid",
+              },
               maxquantity: 1,
-              created_by: 1,
+              created_by: {
+                $toObjectId: "$created_by",
+              },
               product: {
                 $toObjectId: "$product",
               },
@@ -313,13 +324,31 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           },
           { $unwind: "$output" },
           {
+            $lookup: {
+              from: "machines",
+              localField: "machineid",
+              foreignField: "_id",
+              as: "machineoutput",
+            },
+          },
+          { $unwind: "$machineoutput" },
+          {
+            $lookup: {
+              from: "user_infos",
+              localField: "created_by",
+              foreignField: "_id",
+              as: "userinfooutput",
+            },
+          },
+          { $unwind: "$userinfooutput" },
+          {
             $project: {
               _id: 1,
               slot: 1,
-              machineid: 1,
+              machineid: "$machineoutput.machineid",
               maxquantity: 1,
-              created_by: 1,
-              "product": "$output.productname",
+              created_by: "$userinfooutput.first_name",
+              product: "$output.productname",
               "created at": {
                 $dateToString: {
                   format: "%Y-%m-%d %H:%M:%S",

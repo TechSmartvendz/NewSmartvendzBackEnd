@@ -39,7 +39,7 @@ router.get(
   asyncHandler(async (req, res) => {
     const pararms = req.query;
     const data = await machineslot.find({ machineName: pararms.machineName });
-    // console.log(data);
+    console.log(data);
     const machinedata = {
       machineID: data[0].machineid,
       machineName: data[0].machineName,
@@ -127,12 +127,11 @@ router.get(
 router.get(
   "/allrefillingrequest",
   asyncHandler(async (req, res) => {
-    const allRefillerRequest = await refillerrequest
-      .find()
-      .select(
-        "id refillerID refillRequestNumber machineId pendingstatus isDeleted createdAt updatedAt"
-      )
-      .populate("refillerID", ["_id", "first_name", "user_id"]);
+    const allRefillerRequest = await refillerrequest.find();
+    // .select(
+    //   "id refillerID refillRequestNumber machineId pendingstatus isDeleted createdAt updatedAt"
+    // )
+    // .populate("refillerID", ["_id", "first_name", "user_id"]);
     // return res.send(data);
     return rc.setResponse(res, {
       success: true,
@@ -358,7 +357,7 @@ router.get(
 
 // sample csv file for bulk upload slots
 router.get(
-  "/SampleCSVfile",
+  "/MachineSlot/SampleCSV",
   auth,
   asyncHandler(async (req, res) => {
     console.log("----------------xdxdxgxg--------");
@@ -375,9 +374,7 @@ router.get(
         maxquantity: "",
         product: "",
       };
-      const csvFields = [
-        "machineid","slot", "maxquantity", "product"
-      ];
+      const csvFields = ["machineid", "slot", "maxquantity", "product"];
       const csvParser = new CsvParser({ csvFields });
       const csvdata = csvParser.parse(j);
       res.setHeader("Content-Type", "text/csv");
@@ -394,7 +391,7 @@ router.get(
 
 // bulk Upload Slots
 router.post(
-  "/ImportMachineSlots",
+  "/MachineSlot/ImportCSV",
   auth,
   upload.single("file"),
   asyncHandler(async (req, res) => {
@@ -486,8 +483,8 @@ router.post(
                   maxquantity: results[i].maxquantity,
                   product: productdata._id,
                   machineName: machinedata.machineid,
-                  created_by : req.user.id,
-                  admin : req.user.id
+                  created_by: req.user.id,
+                  admin: req.user.id,
                 };
                 const newData = await machineslot(newRow);
                 await newData.save();
@@ -537,85 +534,107 @@ router.post(
 );
 
 // Export all slots of machine
-router.get('/MachineSlot/ExportCSV', auth, asyncHandler(
-  async (req, res) => {
-      var trans = [];
-      function transaction(x) {
-          if (x) {
-              trans.push(x);
-          }
-          return trans;
+router.get(
+  "/MachineSlot/ExportCSV",
+  auth,
+  asyncHandler(async (req, res) => {
+    var trans = [];
+    function transaction(x) {
+      if (x) {
+        trans.push(x);
       }
-      const query = {
-          role: req.user.role
-      }
-      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (cdata.bulkproductupload) {
-          let data = await machineslot.find({machineName: req.query.machine});
-          // console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
-          if (!(data.length == 0)) {
-            for (i = 0; i < data.length; i++) {
-                let productdata = await product.findOne({_id: data[i].product})
-                let admin = await user_infos.findOne({_id:data[i].admin})
-                // console.log("productdata",productdata)
-                  const j = {
-                      "machineName": data[i].machineName,
-                      "slot": data[i].slot,
-                      "product":productdata.productname,
-                      "maxquantity": data[i].maxquantity,
-                      "admin":admin.first_name,
-                      "closingStock": data[i].closingStock,
-                      "currentStock": data[i].currentStock,
-                      "saleQuantity": data[i].saleQuantity
-                  }
-                  //  console.log(j);
-                  transaction(j);
-                  // console.log(trans);
-              }
-              const csvFields = ["machineName", "slot", "product", "maxquantity", "admin", "closingStock","currentStock", "saleQuantity"];
-              const csvParser = new CsvParser({ csvFields });
-              const csvData = csvParser.parse(trans);
-              res.setHeader("Content-Type", "text/csv");
-              res.setHeader("Content-Disposition", "attachment; filename=MachineSlots.csv");
-              res.status(200).end(csvData);
-          } else {
-              return rc.setResponse(res, {
-                  msg: "Data not Found"
-              })
-          }
+      return trans;
+    }
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.bulkproductupload) {
+      let data = await machineslot.find({ machineName: req.query.machine });
+      // console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
+      if (!(data.length == 0)) {
+        for (i = 0; i < data.length; i++) {
+          let productdata = await product.findOne({ _id: data[i].product });
+          let admin = await user_infos.findOne({ _id: data[i].admin });
+          // console.log("productdata",productdata)
+          const j = {
+            machineName: data[i].machineName,
+            slot: data[i].slot,
+            product: productdata.productname,
+            maxquantity: data[i].maxquantity,
+            admin: admin.first_name,
+            closingStock: data[i].closingStock,
+            currentStock: data[i].currentStock,
+            saleQuantity: data[i].saleQuantity,
+          };
+          //  console.log(j);
+          transaction(j);
+          // console.log(trans);
+        }
+        const csvFields = [
+          "machineName",
+          "slot",
+          "product",
+          "maxquantity",
+          "admin",
+          "closingStock",
+          "currentStock",
+          "saleQuantity",
+        ];
+        const csvParser = new CsvParser({ csvFields });
+        const csvData = csvParser.parse(trans);
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=MachineSlots.csv"
+        );
+        res.status(200).end(csvData);
       } else {
-          return rc.setResponse(res, { error: { code: 403 } });
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
       }
-  }
-));
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
 
-router.get('/MachineSlot/:page/:dataperpage', auth, asyncHandler(
-  async (req, res, next) => {
-      const page = req.params.page
-      const dataperpage = req.params.dataperpage
-      const query = {
-          role: req.user.role
+// get request pagination machineslots data
+router.get(
+  "/MachineSlot/Table/:machineid/:page/:dataperpage",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const page = req.params.page;
+    const dataperpage = req.params.dataperpage;
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.productlist) {
+      const machinedata = await machines.findOne({ machineid: req.params.machineid });
+      // console.log("machinedata:", machinedata);
+      const admin = req.user.id;
+      const data = await machineslot.getDataforTablePagination(
+        machinedata.machineid,
+        page,
+        dataperpage
+      );
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data Fetched",
+          data: data,
+        });
+      } else {
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
       }
-      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (cdata.productlist) {
-          const admin = req.user.id
-          const data = await machineslot.getDataforTablePagination(page, dataperpage);
-          if (data) {
-              return rc.setResponse(res, {
-                  success: true,
-                  msg: 'Data Fetched',
-                  data: data
-              });
-          } else {
-              return rc.setResponse(res, {
-                  msg: "Data not Found"
-              })
-          }
-      }
-      else {
-          return rc.setResponse(res, { error: { code: 403 } });
-      }
-  }
-));
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
 
 module.exports = router;
