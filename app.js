@@ -90,7 +90,7 @@ app.use("/api", machine_Stock);
 app.use("/api", warehouse);
 app.use("/api", supplier);
 app.use("/api", warestocktransferrequest);
-app.use("/api", gst);
+app.use("/api/tax", gst);
 //TODO:catch 404 and forward to error handler
 app.use(function (req, res, next) {
   // next(createError(404));

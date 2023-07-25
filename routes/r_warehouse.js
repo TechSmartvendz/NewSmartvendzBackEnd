@@ -507,8 +507,6 @@ router.get(
           invoiceNumber: data[i].invoiceNumber,
           GRN_Number: data[i].GRN_Number,
           date: data[i].createdAt.toLocaleDateString(),
-          gst: data[i].gst.gstName,
-          gstRate: data[i].gst.gstRate,
         });
       }
       // console.log(data[0].gst);
@@ -695,6 +693,9 @@ router.post(
               const r = reject(results[i]);
             } else {
               try {
+                if(cdata.purchaseStock){
+                  
+                }
                 const productdata = await productTable.findOne({
                   productname: results[i].product,
                 });
