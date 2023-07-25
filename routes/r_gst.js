@@ -74,7 +74,7 @@ router.get(
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
-      const data = await m_gst.findOne(
+      const data = await m_gst.find(
         { _id: req.params.id },
         { isDeleted: false }
       );
