@@ -16,6 +16,7 @@ const TableModelMachineSlot = require('../model/m_machine_slot');
 const TableModelPermission = require('../model/m_permission');
 const TableModelCompany = require('../model/m_company');
 const TableModel = require('../model/m_product');
+const gstTable = require("../model/gst");
 
 
 //permissions
@@ -152,10 +153,18 @@ router.post('/ImportCSV', auth, upload.single("file"), asyncHandler(
                             results[i].error="materialtype is missing"
                             const r = reject(results[i]);
                         }
+                        else if (results[i].HSN_code == "" || results[i].HSN_code == "NA" || results[i].HSN_code == "#N/A") {
+                            console.log(`HSN_code is not available`);
+                            console.log(results[i]);
+                            results[i].error="HSN_code is missing"
+                            const r = reject(results[i]);
+                        }
                         else {
                             try{
+                                const hsncodedata =await gsttable.findOne({hsn_Code: results[i].HSN_code})
                                 newRow = new TableModel(results[i]);
                                 newRow.admin = req.user._id
+                                newRow.HSN_code = hsncodedata._id
                                 const data = await TableModel.addRow(newRow);
                                 if (data) {
                                     const r = succ(results[i]);      

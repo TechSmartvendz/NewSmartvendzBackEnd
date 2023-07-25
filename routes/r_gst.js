@@ -7,7 +7,7 @@ const m_gst = require("../model/gst");
 
 // add gst
 router.post(
-  "/addtax",
+  "/",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
@@ -34,7 +34,7 @@ router.post(
 
 // get gst
 router.get(
-  "/AllTax/Datalist",
+  "/Datalist",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
@@ -70,7 +70,7 @@ router.get(
 
 // get gst by id
 router.get(
-  "/tax/:id",
+  "/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
@@ -109,10 +109,11 @@ router.get(
 
 // edit gst
 router.put(
-  "/edittax/:id",
+  "/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
+      const newdata = req.body;
       const data = await m_gst.findOneAndUpdate(
         { _id: req.params.id },
         { $set: newdata }
@@ -136,7 +137,7 @@ router.put(
 
 // soft delete gst
 router.put(
-  "/deletetax/:id",
+  "/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
@@ -163,7 +164,7 @@ router.put(
 
 // delete permanentely
 router.delete(
-  "/deletetaxpermanentely/:id",
+  "/:id",
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
