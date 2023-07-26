@@ -32,6 +32,42 @@ router.post(
   })
 );
 
+// get data
+router.get(
+  "/",
+  auth,
+  asyncHandler(async (req, res) => {
+    if (req.user.role === "SuperAdmin") {
+      const data = await m_gst.find({ isDeleted: false });
+      let sendData = [];
+      for (let i = 0; i < data.length; i++) {
+        sendData.push({
+          _id: data[i]._id,
+          hsn_Code: data[i].hsn_Code,
+          hsn_description: data[i].hsn_description,
+          cgst: data[i].cgst,
+          sgst: data[i].sgst,
+          igst: data[i].igst,
+          cess: data[i].cess,
+        });
+      }
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data Fetched",
+          data: sendData,
+        });
+      } else {
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
+      }
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
 // get gst
 router.get(
   "/Datalist",

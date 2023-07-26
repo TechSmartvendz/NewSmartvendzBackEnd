@@ -701,7 +701,7 @@ router.post(
                     wareHouseName: results[i].warehouse,
                   });
                   const gstID = await gstTable.findOne({
-                    gstName: results[i].gstName,
+                    hsn_Code: results[i].gstName,
                   });
 
                   const existingStock = await warehouseStock
