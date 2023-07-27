@@ -39,9 +39,9 @@ router.get(
   asyncHandler(async (req, res) => {
     const pararms = req.query;
     const data = await machineslot.find({ machineName: pararms.machineName });
-    console.log(data);
+    // console.log(data);
     const machinedata = {
-      machineID: data[0].machineid,
+      machineId: data[0].machineid,
       machineName: data[0].machineName,
       admin: data[0].admin,
       machineSlot: data,

@@ -528,6 +528,7 @@ router.get(
   })
 );
 
+// get purchase list pagination
 router.get(
   "/purchasestocklist/Table/:page/:dataperpage",
   auth,
