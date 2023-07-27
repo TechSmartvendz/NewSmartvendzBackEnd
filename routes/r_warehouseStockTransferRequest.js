@@ -12,6 +12,7 @@ const WarehouseStockTransferRequest = require("../model/m_warehouseToWarehouse_S
 const machine = require("../model/m_machine_slot");
 const warehouseToMachineStockTransferRequest = require("../model/m_warehouseToMachine_Stock_TransferRequest");
 const refillRequest = require("../model/m_refiller_request");
+const machinedata = require("../model/m_machine");
 
 // sendStockTransferRequest to warehouse
 router.post(
@@ -258,18 +259,22 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     try {
+      // console.log(req.body);
       const { machineId, machineSlots } = req.body;
       const refillerid = req.user.id;
       // Create the refill request in the database
+      const warehouse = await machinedata.findOne({_id:machineId})
+      console.log("warehouseid", warehouse)
       let randomNumber = Math.floor(Math.random() * 100000000000000);
       let data = new refillRequest({
-        refillerID: refillerid,
+        refillerId: refillerid,
         machineId: machineId,
+        warehouse: warehouse.warehouse,
         machineSlots: machineSlots,
         refillRequestNumber: randomNumber,
         status: "Pending",
       });
-      console.log("data", data);
+      // console.log("data", data);
       await data.save();
 
       return res.status(200).json({ message: "Refill request sent." });
