@@ -701,7 +701,7 @@ router.post(
                     wareHouseName: results[i].warehouse,
                   });
                   const gstID = await gstTable.findOne({
-                    hsn_Code: results[i].gstName,
+                    hsn_Code: results[i].gst,
                   });
 
                   const existingStock = await warehouseStock
@@ -744,8 +744,12 @@ router.post(
                         msg: "No Data to insert",
                       });
                     }
-                    const warehousedata = await warehouseStock.addRow(newstock);
-                    console.log("-----------------data inserted------------------")
+                    const newwarehousedata = await warehouseStock.addRow(
+                      newstock
+                    );
+                    console.log(
+                      "-----------------data inserted------------------"
+                    );
                   }
 
                   let newRow = {
@@ -766,7 +770,7 @@ router.post(
                     const r = succ(results[i]);
                   }
                 }
-              } catch {
+              } catch (e) {
                 console.log(e);
                 if (e.code == 11000) {
                   results[i].error = "Duplicate Entry";
