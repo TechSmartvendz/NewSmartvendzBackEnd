@@ -59,7 +59,8 @@ const TableSchema = mongoose.Schema({
   },
   closingStock: {
     type: Number,
-    max: maxquantity,
+    default: 0,
+    // max: maxquantity,
   },
   currentStock: { type: Number, default: 0, minimum: 0 },
   refillQuantity: { type: Number, default: 0 },

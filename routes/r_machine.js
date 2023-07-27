@@ -234,6 +234,7 @@ router.post(
         newRow.admin = req.user.id;
         newRow.machineName = cdata.machineid;
         newRow.product = productdata._id;
+        newRow.closingStock = req.body.maxquantity;
         newRow = new TableModelMachineSlot(newRow);
         console.log(newRow);
 
