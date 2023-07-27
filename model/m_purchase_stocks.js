@@ -12,6 +12,7 @@ const purchaseStocks = new Schema(
     invoiceNumber: { type: Number, default: 0 },
     GRN_Number: { type: Number, default: 0 },
     gst: { type: Schema.Types.ObjectId, ref: "m_gst" },
+    date: { type: Date, default: null, require: true },
     admin: { type: String, default: null },
     isDeleted: { type: Boolean, default: false },
   },

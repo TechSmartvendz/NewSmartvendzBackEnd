@@ -350,6 +350,7 @@ router.post(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     // console.log(cdata);
     if (cdata.purchaseStock) {
+      console.log(req.body);
       // const warehouseidcheck = await warehouseTable.findOne({
       //   wareHouseName: req.body.warehouse,
       // });
@@ -359,10 +360,11 @@ router.post(
       const warehouseid = await warehouseTable.findOne({
         wareHouseName: req.body.warehouse,
       });
-      // console.log("warehouseID",warehouseid._id)
+      console.log("warehouseID",warehouseid);
       const productid = await productTable.findOne({
         productname: req.body.product,
       });
+      console.log("productID", productid);
       const existingStock = await warehouseStock
         .findOne({ warehouse: warehouseid._id }, { product: productid._id })
         .select("productQuantity sellingPrice admin warehouse product")
@@ -378,7 +380,7 @@ router.post(
       const supplierid = await supplierTable.findOne({
         supplierName: req.body.supplier,
       });
-      const gstID = await gstTable.findOne({ gstName: req.body.gstName });
+      const gstID = await gstTable.findOne({ gstName: req.body.hsn_Code });
       // console.log("supplierID",supplierid)
       if (existingStock) {
         console.log("---------------");
@@ -419,6 +421,7 @@ router.post(
         gst: gstID._id,
         invoiceNumber: req.body.invoiceNumber,
         GRN_Number: req.body.GRN_Number,
+        date: req.body.date,
         admin: req.user._id,
       };
       let newRow = new purchaseStock(purchaseStockData);
@@ -503,7 +506,8 @@ router.get(
           totalPrice: data[i].totalPrice,
           invoiceNumber: data[i].invoiceNumber,
           GRN_Number: data[i].GRN_Number,
-          date: data[i].createdAt.toLocaleDateString(),
+          createdAt: data[i].createdAt.toLocaleDateString(),
+          date: data[i].date
         });
       }
       // console.log(data[0].gst);

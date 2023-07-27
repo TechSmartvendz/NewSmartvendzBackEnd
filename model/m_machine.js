@@ -125,7 +125,7 @@ module.exports.getDataforTable = async () => {
         location: 1,
         totalslots: 1,
         warehouse: {
-          "$toObjectId": "warehouse"
+          "$toObjectId": "$warehouse"
         },
         // admin: {
         //   "$toObjectId": "$country"
@@ -171,7 +171,7 @@ module.exports.getDataforTable = async () => {
         "machine name": "$machinename",
         "company id": "$companyid",
         location: "$location",
-        "warehouseoutput": "$warehouseoutput.wareHouseName",
+        "warehouse": "$warehouseoutput.wareHouseName",
         "created by": "$output.user_id",
         "created at": {
           $dateToString: {
