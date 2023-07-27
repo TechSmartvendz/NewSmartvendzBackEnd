@@ -360,7 +360,7 @@ router.post(
       const warehouseid = await warehouseTable.findOne({
         wareHouseName: req.body.warehouse,
       });
-      console.log("warehouseID",warehouseid);
+      console.log("warehouseID", warehouseid);
       const productid = await productTable.findOne({
         productname: req.body.product,
       });
@@ -493,9 +493,10 @@ router.get(
           "pincode",
         ])
         .populate("gst", ["gstName", "gstRate"]);
-      console.log(data);
+      // console.log(data);
       let sendData = [];
       for (let i = 0; i < data.length; i++) {
+        // const dateee = data[i].date.toLocaleDateString();
         sendData.push({
           _id: data[i]._id,
           productName: data[i].product.productname,
@@ -506,8 +507,8 @@ router.get(
           totalPrice: data[i].totalPrice,
           invoiceNumber: data[i].invoiceNumber,
           GRN_Number: data[i].GRN_Number,
-          createdAt: data[i].createdAt.toLocaleDateString(),
-          date: data[i].date
+          // createdAt: data[i].createdAt.toLocaleDateString(),
+          date: data[i].date,
         });
       }
       // console.log(data[0].gst);
@@ -523,6 +524,39 @@ router.get(
         msg: "no permission to see purchase list",
         error: { code: 403 },
       });
+    }
+  })
+);
+
+router.get(
+  "/purchasestocklist/Table/:page/:dataperpage",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const page = req.params.page;
+    const dataperpage = req.params.dataperpage;
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.productlist) {
+      const admin = req.user.id;
+      const data = await purchaseStock.getDataforTablePagination(
+        page,
+        dataperpage
+      );
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "Data Fetched",
+          data: data,
+        });
+      } else {
+        return rc.setResponse(res, {
+          msg: "Data not Found",
+        });
+      }
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
     }
   })
 );
