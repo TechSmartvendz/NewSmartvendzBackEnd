@@ -38,16 +38,42 @@ router.get(
   "/getallmachineslots",
   asyncHandler(async (req, res) => {
     const pararms = req.query;
-    const data = await machineslot.find({ machineName: pararms.machineName });
-    // console.log(data);
+    const data = await machineslot.find({ machineid: req.query.machineid });
+    console.log("data", data);
+    let productdata;
+    let pdata = [];
+    let sendData ;
+    let ss = [];
+    for (let i = 0; i < data.length; i++) {
+      productdata = await product.findOne({ _id: data[i].product });
+      console.log(productdata);
+      pdata.push(productdata);
+
+      sendData = {
+        _id: data[i]._id,
+        machineid: data[i].machineid,
+        machineName: data[i].machineName,
+        slot: data[i].slot,
+        maxquantity: data[i].maxquantity,
+        active_status: data[i].active_status,
+        productid: pdata[i]._id,
+        productname: pdata[i].productname,
+        closingStock: data[i].closingStock,
+        currentStock: data[i].currentStock,
+        refillQuantity: data[i].refillQuantity,
+        saleQuantity: data[i].saleQuantity,
+        delete_status: data[i].delete_status,
+        created_at: data[i].created_at,
+      };
+      ss.push(sendData);
+    }
+    console.log("ss", ss);
     const machinedata = {
       machineId: data[0].machineid,
       machineName: data[0].machineName,
       admin: data[0].admin,
-      machineSlot: data,
+      machineSlot: ss,
     };
-    // console.log(machinedata)
-    // return res.send(machinedata);
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
@@ -55,6 +81,46 @@ router.get(
     });
   })
 );
+
+// ---------------- check with aggregation ---------------------------//
+// router.get(
+//   "/getallmachineslots",
+//   auth,
+//   asyncHandler(async (req, res, next) => {
+//     const query = {
+//       role: req.user.role,
+//     };
+//     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+//     if (cdata.addnewmachine) {
+//       const query = {
+//         _id: req.query.id,
+//       };
+//       var cdata = await machines.getDataByQueryFilterDataOne(query);
+//       if (cdata.machineid) {
+//         const machineid = cdata.id;
+//         const data = await machineslot.getDataforRefillTable(machineid);
+//         console.log(data);
+//         if (data) {
+//           return rc.setResponse(res, {
+//             success: true,
+//             msg: "Data Fetched",
+//             data: data,
+//           });
+//         } else {
+//           return rc.setResponse(res, {
+//             msg: "Data not Found",
+//           });
+//         }
+//       } else {
+//         return rc.setResponse(res, {
+//           msg: "Data not Found",
+//         });
+//       }
+//     } else {
+//       return rc.setResponse(res, { error: { code: 403 } });
+//     }
+//   })
+// );
 
 //-------------------------Refiller post request--------------------------------//
 
@@ -612,7 +678,9 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.productlist) {
-      const machinedata = await machines.findOne({ machineid: req.params.machineid });
+      const machinedata = await machines.findOne({
+        machineid: req.params.machineid,
+      });
       // console.log("machinedata:", machinedata);
       const admin = req.user.id;
       const data = await machineslot.getDataforTablePagination(

@@ -147,7 +147,7 @@ module.exports.getDataByQueryFilterDataOne = async (query) => {
    //// console.log("🚀 ~ file: m_user_info.js:145 ~ module.exports.getDataByQueryFilterDataOne= ~ query", query)
     const data = await Table.findOne(
       query,
-      { delete_status: 0,created_at:0,last_update:0,token:0,password:0,otp:0,admin:0,city:0,state:0,country:0,area:0,__v: 0 }
+      { delete_status: 0,created_at:0,last_update:0,token:0,password:0,otp:0,admin:0,__v: 0 }
     );
     return data;
   };

@@ -263,13 +263,13 @@ router.post(
       const { machineId, machineSlots } = req.body;
       const refillerid = req.user.id;
       // Create the refill request in the database
-      const warehouse = await machinedata.findOne({_id:machineId})
-      console.log("warehouseid", warehouse)
+      const warehouseid = await machinedata.findOne({_id:machineId})
+      console.log("warehouseid", warehouseid)
       let randomNumber = Math.floor(Math.random() * 100000000000000);
       let data = new refillRequest({
         refillerId: refillerid,
         machineId: machineId,
-        warehouse: warehouse.warehouse,
+        warehouse: warehouseid.warehouse,
         machineSlots: machineSlots,
         refillRequestNumber: randomNumber,
         status: "Pending",
