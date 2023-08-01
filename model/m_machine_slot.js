@@ -208,6 +208,100 @@ module.exports.getDataforTable = async (machineid) => {
   return data;
 };
 
+module.exports.getDataforRefillTable = async (machineid) => {
+  //console.log("🚀 ~ file: m_machine_slot.js:104 ~ module.exports.getDataforTable= ~ machineid", machineid)
+
+  const data = Table.aggregate([
+    {
+      $match: { machineid: machineid },
+    },
+    {
+      $project: {
+        _id: 1,
+        machineid: {
+          $toObjectId: "$machineid",
+        },
+        slot: 1,
+        product: {
+          $toObjectId: "$product",
+        },
+        maxquantity: 1,
+        admin: {
+          $toObjectId: "$created_by",
+        },
+        closingStock: 1,
+        currentStock: 1,
+        saleQuantity: 1,
+        refillQuantity: 1,
+        warehouse: {
+          $toObjectId: "$machineid",
+        },
+        created_at: 1,
+      },
+    },
+    {
+      $lookup: {
+        from: "user_infos",
+        localField: "admin",
+        foreignField: "_id",
+        as: "output",
+      },
+    },
+    { $unwind: "$output" },
+    {
+      $lookup: {
+        from: "machines",
+        localField: "machineid",
+        foreignField: "_id",
+        as: "output2",
+      },
+    },
+    { $unwind: "$output2" },
+    {
+      $lookup: {
+        from: "products",
+        localField: "product",
+        foreignField: "_id",
+        as: "productresult",
+      },
+    },
+    { $unwind: "$productresult" },
+    {
+      $lookup: {
+        from: "warehouses",
+        localField: "warehouse",
+        foreignField: "_id",
+        as: "warehouseresult",
+      },
+    },
+    { $unwind: "$warehouseresult" },
+    {
+      $project: {
+        _id: 1,
+        role: 1,
+        "machine id": "$output2.machineid",
+        slot: 1,
+        "max quantity": "$maxquantity",
+        "created by": "$output.display_name",
+        product: "$productresult.productname",
+        closingStock: 1,
+        currentStock: 1,
+        saleQuantity: 1,
+        refillQuantity: 1,
+        "wareHouseName": "$warehouseresult.wareHouseName",
+        "created at": {
+          $dateToString: {
+            format: "%Y-%m-%d %H:%M:%S",
+            date: "$created_at",
+            timezone: "Asia/Kolkata",
+          },
+        },
+      },
+    },
+  ]);
+  return data;
+};
+
 module.exports.getDataForEditFormAssignUser = async (id) => {
   //console.log("🚀 ~ file: m_company_admin.js:164 ~ module.exports.getDataForEditFormAssignUser= ~ id", id)
   id = mongoose.Types.ObjectId(id);
