@@ -260,24 +260,35 @@ router.post(
   asyncHandler(async (req, res) => {
     try {
       // console.log(req.body);
-      const { machineId, machineSlots } = req.body;
+      const { machineId, machineSlot } = req.body.machine;
       const refillerid = req.user.id;
       // Create the refill request in the database
-      const warehouseid = await machinedata.findOne({_id:machineId})
-      console.log("warehouseid", warehouseid)
+      const warehouseid = await machinedata.findOne({ _id: machineId });
+      // console.log("deletedSlots", req.body.deletedSlots);
+      // console.log("warehouseid", warehouseid);
+      let updatedSlots;
+      if (!req.body.deletedSlots) {
+        updatedSlots = null;
+      } else {
+        updatedSlots = req.body.deletedSlots.machineSlot;
+      }
       let randomNumber = Math.floor(Math.random() * 100000000000000);
       let data = new refillRequest({
         refillerId: refillerid,
         machineId: machineId,
         warehouse: warehouseid.warehouse,
-        machineSlots: machineSlots,
+        machineSlots: machineSlot,
+        updatedSlots: updatedSlots,
         refillRequestNumber: randomNumber,
         status: "Pending",
       });
       // console.log("data", data);
       await data.save();
-
-      return res.status(200).json({ message: "Refill request sent." });
+      rc.setResponse(res, {
+        success: true,
+        message: "Refill request sent.",
+        data: data,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Failed to send refill request." });
