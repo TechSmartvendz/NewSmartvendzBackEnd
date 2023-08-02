@@ -38,15 +38,15 @@ router.get(
   "/getallmachineslots",
   asyncHandler(async (req, res) => {
     const pararms = req.query;
-    const data = await machineslot.find({ machineid: req.query.machineid });
-    console.log("data", data);
+    const data = await machineslot.find({ machineid: req.query.id });
+    // console.log("data", data);
     let productdata;
     let pdata = [];
-    let sendData ;
+    let sendData;
     let ss = [];
     for (let i = 0; i < data.length; i++) {
       productdata = await product.findOne({ _id: data[i].product });
-      console.log(productdata);
+      // console.log(productdata);
       pdata.push(productdata);
 
       sendData = {
@@ -58,6 +58,7 @@ router.get(
         active_status: data[i].active_status,
         productid: pdata[i]._id,
         productname: pdata[i].productname,
+        sloteid: data[i].sloteid,
         closingStock: data[i].closingStock,
         currentStock: data[i].currentStock,
         refillQuantity: data[i].refillQuantity,
@@ -67,7 +68,7 @@ router.get(
       };
       ss.push(sendData);
     }
-    console.log("ss", ss);
+    // console.log("ss", ss);
     const machinedata = {
       machineId: data[0].machineid,
       machineName: data[0].machineName,
@@ -276,7 +277,7 @@ router.post(
         let rdata = await refillerrequest.find({
           refillRequestNumber: pararms.refillRequestNumber,
         });
-        // console.log(rdata[0].machineSlots);
+        console.log(rdata[0].machineSlots);
 
         let data;
         let approveddata;
@@ -329,16 +330,38 @@ router.post(
               { refillRequestNumber: pararms.refillRequestNumber },
               { status: "Approved" }
             );
-            // if(updaterdata.status === "Approved"){
-            // const updatewarehousestock = await warehouseStock.updateOne(
-            //   {
-            //     warehouse: updaterdata.warehouse,
-            //     product: updaterdata.machineSlots[i].product,
-            //   },
-            //   { $inc: { productQuantity: - updaterdata.machineSlots[i].refillQuantity } }
-            // );
-            // }
-            console.log(updaterdata.machineSlots);
+            console.log("updaterdata", updaterdata);
+            for (let i = 0; i < updaterdata.machineSlots.length; i++) {
+              if (updaterdata.status === "Approved") {
+                const updatewarehousestock = await warehouseStock.updateOne(
+                  {
+                    warehouse: updaterdata.warehouse,
+                    product: updaterdata.machineSlots[i].productid,
+                  },
+                  {
+                    $inc: {
+                      productQuantity:
+                        -updaterdata.machineSlots[i].refillQuantity,
+                    },
+                  }
+                );
+              }
+              if(updaterdata.updatedSlots.length != 0){
+                const updatewarehousestock = await warehouseStock.updateOne(
+                  {
+                    warehouse: updaterdata.warehouse,
+                    product: updaterdata.machineSlots[i].productid,
+                  },
+                  {
+                    $inc: {
+                      productQuantity:
+                        + updaterdata.machineSlots[i].closingStock,
+                    },
+                  }
+                );
+              }
+            }
+            // console.log(updaterdata.machineSlots);
             return rc.setResponse(res, {
               success: true,
               msg: "data updated",

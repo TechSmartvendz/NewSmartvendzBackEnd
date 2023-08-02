@@ -63,7 +63,84 @@ router.post(
   })
 );
 
-// acceptStock Transfer request of warehouse to warehouse
+//-------------------- Bulk upload warehouse to warehouse stock transfer -----------------------------------//
+
+router.post(
+  "/sendStockTransferRequest",
+  auth,
+  asyncHandler(async (req, res) => {
+    if (!req.files || !req.files.csvFile) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "CSV file not provided.",
+      });
+    }
+
+    const file = req.files.csvFile;
+
+    try {
+      const bulkUploadResults = [];
+
+      fs.createReadStream(file.tempFilePath)
+        .pipe(csv())
+        .on("data", async (row) => {
+          const { fromWarehouse, toWarehouse, productName, quantity } = row;
+
+          // Perform any necessary validation or business logic here before creating the request
+
+          // Create a new stock transfer request in the database
+          const fromwarehouse = await warehouseTable.findOne({
+            wareHouseName: fromWarehouse,
+          });
+          const towarehouse = await warehouseTable.findOne({
+            wareHouseName: toWarehouse,
+          });
+          const product = await productTable.findOne({ productname: productName });
+          const warehouse = await warehouseStock.findOne({
+            warehouse: fromwarehouse._id,
+          });
+
+          if (warehouse.productQuantity < quantity) {
+            bulkUploadResults.push({
+              success: false,
+              msg: "Warehouse has less quantity for the transfer request.",
+            });
+          } else {
+            // Create a new stock transfer request in the database
+            const transferRequest = new WarehouseStockTransferRequest({
+              fromWarehouse: fromwarehouse._id,
+              toWarehouse: towarehouse._id,
+              productName: product._id,
+              productQuantity: quantity,
+              status: "Pending",
+            });
+
+            await transferRequest.save();
+            bulkUploadResults.push({
+              success: true,
+              msg: "Stock transfer request sent.",
+            });
+          }
+        })
+        .on("end", () => {
+          return rc.setResponse(res, {
+            success: true,
+            msg: "Bulk stock transfer requests sent.",
+            data: bulkUploadResults,
+          });
+        });
+    } catch (error) {
+      return rc.setResponse(res, {
+        error,
+        msg: "Failed to send bulk stock transfer requests.",
+      });
+    }
+  })
+);
+
+// ----------------------------------------------------//
+
+// acceptStock Tra nsfer request of warehouse to warehouse
 router.post(
   "/acceptStockTransferRequest/:requestId",
   auth,
@@ -260,24 +337,35 @@ router.post(
   asyncHandler(async (req, res) => {
     try {
       // console.log(req.body);
-      const { machineId, machineSlots } = req.body;
+      const { machineId, machineSlot } = req.body.machine;
       const refillerid = req.user.id;
       // Create the refill request in the database
-      const warehouseid = await machinedata.findOne({_id:machineId})
-      console.log("warehouseid", warehouseid)
+      const warehouseid = await machinedata.findOne({ _id: machineId });
+      // console.log("deletedSlots", req.body.deletedSlots);
+      // console.log("warehouseid", warehouseid);
+      let updatedSlots;
+      if (!req.body.deletedSlots) {
+        updatedSlots = null;
+      } else {
+        updatedSlots = req.body.deletedSlots.machineSlot;
+      }
       let randomNumber = Math.floor(Math.random() * 100000000000000);
       let data = new refillRequest({
         refillerId: refillerid,
         machineId: machineId,
         warehouse: warehouseid.warehouse,
-        machineSlots: machineSlots,
+        machineSlots: machineSlot,
+        updatedSlots: updatedSlots,
         refillRequestNumber: randomNumber,
         status: "Pending",
       });
       // console.log("data", data);
       await data.save();
-
-      return res.status(200).json({ message: "Refill request sent." });
+      rc.setResponse(res, {
+        success: true,
+        message: "Refill request sent.",
+        data: data,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Failed to send refill request." });
