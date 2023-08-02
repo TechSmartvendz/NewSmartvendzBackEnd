@@ -63,7 +63,84 @@ router.post(
   })
 );
 
-// acceptStock Transfer request of warehouse to warehouse
+//-------------------- Bulk upload warehouse to warehouse stock transfer -----------------------------------//
+
+router.post(
+  "/sendStockTransferRequest",
+  auth,
+  asyncHandler(async (req, res) => {
+    if (!req.files || !req.files.csvFile) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "CSV file not provided.",
+      });
+    }
+
+    const file = req.files.csvFile;
+
+    try {
+      const bulkUploadResults = [];
+
+      fs.createReadStream(file.tempFilePath)
+        .pipe(csv())
+        .on("data", async (row) => {
+          const { fromWarehouse, toWarehouse, productName, quantity } = row;
+
+          // Perform any necessary validation or business logic here before creating the request
+
+          // Create a new stock transfer request in the database
+          const fromwarehouse = await warehouseTable.findOne({
+            wareHouseName: fromWarehouse,
+          });
+          const towarehouse = await warehouseTable.findOne({
+            wareHouseName: toWarehouse,
+          });
+          const product = await productTable.findOne({ productname: productName });
+          const warehouse = await warehouseStock.findOne({
+            warehouse: fromwarehouse._id,
+          });
+
+          if (warehouse.productQuantity < quantity) {
+            bulkUploadResults.push({
+              success: false,
+              msg: "Warehouse has less quantity for the transfer request.",
+            });
+          } else {
+            // Create a new stock transfer request in the database
+            const transferRequest = new WarehouseStockTransferRequest({
+              fromWarehouse: fromwarehouse._id,
+              toWarehouse: towarehouse._id,
+              productName: product._id,
+              productQuantity: quantity,
+              status: "Pending",
+            });
+
+            await transferRequest.save();
+            bulkUploadResults.push({
+              success: true,
+              msg: "Stock transfer request sent.",
+            });
+          }
+        })
+        .on("end", () => {
+          return rc.setResponse(res, {
+            success: true,
+            msg: "Bulk stock transfer requests sent.",
+            data: bulkUploadResults,
+          });
+        });
+    } catch (error) {
+      return rc.setResponse(res, {
+        error,
+        msg: "Failed to send bulk stock transfer requests.",
+      });
+    }
+  })
+);
+
+// ----------------------------------------------------//
+
+// acceptStock Tra nsfer request of warehouse to warehouse
 router.post(
   "/acceptStockTransferRequest/:requestId",
   auth,
