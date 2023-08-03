@@ -37,8 +37,7 @@ router.get(
 router.get(
   "/getallmachineslots",
   asyncHandler(async (req, res) => {
-    const pararms = req.query;
-    const data = await machineslot.find({ machineid: req.query.id });
+    const data = await machineslot.find({ machineid: req.query.machineid });
     // console.log("data", data);
     let productdata;
     let pdata = [];
@@ -60,8 +59,8 @@ router.get(
         productname: pdata[i].productname,
         sloteid: data[i].sloteid,
         closingStock: data[i].closingStock,
-        currentStock: data[i].currentStock,
-        refillQuantity: data[i].refillQuantity,
+        currentStock: 0,
+        refillQuantity: 0,
         saleQuantity: data[i].saleQuantity,
         delete_status: data[i].delete_status,
         created_at: data[i].created_at,
@@ -194,11 +193,13 @@ router.get(
 router.get(
   "/allrefillingrequest",
   asyncHandler(async (req, res) => {
-    const allRefillerRequest = await refillerrequest.find();
+    const allRefillerRequest = await refillerrequest.find()
     // .select(
-    //   "id refillerID refillRequestNumber machineId pendingstatus isDeleted createdAt updatedAt"
+    //   "id refillerId warehouse refillRequestNumber machineId status isDeleted createdAt updatedAt"
     // )
-    // .populate("refillerID", ["_id", "first_name", "user_id"]);
+    .populate("refillerId", ["_id", "first_name", "user_id"])
+    .populate("machineId")
+    .populate("warehouse")
     // return res.send(data);
     return rc.setResponse(res, {
       success: true,
@@ -346,16 +347,16 @@ router.post(
                   }
                 );
               }
-              if(updaterdata.updatedSlots.length != 0){
+              if(updaterdata.returnItems.length != 0){
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
                     warehouse: updaterdata.warehouse,
-                    product: updaterdata.machineSlots[i].productid,
+                    product: updaterdata.returnItems[i].productid,
                   },
                   {
                     $inc: {
                       productQuantity:
-                        + updaterdata.machineSlots[i].closingStock,
+                        + updaterdata.returnItems[i].closingStock,
                     },
                   }
                 );

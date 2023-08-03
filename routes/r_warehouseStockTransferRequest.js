@@ -376,26 +376,29 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     try {
-      // console.log(req.body);
-      const { machineId, machineSlot } = req.body.machine;
+      // console.log("req.body",req.body.machineSlot);
+      // console.log("returnitems:",req.body.returnItems);
+
+      const { machineId, machineSlot } = req.body;
       const refillerid = req.user.id;
+      console.log(refillerid);
       // Create the refill request in the database
       const warehouseid = await machinedata.findOne({ _id: machineId });
       // console.log("deletedSlots", req.body.deletedSlots);
       // console.log("warehouseid", warehouseid);
       let updatedSlots;
-      if (!req.body.deletedSlots) {
+      if (!req.body.returnItems) {
         updatedSlots = null;
       } else {
-        updatedSlots = req.body.deletedSlots.machineSlot;
+        updatedSlots = req.body.returnItems;
       }
       let randomNumber = Math.floor(Math.random() * 100000000000000);
       let data = new refillRequest({
         refillerId: refillerid,
         machineId: machineId,
         warehouse: warehouseid.warehouse,
-        machineSlots: machineSlot,
-        updatedSlots: updatedSlots,
+        machineSlots: req.body.machineSlot,
+        returnItems: updatedSlots,
         refillRequestNumber: randomNumber,
         status: "Pending",
       });
