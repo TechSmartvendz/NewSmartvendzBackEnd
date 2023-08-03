@@ -3,12 +3,17 @@ const { Schema } = mongoose;
 
 const refillrequest = new Schema(
   {
-    refillerID: {
+    refillerId: {
       type: Schema.Types.ObjectId,
       ref: "user_info",
       require: true,
     },
-    warehouse: { type: String, default: null, required: true },
+    // warehouse: { type: String, default: null, required: true },
+    warehouse: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "warehouse",
+      required: true,
+    },
     refillRequestNumber: { type: String, default: null, unique: true },
     machineId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,7 +31,7 @@ const refillrequest = new Schema(
         sloteid: { type: String, default: false },
       },
     ],
-    updatedSlots: [
+    returnItems: [
       {
         slot: { type: String, default: false },
         closingStock: { type: Number, default: 0 },
