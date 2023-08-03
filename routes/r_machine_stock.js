@@ -193,18 +193,34 @@ router.get(
 router.get(
   "/allrefillingrequest",
   asyncHandler(async (req, res) => {
-    const allRefillerRequest = await refillerrequest.find()
-    // .select(
-    //   "id refillerId warehouse refillRequestNumber machineId status isDeleted createdAt updatedAt"
-    // )
-    .populate("refillerId", ["_id", "first_name", "user_id"])
-    .populate("machineId")
-    .populate("warehouse")
-    // return res.send(data);
+    const allRefillerRequest = await refillerrequest
+      .find()
+      .select(
+        "id refillerId warehouse refillRequestNumber machineId status isDeleted createdAt updatedAt"
+      )
+      .populate("refillerId", ["_id", "first_name", "user_id"])
+      .populate("machineId")
+      .populate("warehouse");
+    console.log(allRefillerRequest);
+    let data = [];
+    for (let i = 0; i < allRefillerRequest.length; i++) {
+      data.push({
+        _id: allRefillerRequest[i]._id,
+        refillerId: allRefillerRequest[i].refillerId._id,
+        refillerName: allRefillerRequest[i].refillerId.first_name,
+        refillerUserId: allRefillerRequest[i].refillerId.user_id,
+        refillingRequestNumber: allRefillerRequest[i].refillRequestNumber,
+        machine: allRefillerRequest[i].machineId.machineid,
+        machineId: allRefillerRequest[i].machineId._id,
+        machineName: allRefillerRequest[i].machineId.machinename,
+        status: allRefillerRequest[i].status,
+        date: allRefillerRequest[i].createdAt,
+      });
+    }
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
-      data: allRefillerRequest,
+      data: data,
     });
   })
 );
@@ -212,21 +228,23 @@ router.get(
 //------------------refilling request by id--------------------------------//
 
 router.get(
-  "/allrefillingrequestbyid",
+  "/refillRequest/:id",
   asyncHandler(async (req, res) => {
-    const id = req.query.id;
     const refillerRequestById = await refillerrequest
-      .find({ _id: id })
-      .select(
-        "id refillerID refillRequestNumber machineId machineSlot status isDeleted"
-      )
-      .populate("refillerID", ["_id", "first_name", "user_id"]);
-    // console.log(data[0])
-    // return res.send(data[0]);
+      .findOne({ _id: req.params.id })
+      // .select(
+      //   "id refillerId warehouse refillRequestNumber machineId status isDeleted createdAt updatedAt"
+      // )
+      // .populate("refillerId", ["_id", "first_name", "user_id"])
+      // .populate("machineId")
+      // .populate("warehouse")
+      .populate("machineSlots.productid", ["_id", "productname", "sellingprice"])
+      .populate("returnItems.productid", ["_id", "productname", "sellingprice"])
+      const data = refillerRequestById
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
-      data: refillerRequestById[0],
+      data: data,
     });
   })
 );
@@ -347,7 +365,7 @@ router.post(
                   }
                 );
               }
-              if(updaterdata.returnItems.length != 0){
+              if (updaterdata.returnItems.length != 0) {
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
                     warehouse: updaterdata.warehouse,
@@ -355,8 +373,7 @@ router.post(
                   },
                   {
                     $inc: {
-                      productQuantity:
-                        + updaterdata.returnItems[i].closingStock,
+                      productQuantity: +updaterdata.returnItems[i].closingStock,
                     },
                   }
                 );
