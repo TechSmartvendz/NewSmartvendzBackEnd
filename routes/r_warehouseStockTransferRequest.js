@@ -14,6 +14,11 @@ const warehouseToMachineStockTransferRequest = require("../model/m_warehouseToMa
 const refillRequest = require("../model/m_refiller_request");
 const machinedata = require("../model/m_machine");
 
+const CsvParser = require("json2csv").Parser;
+const csv = require("csv-parser");
+const fs = require("fs");
+const { upload } = require("../middleware/fileUpload");
+
 // sendStockTransferRequest to warehouse
 router.post(
   "/sendStockTransferRequest",
@@ -62,6 +67,41 @@ router.post(
     }
   })
 );
+
+// sample file for bulk upload warehouseStock
+router.get(
+  "/warehouseStock/SampleCSV",
+  auth,
+  asyncHandler(async (req, res) => {
+    console.log("----------------xdxdxgxg--------");
+    const query = {
+      role: req.user.role,
+    };
+    // console.log(query);
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    // console.log(cdata);
+    if (cdata.updatebulkproduct) {
+      const j = {
+        fromWarehouse: "",
+        toWarehouse: "",
+        productName: "",
+        quantity: "",
+      };
+      const csvFields = ["fromWarehouse", "toWarehouse", "productName", "quantity"];
+      const csvParser = new CsvParser({ csvFields });
+      const csvdata = csvParser.parse(j);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=SampleImportwarehouseStock.csv"
+      );
+      res.status(200).end(csvdata);
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
 
 //-------------------- Bulk upload warehouse to warehouse stock transfer -----------------------------------//
 
