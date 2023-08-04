@@ -87,7 +87,12 @@ router.get(
         productName: "",
         quantity: "",
       };
-      const csvFields = ["fromWarehouse", "toWarehouse", "productName", "quantity"];
+      const csvFields = [
+        "fromWarehouse",
+        "toWarehouse",
+        "productName",
+        "quantity",
+      ];
       const csvParser = new CsvParser({ csvFields });
       const csvdata = csvParser.parse(j);
       res.setHeader("Content-Type", "text/csv");
@@ -102,78 +107,224 @@ router.get(
   })
 );
 
-
 //-------------------- Bulk upload warehouse to warehouse stock transfer -----------------------------------//
 
+// router.post(
+//   "/sendStockTransferRequest/BulkUpload",
+//   auth,
+//   upload.single("file"),
+//   asyncHandler(async (req, res) => {
+//     if (!req.files || !req.files.csvFile) {
+//       return rc.setResponse(res, {
+//         success: false,
+//         msg: "CSV file not provided.",
+//       });
+//     }
+
+//     const file = req.files.csvFile;
+
+//     try {
+//       const bulkUploadResults = [];
+
+//       fs.createReadStream(file.tempFilePath)
+//         .pipe(csv())
+//         .on("data", async (row) => {
+//           const { fromWarehouse, toWarehouse, productName, quantity } = row;
+
+//           // Perform any necessary validation or business logic here before creating the request
+
+//           // Create a new stock transfer request in the database
+//           const fromwarehouse = await warehouseTable.findOne({
+//             wareHouseName: fromWarehouse,
+//           });
+//           const towarehouse = await warehouseTable.findOne({
+//             wareHouseName: toWarehouse,
+//           });
+//           const product = await productTable.findOne({ productname: productName });
+//           const warehouse = await warehouseStock.findOne({
+//             warehouse: fromwarehouse._id,
+//           });
+
+//           if (warehouse.productQuantity < quantity) {
+//             bulkUploadResults.push({
+//               success: false,
+//               msg: "Warehouse has less quantity for the transfer request.",
+//             });
+//           } else {
+//             // Create a new stock transfer request in the database
+//             const transferRequest = new WarehouseStockTransferRequest({
+//               fromWarehouse: fromwarehouse._id,
+//               toWarehouse: towarehouse._id,
+//               productName: product._id,
+//               productQuantity: quantity,
+//               status: "Pending",
+//             });
+
+//             await transferRequest.save();
+//             bulkUploadResults.push({
+//               success: true,
+//               msg: "Stock transfer request sent.",
+//             });
+//           }
+//         })
+//         .on("end", () => {
+//           return rc.setResponse(res, {
+//             success: true,
+//             msg: "Bulk stock transfer requests sent.",
+//             data: bulkUploadResults,
+//           });
+//         });
+//     } catch (error) {
+//       return rc.setResponse(res, {
+//         error,
+//         msg: "Failed to send bulk stock transfer requests.",
+//       });
+//     }
+//   })
+// );
+
+// new bulk upload warehouse stock
+
 router.post(
-  "/sendStockTransferRequest",
+  "/sendStockTransferRequest/ImportCSV",
   auth,
+  upload.single("file"),
   asyncHandler(async (req, res) => {
-    if (!req.files || !req.files.csvFile) {
-      return rc.setResponse(res, {
-        success: false,
-        msg: "CSV file not provided.",
-      });
+    const results = [];
+    var rejectdata = [];
+
+    function reject(x) {
+      if (x) {
+        rejectdata.push(x);
+      }
+      return rejectdata;
     }
 
-    const file = req.files.csvFile;
+    var storeddata = [];
 
-    try {
-      const bulkUploadResults = [];
+    function succ(x) {
+      if (x) {
+        storeddata.push(x);
+      }
+      return storeddata;
+    }
+    const query = { role: req.user.role };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
 
-      fs.createReadStream(file.tempFilePath)
-        .pipe(csv())
-        .on("data", async (row) => {
-          const { fromWarehouse, toWarehouse, productName, quantity } = row;
+    if (cdata.bulkproductupload) {
+      var path = `public/${req.file.filename}`;
+      fs.createReadStream(path)
+        .pipe(csv({}))
+        .on("data", async (data) => results.push(data))
 
-          // Perform any necessary validation or business logic here before creating the request
+        .on("end", async () => {
+          console.log("result", results);
+          for (i = 0; i < results.length; i++) {
+            if (
+              results[i].fromWarehouse == "" ||
+              results[i].fromWarehouse == "NA" ||
+              results[i].fromWarehouse == "#N/A"
+            ) {
+              console.log(`fromWarehouse is not available`);
+              console.log(results[i]);
+              results[i].error = "fromWarehouse is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].toWarehouse == "" ||
+              results[i].toWarehouse == "NA" ||
+              results[i].toWarehouse == "#N/A"
+            ) {
+              console.log(`toWarehouse is not available`);
+              console.log(results[i]);
+              results[i].error = "toWarehouse is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].productName == "" ||
+              results[i].productName == "NA" ||
+              results[i].productName == "#N/A"
+            ) {
+              console.log(`productName is not available`);
+              console.log(results[i]);
+              results[i].error = "productName is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].quantity == "" ||
+              results[i].quantity == "NA" ||
+              results[i].quantity == "#N/A"
+            ) {
+              console.log(`quantity is not available`);
+              console.log(results[i]);
+              results[i].error = "quantity is missing";
+              const r = reject(results[i]);
+            } else {
+              try {
+                const { fromWarehouse, toWarehouse, productName, quantity } =
+                  row;
 
-          // Create a new stock transfer request in the database
-          const fromwarehouse = await warehouseTable.findOne({
-            wareHouseName: fromWarehouse,
-          });
-          const towarehouse = await warehouseTable.findOne({
-            wareHouseName: toWarehouse,
-          });
-          const product = await productTable.findOne({ productname: productName });
-          const warehouse = await warehouseStock.findOne({
-            warehouse: fromwarehouse._id,
-          });
+                const fromwarehouse = await warehouseTable.findOne({
+                  wareHouseName: fromWarehouse,
+                });
+                const towarehouse = await warehouseTable.findOne({
+                  wareHouseName: toWarehouse,
+                });
+                const product = await productTable.findOne({
+                  productname: productName,
+                });
+                const warehouse = await warehouseStock.findOne({
+                  warehouse: fromwarehouse._id,
+                });
 
-          if (warehouse.productQuantity < quantity) {
-            bulkUploadResults.push({
-              success: false,
-              msg: "Warehouse has less quantity for the transfer request.",
-            });
-          } else {
-            // Create a new stock transfer request in the database
-            const transferRequest = new WarehouseStockTransferRequest({
-              fromWarehouse: fromwarehouse._id,
-              toWarehouse: towarehouse._id,
-              productName: product._id,
-              productQuantity: quantity,
-              status: "Pending",
-            });
+                
+                let newRow = {
+                  fromWarehouse: fromwarehouse._id,
+                  toWarehouse: towarehouse._id,
+                  productName: product._id,
+                  quantity: results[i].quantity,
+                  status: "Pending"
+                };
+                const newData = await WarehouseStockTransferRequest(newRow);
+                await newData.save();
+                if (newData) {
+                  const r = succ(results[i]);
+                }
+              } catch (e) {
+                console.log(e);
+                if (e.code == 11000) {
+                  results[i].error = "Duplicate Entry";
+                  const r = reject(results[i]);
+                } else {
+                  results[i].error = e;
+                  const r = reject(results[i]);
+                }
+              }
+            }
+          }
+          // const r= reject();
+          console.log("storeddata.length", storeddata.length);
+          console.log("rejectdata", rejectdata);
+          console.log("rejectdata.length", rejectdata.length);
 
-            await transferRequest.save();
-            bulkUploadResults.push({
+          if (rejectdata.length > 0) {
+            return rc.setResponse(res, {
               success: true,
-              msg: "Stock transfer request sent.",
+              msg: "Data Fetched",
+              data: {
+                dataupload: "partial upload",
+                reject_data: rejectdata,
+                stored_data: storeddata.length,
+              },
+            });
+            // res.status(200).json({ "dataupload": "error", "reject_data": rejectdata, "stored_data": storeddata.length });
+          } else {
+            return rc.setResponse(res, {
+              success: true,
+              msg: "Data Fetched",
+              data: { dataupload: "success", stored_data: storeddata.length },
             });
           }
-        })
-        .on("end", () => {
-          return rc.setResponse(res, {
-            success: true,
-            msg: "Bulk stock transfer requests sent.",
-            data: bulkUploadResults,
-          });
         });
-    } catch (error) {
-      return rc.setResponse(res, {
-        error,
-        msg: "Failed to send bulk stock transfer requests.",
-      });
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
     }
   })
 );
