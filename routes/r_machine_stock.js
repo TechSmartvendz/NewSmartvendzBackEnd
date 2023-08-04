@@ -289,14 +289,14 @@ router.post("/testingpulldata", async (req, res) => {
 
 //------------------for approveadmin request-------------------------//
 router.post(
-  "/approverefillrequest",
+  "/approverefillrequest/:refillRequestNumber",
   auth,
   asyncHandler(
     async (req, res) => {
       const pararms = req.query;
       if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
         let rdata = await refillerrequest.find({
-          refillRequestNumber: pararms.refillRequestNumber,
+          refillRequestNumber: req.params.refillRequestNumber,
         });
         console.log(rdata[0].machineSlots);
 
