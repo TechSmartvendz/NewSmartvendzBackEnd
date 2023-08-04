@@ -210,6 +210,8 @@ router.get(
         refillerName: allRefillerRequest[i].refillerId.first_name,
         refillerUserId: allRefillerRequest[i].refillerId.user_id,
         refillingRequestNumber: allRefillerRequest[i].refillRequestNumber,
+        warehouseid: allRefillerRequest[i].warehouse._id,
+        warehouseName: allRefillerRequest[i].warehouse.wareHouseName,
         machine: allRefillerRequest[i].machineId.machineid,
         machineId: allRefillerRequest[i].machineId._id,
         machineName: allRefillerRequest[i].machineId.machinename,
@@ -400,6 +402,7 @@ router.post(
   )
 );
 
+// not using
 router.get(
   "/refillingproductchangerequest",
   asyncHandler(async (req, res) => {
