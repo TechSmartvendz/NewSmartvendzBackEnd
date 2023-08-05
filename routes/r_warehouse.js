@@ -340,6 +340,128 @@ router.put(
 );
 
 // purchase stocks
+// router.post(
+//   "/purchaseStock",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     const query = {
+//       role: req.user.role,
+//     };
+//     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+//     // console.log(cdata);
+//     if (cdata.purchaseStock) {
+// console.log("req.body",req.body);
+// const warehouseidcheck = await warehouseTable.findOne({
+//   wareHouseName: req.body.warehouse,
+// });
+// const productidcheck = await productTable.findOne({
+//   productname: req.body.product,
+// });
+// const warehouseid = await warehouseTable.findOne({
+//   wareHouseName: req.body.warehouse,
+// });
+// console.log("warehouseID", warehouseid);
+// const productid = await productTable.findOne({
+//   productname: req.body.product,
+// });
+// console.log("productID", productid);
+// const existingStock = await warehouseStock
+//   .findOne({ warehouse: warehouseid._id }, { product: productid._id })
+//   .select("productQuantity sellingPrice admin warehouse product")
+//   .populate("warehouse product");
+// console.log(
+//   "-----------------------existingstock---------------------------"
+// );
+// console.log(existingStock);
+// console.log(
+//   "-----------------------existingstock---------------------------"
+// );
+// console.log("productId",productid._id)
+// const supplierid = await supplierTable.findOne({
+//   supplierName: req.body.supplier,
+// });
+// const gstID = await gstTable.findOne({ gstName: req.body.hsn_Code });
+// console.log("supplierID",supplierid)
+
+// ------------------------------------------------//
+
+// if (existingStock) {
+//   console.log("---------------");
+//   existingStock.productQuantity += parseInt(req.body.productQuantity);
+//   await existingStock.save();
+//   console.log("-------------------stock Updated--------------------");
+// } else {
+//   const stock = {
+//     warehouse: warehouseid._id,
+//     product: productid._id,
+//     productQuantity: req.body.productQuantity,
+//     sellingPrice: req.body.sellingPrice,
+//   };
+//   let newstock = new warehouseStock(stock);
+//   newstock.admin = req.user._id;
+//   if (!newstock) {
+//     return rc.setResponse(res, {
+//       msg: "No Data to insert",
+//     });
+//   }
+//   const warehousedata = await warehouseStock.addRow(newstock);
+
+// ------------------------------------//
+
+// if (warehousedata) {
+//   rc.setResponse(res, {
+//     success: true,
+//     msg: "Data Inserted",
+//     data: warehousedata,
+//   });
+// }
+// console.log("------------------data inserted---------------");
+// }
+// const purchaseStockData = {
+//   warehouse: warehouseid._id,
+//   product: productid._id,
+//   supplier: supplierid._id,
+//   productQuantity: req.body.productQuantity,
+//   sellingPrice: req.body.sellingPrice,
+//   totalPrice: req.body.totalPrice,
+//   gst: gstID._id,
+//   invoiceNumber: req.body.invoiceNumber,
+//   GRN_Number: req.body.GRN_Number,
+//   date: req.body.date,
+//   admin: req.user._id,
+// };
+// let newRow = new purchaseStock(purchaseStockData);
+
+// ------------------------------------
+// newRow.admin = req.user._id;
+//--------------------------------------
+
+// if (!newRow) {
+//   return rc.setResponse(res, {
+//     msg: "No Data to insert",
+//   });
+// }
+// console.log(newRow);
+// const data = await purchaseStock.addRow(newRow);
+// console.log(data);
+// if (data) {
+//   return rc.setResponse(res, {
+//     success: true,
+//     msg: "Data Inserted",
+//     data: data,
+//   });
+// }
+// } else {
+//   return rc.setResponse(res, {
+//     msg: "no permission to purchase",
+//     error: { code: 403 },
+//   });
+// }
+//   })
+// );
+
+//------------------------------ new purchase request------------------------------//
+
 router.post(
   "/purchaseStock",
   auth,
@@ -347,98 +469,109 @@ router.post(
     const query = {
       role: req.user.role,
     };
-    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    // console.log(cdata);
-    if (cdata.purchaseStock) {
-      console.log(req.body);
-      // const warehouseidcheck = await warehouseTable.findOne({
-      //   wareHouseName: req.body.warehouse,
-      // });
-      // const productidcheck = await productTable.findOne({
-      //   productname: req.body.product,
-      // });
-      const warehouseid = await warehouseTable.findOne({
-        wareHouseName: req.body.warehouse,
-      });
-      console.log("warehouseID", warehouseid);
-      const productid = await productTable.findOne({
-        productname: req.body.product,
-      });
-      console.log("productID", productid);
-      const existingStock = await warehouseStock
-        .findOne({ warehouse: warehouseid._id }, { product: productid._id })
-        .select("productQuantity sellingPrice admin warehouse product")
-        .populate("warehouse product");
-      console.log(
-        "-----------------------existingstock---------------------------"
-      );
-      // console.log(existingStock);
-      console.log(
-        "-----------------------existingstock---------------------------"
-      );
-      // console.log("productId",productid._id)
-      const supplierid = await supplierTable.findOne({
-        supplierName: req.body.supplier,
-      });
-      const gstID = await gstTable.findOne({ gstName: req.body.hsn_Code });
-      // console.log("supplierID",supplierid)
-      if (existingStock) {
-        console.log("---------------");
-        existingStock.productQuantity += parseInt(req.body.productQuantity);
-        await existingStock.save();
-        console.log("-------------------stock Updated--------------------");
-      } else {
-        const stock = {
-          warehouse: warehouseid._id,
-          product: productid._id,
+    console.log("req.body: ", req.body);
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    // console.log(permissions);
+    if (permissions.purchaseStock) {
+      try {
+        const warehouseidcheck = await warehouseTable.findOne({
+          wareHouseName: req.body.warehouse,
+        });
+        console.log("warehouseidcheck: ", warehouseidcheck);
+
+        const productidcheck = await productTable.findOne({
+          productname: req.body.product,
+        });
+        console.log("productidcheck: ", productidcheck);
+
+        let existingStock = await warehouseStock
+          .findOne({
+            warehouse: warehouseidcheck._id,
+            product: productidcheck._id,
+          })
+          .populate("warehouse product");
+        // .findOne({ warehouse: warehouseidcheck._id }, { product: productidcheck._id })
+        // .select("productQuantity sellingPrice admin warehouse product")
+
+        console.log("------------existingstock--------------");
+        console.log("existingStock: ", existingStock);
+        console.log("------------existingstock--------------");
+
+        if (existingStock) {
+          console.log("-----------------------------------------------------");
+
+          existingStock.productQuantity += parseInt(req.body.productQuantity);
+          await existingStock.save();
+          console.log("-------------------stock Updated--------------------");
+        } else {
+          const stock = {
+            warehouse: warehouseidcheck._id,
+            product: productidcheck._id,
+            productQuantity: req.body.productQuantity,
+            sellingPrice: req.body.sellingPrice,
+          };
+          let newstock = new warehouseStock(stock);
+          newstock.admin = req.user._id;
+          if (!newstock) {
+            return rc.setResponse(res, {
+              msg: "No Data to insert",
+            });
+          }
+          await newstock.save();
+          // const warehousedata = await warehouseStock.addRow(newstock);
+          console.log("------------------data inserted---------------");
+        }
+
+        const warehouseid = warehouseidcheck._id;
+        const productid = productidcheck._id;
+        const supplierid = await supplierTable.findOne({
+          supplierName: req.body.supplier,
+        });
+
+        const gstID = await gstTable.findOne({ hsn_Code: req.body.gst });
+
+        const purchaseStockData = {
+          warehouse: warehouseid,
+          product: productid,
+          supplier: supplierid._id,
           productQuantity: req.body.productQuantity,
           sellingPrice: req.body.sellingPrice,
+          totalPrice: req.body.totalPrice,
+          gst: gstID._id,
+          invoiceNumber: req.body.invoiceNumber,
+          GRN_Number: req.body.GRN_Number,
+          admin: req.user._id,
+          date: req.body.date,
         };
-        let newstock = new warehouseStock(stock);
-        newstock.admin = req.user._id;
-        if (!newstock) {
+        let newRow = new purchaseStock(purchaseStockData);
+        newRow.admin = req.user._id;
+        if (!newRow) {
           return rc.setResponse(res, {
             msg: "No Data to insert",
           });
         }
-        const warehousedata = await warehouseStock.addRow(newstock);
-        // if (warehousedata) {
-        //   rc.setResponse(res, {
-        //     success: true,
-        //     msg: "Data Inserted",
-        //     data: warehousedata,
-        //   });
-        // }
-        console.log("------------------data inserted---------------");
-      }
-      const purchaseStockData = {
-        warehouse: warehouseid._id,
-        product: productid._id,
-        supplier: supplierid._id,
-        productQuantity: req.body.productQuantity,
-        sellingPrice: req.body.sellingPrice,
-        totalPrice: req.body.totalPrice,
-        gst: gstID._id,
-        invoiceNumber: req.body.invoiceNumber,
-        GRN_Number: req.body.GRN_Number,
-        date: req.body.date,
-        admin: req.user._id,
-      };
-      let newRow = new purchaseStock(purchaseStockData);
-      // newRow.admin = req.user._id;
-      if (!newRow) {
+        console.log(newRow);
+        const data = await purchaseStock.addRow(newRow);
+        console.log(data);
+        if (data) {
+          return rc.setResponse(res, {
+            success: true,
+            msg: "Data Inserted",
+            data: data,
+          });
+        } else {
+          return rc.setResponse(res, {
+            success: false,
+            msg: "Failed to insert data.",
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
         return rc.setResponse(res, {
-          msg: "No Data to insert",
-        });
-      }
-      console.log(newRow);
-      const data = await purchaseStock.addRow(newRow);
-      console.log(data);
-      if (data) {
-        return rc.setResponse(res, {
-          success: true,
-          msg: "Data Inserted",
-          data: data,
+          success: false,
+          msg: "An error occurred while processing the request.",
         });
       }
     } else {
@@ -449,6 +582,8 @@ router.post(
     }
   })
 );
+
+// ----------------------------*************************-----------------------------//
 
 // get purchase stock list
 router.get(
@@ -579,19 +714,20 @@ router.get(
         product: "",
         supplier: "",
         productQuantity: "",
-        totalPrice: "",
         sellingPrice: "",
+        totalPrice: "",
         invoiceNumber: "",
         GRN_Number: "",
         gst: "",
+        date: ""
       };
       const csvFields = [
         "warehouse",
         "product",
         "supplier",
         "productQuantity",
-        "totalPrice",
         "sellingPrice",
+        "totalPrice",
         "invoiceNumber",
         "GRN_Number",
         "gst",
@@ -635,9 +771,9 @@ router.post(
       return storeddata;
     }
     const query = { role: req.user.role };
-    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    var permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
 
-    if (cdata.bulkproductupload) {
+    if (permissions.bulkproductupload) {
       var path = `public/${req.file.filename}`;
       fs.createReadStream(path)
         .pipe(csv({}))
@@ -727,9 +863,19 @@ router.post(
               console.log(results[i]);
               results[i].error = "gst is missing";
               const r = reject(results[i]);
-            } else {
+            }else if (
+              results[i].date == "" ||
+              results[i].date == "NA" ||
+              results[i].date == "#N/A"
+            ) {
+              console.log(`date is not available`);
+              console.log(results[i]);
+              results[i].error = "date is missing";
+              const r = reject(results[i]);
+            }
+             else {
               try {
-                if (cdata.purchaseStock) {
+                if (permissions.purchaseStock) {
                   const productdata = await productTable.findOne({
                     productname: results[i].product,
                   });
@@ -748,14 +894,14 @@ router.post(
                       { warehouse: warehousedata._id },
                       { product: productdata._id }
                     )
-                    .select(
-                      "productQuantity sellingPrice admin warehouse product"
-                    )
                     .populate("warehouse product");
+                    // .select(
+                    //   "productQuantity sellingPrice admin warehouse product"
+                    // )
                   console.log(
                     "-----------------------existingstock---------------------------"
                   );
-                  // console.log(existingStock);
+                  console.log('existingStock: ', existingStock);
                   console.log(
                     "-----------------------existingstock---------------------------"
                   );
@@ -783,29 +929,37 @@ router.post(
                         msg: "No Data to insert",
                       });
                     }
-                    const newwarehousedata = await warehouseStock.addRow(
-                      newstock
-                    );
+                    await newstock.save();
+                    // const newwarehousedata = await warehouseStock.addRow(
+                    //   newstock
+                    // );
                     console.log(
                       "-----------------data inserted------------------"
                     );
                   }
 
-                  let newRow = {
+                  let purchaseStockData = {
                     warehouse: warehousedata._id,
                     product: productdata._id,
                     supplier: supplierdata._id,
                     productQuantity: results[i].productQuantity,
-                    totalPrice: results[i].totalPrice,
                     sellingPrice: results[i].sellingPrice,
+                    totalPrice: results[i].totalPrice,
                     invoiceNumber: results[i].invoiceNumber,
                     GRN_Number: results[i].GRN_Number,
                     gst: gstID._id,
                     admin: req.user._id,
+                    date: results[i].date
                   };
-                  const newData = await purchaseStock(newRow);
-                  await newData.save();
-                  if (newData) {
+                  let newRow = await purchaseStock(purchaseStockData);
+                  newRow.admin = req.user._id
+                  if (!newRow) {
+                    return rc.setResponse(res, {
+                      msg: "No Data to insert",
+                    });
+                  }
+                  await newRow.save();
+                  if (newRow) {
                     const r = succ(results[i]);
                   }
                 }
