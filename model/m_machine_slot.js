@@ -380,7 +380,7 @@ module.exports.getDataforTablePagination = async (
     {
       $match: { machineName: machinedata },
     },
-    { $sort: { created_at: -1 } },
+    { $sort: { slot: 1 } },
     {
       $facet: {
         metadata: [

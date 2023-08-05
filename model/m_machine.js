@@ -20,7 +20,7 @@ const TableSchema = mongoose.Schema({
   },
   warehouse: {
     type: String,
-    require: true
+    require: true,
   },
   building: {
     type: String,
@@ -97,6 +97,56 @@ module.exports.getDataByQueryFilterDataOne = async (query) => {
   });
   return data;
 };
+module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
+  const data = await Table.aggregate([
+    // console.log("🚀 role:", machineid),
+    {
+      $match: { machineid: machineid },
+    },
+    {
+      $project: {
+        _id: 1,
+        machineid: 1,
+        machinename: 1,
+        companyid: 1,
+        warehouse: {
+          $toObjectId: "$warehouse",
+        },
+        building: 1,
+        location: 1,
+        producttype: 1,
+        totalslots: 1,
+        admin: {
+          $toObjectId: "$admin",
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "warehouses",
+        localField: "warehouse",
+        foreignField: "_id",
+        as: "warehouseoutput",
+      },
+    },
+    { $unwind: "$warehouseoutput" },
+    {
+      $project: {
+        _id: 1,
+        machineid: 1,
+        machinename: 1,
+        companyid: 1,
+        warehouse: "$warehouseoutput.wareHouseName",
+        building: 1,
+        location: 1,
+        producttype: 1,
+        totalslots: 1,
+        admin: 1,
+      },
+    },
+  ]);
+  return data;
+};
 module.exports.getDataCountByQuery = async (query) => {
   const data = await Table.find(query).count();
   return data;
@@ -125,7 +175,7 @@ module.exports.getDataforTable = async () => {
         location: 1,
         totalslots: 1,
         warehouse: {
-          "$toObjectId": "$warehouse"
+          $toObjectId: "$warehouse",
         },
         // admin: {
         //   "$toObjectId": "$country"
@@ -166,14 +216,14 @@ module.exports.getDataforTable = async () => {
     {
       $project: {
         _id: 1,
-        "machine id": "$machineid",
-        "total slots": "$totalslots",
-        "machine name": "$machinename",
-        "company id": "$companyid",
+        machine_id: "$machineid",
+        total_slots: "$totalslots",
+        machine_name: "$machinename",
+        company_id: "$companyid",
         location: "$location",
-        "warehouse": "$warehouseoutput.wareHouseName",
-        "created by": "$output.user_id",
-        "created at": {
+        warehouse: "$warehouseoutput.wareHouseName",
+        created_by: "$output.user_id",
+        created_at: {
           $dateToString: {
             format: "%Y-%m-%d %H:%M:%S",
             date: "$created_at",

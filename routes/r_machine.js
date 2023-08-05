@@ -111,16 +111,19 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
-      const role = req.params.id;
-      const query = {
-        _id: role,
-      };
-      const data = await TableModel.getDataByQueryFilterDataOne(query);
+      // const role = req.params.id;
+      // const query = {
+      //   _id: role,
+      // };
+      // const data = await TableModel.getDataByQueryFilterDataOne(query);
+      const machineid = req.params.id
+      const data = await TableModel.getDataByQueryFilterDataOneAggregate(machineid);
+      console.log("data",data)
       if (data) {
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
-          data: data,
+          data: data[0],
         });
       } else {
         return rc.setResponse(res, {

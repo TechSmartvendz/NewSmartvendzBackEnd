@@ -258,28 +258,32 @@ router.post(
               const r = reject(results[i]);
             } else {
               try {
-                const { fromWarehouse, toWarehouse, productName, quantity } =
-                  row;
-
                 const fromwarehouse = await warehouseTable.findOne({
-                  wareHouseName: fromWarehouse,
+                  wareHouseName: results[i].fromWarehouse,
                 });
                 const towarehouse = await warehouseTable.findOne({
-                  wareHouseName: toWarehouse,
+                  wareHouseName: results[i].toWarehouse,
                 });
                 const product = await productTable.findOne({
-                  productname: productName,
+                  productname: results[i].productName,
                 });
                 const warehouse = await warehouseStock.findOne({
                   warehouse: fromwarehouse._id,
                 });
+
+                if (warehouse.productQuantity < results[i].quantity) {
+                  return rc.setResponse(res, {
+                    success: false,
+                    msg: "warehouse has less quantity",
+                  });
+                }
 
                 
                 let newRow = {
                   fromWarehouse: fromwarehouse._id,
                   toWarehouse: towarehouse._id,
                   productName: product._id,
-                  quantity: results[i].quantity,
+                  productQuantity: results[i].quantity,
                   status: "Pending"
                 };
                 const newData = await WarehouseStockTransferRequest(newRow);
