@@ -339,129 +339,7 @@ router.put(
   })
 );
 
-// purchase stocks
-// router.post(
-//   "/purchaseStock",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const query = {
-//       role: req.user.role,
-//     };
-//     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-//     // console.log(cdata);
-//     if (cdata.purchaseStock) {
-// console.log("req.body",req.body);
-// const warehouseidcheck = await warehouseTable.findOne({
-//   wareHouseName: req.body.warehouse,
-// });
-// const productidcheck = await productTable.findOne({
-//   productname: req.body.product,
-// });
-// const warehouseid = await warehouseTable.findOne({
-//   wareHouseName: req.body.warehouse,
-// });
-// console.log("warehouseID", warehouseid);
-// const productid = await productTable.findOne({
-//   productname: req.body.product,
-// });
-// console.log("productID", productid);
-// const existingStock = await warehouseStock
-//   .findOne({ warehouse: warehouseid._id }, { product: productid._id })
-//   .select("productQuantity sellingPrice admin warehouse product")
-//   .populate("warehouse product");
-// console.log(
-//   "-----------------------existingstock---------------------------"
-// );
-// console.log(existingStock);
-// console.log(
-//   "-----------------------existingstock---------------------------"
-// );
-// console.log("productId",productid._id)
-// const supplierid = await supplierTable.findOne({
-//   supplierName: req.body.supplier,
-// });
-// const gstID = await gstTable.findOne({ gstName: req.body.hsn_Code });
-// console.log("supplierID",supplierid)
-
-// ------------------------------------------------//
-
-// if (existingStock) {
-//   console.log("---------------");
-//   existingStock.productQuantity += parseInt(req.body.productQuantity);
-//   await existingStock.save();
-//   console.log("-------------------stock Updated--------------------");
-// } else {
-//   const stock = {
-//     warehouse: warehouseid._id,
-//     product: productid._id,
-//     productQuantity: req.body.productQuantity,
-//     sellingPrice: req.body.sellingPrice,
-//   };
-//   let newstock = new warehouseStock(stock);
-//   newstock.admin = req.user._id;
-//   if (!newstock) {
-//     return rc.setResponse(res, {
-//       msg: "No Data to insert",
-//     });
-//   }
-//   const warehousedata = await warehouseStock.addRow(newstock);
-
-// ------------------------------------//
-
-// if (warehousedata) {
-//   rc.setResponse(res, {
-//     success: true,
-//     msg: "Data Inserted",
-//     data: warehousedata,
-//   });
-// }
-// console.log("------------------data inserted---------------");
-// }
-// const purchaseStockData = {
-//   warehouse: warehouseid._id,
-//   product: productid._id,
-//   supplier: supplierid._id,
-//   productQuantity: req.body.productQuantity,
-//   sellingPrice: req.body.sellingPrice,
-//   totalPrice: req.body.totalPrice,
-//   gst: gstID._id,
-//   invoiceNumber: req.body.invoiceNumber,
-//   GRN_Number: req.body.GRN_Number,
-//   date: req.body.date,
-//   admin: req.user._id,
-// };
-// let newRow = new purchaseStock(purchaseStockData);
-
-// ------------------------------------
-// newRow.admin = req.user._id;
-//--------------------------------------
-
-// if (!newRow) {
-//   return rc.setResponse(res, {
-//     msg: "No Data to insert",
-//   });
-// }
-// console.log(newRow);
-// const data = await purchaseStock.addRow(newRow);
-// console.log(data);
-// if (data) {
-//   return rc.setResponse(res, {
-//     success: true,
-//     msg: "Data Inserted",
-//     data: data,
-//   });
-// }
-// } else {
-//   return rc.setResponse(res, {
-//     msg: "no permission to purchase",
-//     error: { code: 403 },
-//   });
-// }
-//   })
-// );
-
 //------------------------------ new purchase request------------------------------//
-
 router.post(
   "/purchaseStock",
   auth,
@@ -582,7 +460,6 @@ router.post(
     }
   })
 );
-
 // ----------------------------*************************-----------------------------//
 
 // get purchase stock list
@@ -719,7 +596,7 @@ router.get(
         invoiceNumber: "",
         GRN_Number: "",
         gst: "",
-        date: ""
+        date: "",
       };
       const csvFields = [
         "warehouse",
@@ -747,259 +624,425 @@ router.get(
 );
 
 // bulk upload purchase stock
+// router.post(
+//   "/PurchaseStock/ImportCSV",
+//   auth,
+//   upload.single("file"),
+//   asyncHandler(async (req, res) => {
+//     const results = [];
+//     let rejectdata = [];
+//     let storeddata = [];
+//     const query = { role: req.user.role };
+
+//     function reject(x) {
+//       if (x) {
+//         rejectdata.push(x);
+//       }
+//       return rejectdata;
+//     }
+
+//     function succ(x) {
+//       if (x) {
+//         storeddata.push(x);
+//       }
+//       return storeddata;
+//     }
+//     var permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
+
+//     if (permissions.bulkproductupload) {
+//       var path = `public/${req.file.filename}`;
+//       fs.createReadStream(path)
+//         .pipe(csv({}))
+//         .on("data", async (data) => results.push(data))
+//         .on("end", async () => {
+//           console.log("result", results);
+//           for (i = 0; i < results.length; i++) {
+//             if (
+//               results[i].warehouse == "" ||
+//               results[i].warehouse == "NA" ||
+//               results[i].warehouse == "#N/A"
+//             ) {
+//               console.log(`warehouse is not available`);
+//               console.log(results[i]);
+//               results[i].error = "warehouse is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].product == "" ||
+//               results[i].product == "NA" ||
+//               results[i].product == "#N/A"
+//             ) {
+//               console.log(`product is not available`);
+//               console.log(results[i]);
+//               results[i].error = "product is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].supplier == "" ||
+//               results[i].supplier == "NA" ||
+//               results[i].supplier == "#N/A"
+//             ) {
+//               console.log(`supplier is not available`);
+//               console.log(results[i]);
+//               results[i].error = "supplier is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].productQuantity == "" ||
+//               results[i].productQuantity == "NA" ||
+//               results[i].productQuantity == "#N/A"
+//             ) {
+//               console.log(`productQuantity is not available`);
+//               console.log(results[i]);
+//               results[i].error = "productQuantity is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].sellingPrice == "" ||
+//               results[i].sellingPrice == "NA" ||
+//               results[i].sellingPrice == "#N/A"
+//             ) {
+//               console.log(`sellingPrice is not available`);
+//               console.log(results[i]);
+//               results[i].error = "sellingPrice is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].totalPrice == "" ||
+//               results[i].totalPrice == "NA" ||
+//               results[i].totalPrice == "#N/A"
+//             ) {
+//               console.log(`totalPrice is not available`);
+//               console.log(results[i]);
+//               results[i].error = "totalPrice is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].invoiceNumber == "" ||
+//               results[i].invoiceNumber == "NA" ||
+//               results[i].invoiceNumber == "#N/A"
+//             ) {
+//               console.log(`invoiceNumber is not available`);
+//               console.log(results[i]);
+//               results[i].error = "invoiceNumber is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].GRN_Number == "" ||
+//               results[i].GRN_Number == "NA" ||
+//               results[i].GRN_Number == "#N/A"
+//             ) {
+//               console.log(`GRN_Number is not available`);
+//               console.log(results[i]);
+//               results[i].error = "GRN_Number is missing";
+//               const r = reject(results[i]);
+//             } else if (
+//               results[i].gst == "" ||
+//               results[i].gst == "NA" ||
+//               results[i].gst == "#N/A"
+//             ) {
+//               console.log(`gst is not available`);
+//               console.log(results[i]);
+//               results[i].error = "gst is missing";
+//               const r = reject(results[i]);
+//             }else if (
+//               results[i].date == "" ||
+//               results[i].date == "NA" ||
+//               results[i].date == "#N/A"
+//             ) {
+//               console.log(`date is not available`);
+//               console.log(results[i]);
+//               results[i].error = "date is missing";
+//               const r = reject(results[i]);
+//             }
+//              else {
+//               try {
+//                 if (permissions.purchaseStock) {
+//                   const productdata = await productTable.findOne({
+//                     productname: results[i].product,
+//                   });
+//                   const supplierdata = await supplierTable.findOne({
+//                     supplierName: results[i].supplier,
+//                   });
+//                   const warehousedata = await warehouseTable.findOne({
+//                     wareHouseName: results[i].warehouse,
+//                   });
+//                   const gstID = await gstTable.findOne({
+//                     hsn_Code: results[i].gst,
+//                   });
+
+//                   const existingStock = await warehouseStock
+//                     .findOne(
+//                       { warehouse: warehousedata._id },
+//                       { product: productdata._id }
+//                     )
+//                     .populate("warehouse product");
+//                     // .select(
+//                     //   "productQuantity sellingPrice admin warehouse product"
+//                     // )
+//                   console.log(
+//                     "-----------------------existingstock---------------------------"
+//                   );
+//                   console.log('existingStock: ', existingStock);
+//                   console.log(
+//                     "-----------------------existingstock---------------------------"
+//                   );
+
+//                   if (existingStock) {
+//                     console.log("---------------");
+//                     existingStock.productQuantity += parseInt(
+//                       results[i].productQuantity
+//                     );
+//                     await existingStock.save();
+//                     console.log(
+//                       "-------------------stock Updated--------------------"
+//                     );
+//                   } else {
+//                     const stock = {
+//                       warehouse: warehousedata._id,
+//                       product: productdata._id,
+//                       productQuantity: results[i].productQuantity,
+//                       sellingPrice: results[i].sellingPrice,
+//                     };
+//                     let newstock = new warehouseStock(stock);
+//                     newstock.admin = req.user._id;
+//                     if (!newstock) {
+//                       return rc.setResponse(res, {
+//                         msg: "No Data to insert",
+//                       });
+//                     }
+//                     await newstock.save();
+//                     // const newwarehousedata = await warehouseStock.addRow(
+//                     //   newstock
+//                     // );
+//                     console.log(
+//                       "-----------------data inserted------------------"
+//                     );
+//                   }
+
+//                   let purchaseStockData = {
+//                     warehouse: warehousedata._id,
+//                     product: productdata._id,
+//                     supplier: supplierdata._id,
+//                     productQuantity: results[i].productQuantity,
+//                     sellingPrice: results[i].sellingPrice,
+//                     totalPrice: results[i].totalPrice,
+//                     invoiceNumber: results[i].invoiceNumber,
+//                     GRN_Number: results[i].GRN_Number,
+//                     gst: gstID._id,
+//                     admin: req.user._id,
+//                     date: results[i].date
+//                   };
+//                   let newRow = await purchaseStock(purchaseStockData);
+//                   newRow.admin = req.user._id
+//                   if (!newRow) {
+//                     return rc.setResponse(res, {
+//                       msg: "No Data to insert",
+//                     });
+//                   }
+//                   await newRow.save();
+//                   if (newRow) {
+//                     const r = succ(results[i]);
+//                   }
+//                 }
+//               } catch (e) {
+//                 console.log(e);
+//                 if (e.code == 11000) {
+//                   results[i].error = "Duplicate Entry";
+//                   const r = reject(results[i]);
+//                 } else {
+//                   results[i].error = e;
+//                   const r = reject(results[i]);
+//                 }
+//               }
+//             }
+//           }
+//           console.log("storeddata.length", storeddata.length);
+//           console.log("rejectdata", rejectdata);
+//           console.log("rejectdata.length", rejectdata.length);
+
+//           if (rejectdata.length > 0) {
+//             return rc.setResponse(res, {
+//               success: true,
+//               msg: "Data Fetched",
+//               data: {
+//                 dataupload: "partial upload",
+//                 reject_data: rejectdata,
+//                 stored_data: storeddata.length,
+//               },
+//             });
+//             // res.status(200).json({ "dataupload": "error", "reject_data": rejectdata, "stored_data": storeddata.length });
+//           } else {
+//             return rc.setResponse(res, {
+//               success: true,
+//               msg: "Data Fetched",
+//               data: { dataupload: "success", stored_data: storeddata.length },
+//             });
+//           }
+//         });
+//     } else {
+//       return rc.setResponse(res, { error: { code: 403 } });
+//     }
+//   })
+// );
+
 router.post(
   "/PurchaseStock/ImportCSV",
   auth,
   upload.single("file"),
   asyncHandler(async (req, res) => {
     const results = [];
-    var rejectdata = [];
-
-    function reject(x) {
-      if (x) {
-        rejectdata.push(x);
-      }
-      return rejectdata;
-    }
-
-    var storeddata = [];
-
-    function succ(x) {
-      if (x) {
-        storeddata.push(x);
-      }
-      return storeddata;
-    }
+    const rejectdata = [];
+    const storeddata = [];
     const query = { role: req.user.role };
-    var permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
 
-    if (permissions.bulkproductupload) {
-      var path = `public/${req.file.filename}`;
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (!permissions.bulkproductupload) {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+
+    try {
+      const path = `public/${req.file.filename}`;
       fs.createReadStream(path)
         .pipe(csv({}))
-        .on("data", async (data) => results.push(data))
-
+        .on("data", (data) => results.push(data))
         .on("end", async () => {
-          console.log("result", results);
-          for (i = 0; i < results.length; i++) {
-            if (
-              results[i].warehouse == "" ||
-              results[i].warehouse == "NA" ||
-              results[i].warehouse == "#N/A"
-            ) {
-              console.log(`warehouse is not available`);
-              console.log(results[i]);
-              results[i].error = "warehouse is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].product == "" ||
-              results[i].product == "NA" ||
-              results[i].product == "#N/A"
-            ) {
-              console.log(`product is not available`);
-              console.log(results[i]);
-              results[i].error = "product is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].supplier == "" ||
-              results[i].supplier == "NA" ||
-              results[i].supplier == "#N/A"
-            ) {
-              console.log(`supplier is not available`);
-              console.log(results[i]);
-              results[i].error = "supplier is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].productQuantity == "" ||
-              results[i].productQuantity == "NA" ||
-              results[i].productQuantity == "#N/A"
-            ) {
-              console.log(`productQuantity is not available`);
-              console.log(results[i]);
-              results[i].error = "productQuantity is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].sellingPrice == "" ||
-              results[i].sellingPrice == "NA" ||
-              results[i].sellingPrice == "#N/A"
-            ) {
-              console.log(`sellingPrice is not available`);
-              console.log(results[i]);
-              results[i].error = "sellingPrice is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].totalPrice == "" ||
-              results[i].totalPrice == "NA" ||
-              results[i].totalPrice == "#N/A"
-            ) {
-              console.log(`totalPrice is not available`);
-              console.log(results[i]);
-              results[i].error = "totalPrice is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].invoiceNumber == "" ||
-              results[i].invoiceNumber == "NA" ||
-              results[i].invoiceNumber == "#N/A"
-            ) {
-              console.log(`invoiceNumber is not available`);
-              console.log(results[i]);
-              results[i].error = "invoiceNumber is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].GRN_Number == "" ||
-              results[i].GRN_Number == "NA" ||
-              results[i].GRN_Number == "#N/A"
-            ) {
-              console.log(`GRN_Number is not available`);
-              console.log(results[i]);
-              results[i].error = "GRN_Number is missing";
-              const r = reject(results[i]);
-            } else if (
-              results[i].gst == "" ||
-              results[i].gst == "NA" ||
-              results[i].gst == "#N/A"
-            ) {
-              console.log(`gst is not available`);
-              console.log(results[i]);
-              results[i].error = "gst is missing";
-              const r = reject(results[i]);
-            }else if (
-              results[i].date == "" ||
-              results[i].date == "NA" ||
-              results[i].date == "#N/A"
-            ) {
-              console.log(`date is not available`);
-              console.log(results[i]);
-              results[i].error = "date is missing";
-              const r = reject(results[i]);
+          // console.log('results: ', results);
+          for (let i = 0; i < results.length; i++) {
+            const currentResult = results[i];
+            let errorFound = false;
+            // console.log("results[i] :", results);
+            if (!currentResult.warehouse) {
+              currentResult.error = "warehouse is missing";
+              errorFound = true;
+            } else if (!currentResult.product) {
+              currentResult.error = "product is missing";
+              errorFound = true;
+            } else if (!currentResult.supplier) {
+              currentResult.error = "supplier is missing";
+              errorFound = true;
+            } else if (!currentResult.productQuantity) {
+              currentResult.error = "productQuantity is missing";
+              errorFound = true;
+            } else if (!currentResult.sellingPrice) {
+              currentResult.error = "sellingPrice is missing";
+              errorFound = true;
+            } else if (!currentResult.totalPrice) {
+              currentResult.error = "totalPrice is missing";
+              errorFound = true;
+            } else if (!currentResult.invoiceNumber) {
+              currentResult.error = "invoiceNumber is missing";
+              errorFound = true;
+            } else if (!currentResult.GRN_Number) {
+              currentResult.error = "GRN_Number is missing";
+              errorFound = true;
+            } else if (!currentResult.gst) {
+              currentResult.error = "gst is missing";
+              errorFound = true;
+            } else if (!currentResult.date) {
+              currentResult.error = "date is missing";
+              errorFound = true;
             }
-             else {
+
+            if (errorFound) {
+              rejectdata.push(currentResult);
+              console.log('rejectdata: ', rejectdata);
+            } else {
               try {
-                if (permissions.purchaseStock) {
-                  const productdata = await productTable.findOne({
-                    productname: results[i].product,
-                  });
-                  const supplierdata = await supplierTable.findOne({
-                    supplierName: results[i].supplier,
-                  });
-                  const warehousedata = await warehouseTable.findOne({
-                    wareHouseName: results[i].warehouse,
-                  });
-                  const gstID = await gstTable.findOne({
-                    hsn_Code: results[i].gst,
-                  });
+                const productdata = await productTable.findOne({
+                  productname: currentResult.product,
+                });
+                const supplierdata = await supplierTable.findOne({
+                  supplierName: currentResult.supplier,
+                });
+                const warehousedata = await warehouseTable.findOne({
+                  wareHouseName: currentResult.warehouse,
+                });
+                const gstID = await gstTable.findOne({
+                  hsn_Code: currentResult.gst,
+                });
 
-                  const existingStock = await warehouseStock
-                    .findOne(
-                      { warehouse: warehousedata._id },
-                      { product: productdata._id }
-                    )
-                    .populate("warehouse product");
-                    // .select(
-                    //   "productQuantity sellingPrice admin warehouse product"
-                    // )
-                  console.log(
-                    "-----------------------existingstock---------------------------"
+                let existingStock = await warehouseStock.findOne({
+                  warehouse: warehousedata._id,
+                  product: productdata._id,
+                });
+                console.log("existingStock: ", existingStock);
+
+                if (existingStock) {
+                  existingStock.productQuantity += parseInt(
+                    currentResult.productQuantity
                   );
-                  console.log('existingStock: ', existingStock);
-                  console.log(
-                    "-----------------------existingstock---------------------------"
-                  );
-
-                  if (existingStock) {
-                    console.log("---------------");
-                    existingStock.productQuantity += parseInt(
-                      results[i].productQuantity
-                    );
-                    await existingStock.save();
-                    console.log(
-                      "-------------------stock Updated--------------------"
-                    );
-                  } else {
-                    const stock = {
-                      warehouse: warehousedata._id,
-                      product: productdata._id,
-                      productQuantity: results[i].productQuantity,
-                      sellingPrice: results[i].sellingPrice,
-                    };
-                    let newstock = new warehouseStock(stock);
-                    newstock.admin = req.user._id;
-                    if (!newstock) {
-                      return rc.setResponse(res, {
-                        msg: "No Data to insert",
-                      });
-                    }
-                    await newstock.save();
-                    // const newwarehousedata = await warehouseStock.addRow(
-                    //   newstock
-                    // );
-                    console.log(
-                      "-----------------data inserted------------------"
-                    );
-                  }
-
-                  let purchaseStockData = {
+                  await existingStock.save();
+                  console.log("----------existing stock updated---------");
+                } else {
+                  const stock = {
                     warehouse: warehousedata._id,
                     product: productdata._id,
-                    supplier: supplierdata._id,
-                    productQuantity: results[i].productQuantity,
-                    sellingPrice: results[i].sellingPrice,
-                    totalPrice: results[i].totalPrice,
-                    invoiceNumber: results[i].invoiceNumber,
-                    GRN_Number: results[i].GRN_Number,
-                    gst: gstID._id,
-                    admin: req.user._id,
-                    date: results[i].date
+                    productQuantity: currentResult.productQuantity,
+                    sellingPrice: currentResult.sellingPrice,
                   };
-                  let newRow = await purchaseStock(purchaseStockData);
-                  newRow.admin = req.user._id
-                  if (!newRow) {
-                    return rc.setResponse(res, {
-                      msg: "No Data to insert",
-                    });
-                  }
-                  await newRow.save();
-                  if (newRow) {
-                    const r = succ(results[i]);
-                  }
+                  let newstock = new warehouseStock(stock);
+                  newstock.admin = req.user._id;
+                  await newstock.save();
+                  console.log("---------new stock created ---------------");
                 }
+
+                let purchaseStockData = {
+                  warehouse: warehousedata._id,
+                  product: productdata._id,
+                  supplier: supplierdata._id,
+                  productQuantity: currentResult.productQuantity,
+                  sellingPrice: currentResult.sellingPrice,
+                  totalPrice: currentResult.totalPrice,
+                  invoiceNumber: currentResult.invoiceNumber,
+                  GRN_Number: currentResult.GRN_Number,
+                  gst: gstID._id,
+                  admin: req.user._id,
+                  date: currentResult.date,
+                };
+
+                let newRow = await purchaseStock(purchaseStockData);
+                newRow.admin = req.user._id;
+                await newRow.save();
+                console.log(
+                  "----------new purchase request created---------------"
+                );
+                storeddata.push(currentResult);
               } catch (e) {
-                console.log(e);
+                console.error(e);
                 if (e.code == 11000) {
-                  results[i].error = "Duplicate Entry";
-                  const r = reject(results[i]);
+                  currentResult.error = "Duplicate Entry";
                 } else {
-                  results[i].error = e;
-                  const r = reject(results[i]);
+                  currentResult.error = e.message || e.toString();
                 }
+                rejectdata.push(currentResult);
               }
             }
           }
-          console.log("storeddata.length", storeddata.length);
-          console.log("rejectdata", rejectdata);
-          console.log("rejectdata.length", rejectdata.length);
+
+          responseMsg="Data Fetched";
+          responseData={
+            dataupload: "success",
+            stored_data: storeddata.length,
+          }
+          // console.log('responseMsg: ', responseMsg);
+          // console.log('responseData: ', responseData);
 
           if (rejectdata.length > 0) {
-            return rc.setResponse(res, {
-              success: true,
-              msg: "Data Fetched",
-              data: {
-                dataupload: "partial upload",
-                reject_data: rejectdata,
-                stored_data: storeddata.length,
-              },
-            });
-            // res.status(200).json({ "dataupload": "error", "reject_data": rejectdata, "stored_data": storeddata.length });
-          } else {
-            return rc.setResponse(res, {
-              success: true,
-              msg: "Data Fetched",
-              data: { dataupload: "success", stored_data: storeddata.length },
-            });
+            responseMsg = "Data Fetched (Partial Upload)";
+            responseData = {
+              dataupload: "partial upload",
+              reject_data: rejectdata,
+              stored_data: storeddata.length,
+            };
           }
         });
-    } else {
-      return rc.setResponse(res, { error: { code: 403 } });
+        return rc.setResponse(res, {
+          success: true,
+          msg: responseMsg,
+          data: responseData,
+        });
+    } catch (error) {
+      console.error(error);
+      return rc.setResponse(res, {
+        success: false,
+        msg: "An error occurred while processing the request.",
+      });
     }
   })
 );
