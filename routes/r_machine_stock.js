@@ -304,23 +304,22 @@ router.post(
       const pararms = req.params;
       console.log('pararms: ', pararms);
       if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
-        let rdata = await refillerrequest.find({
+        let rdata = await refillerrequest.findOne({
           refillRequestNumber: req.params.refillRequestNumber,
         });
         console.log('rdata: ', rdata);
         // console.log('rdata: ', rdata);
-        
-        console.log(rdata[0].machineSlots);
 
-        let data;
+        console.log(rdata.machineSlots);
+
         let approveddata;
         let updatedClosingStock;
 
-        if (rdata[0].status === "Pending") {
-          for (let i = 0; i < rdata[0].machineSlots.length; i++) {
-            // console.log(rdata[0].machineSlots.length)
-            let rslots = rdata[0].machineSlots[i].sloteid;
-            // console.log(rdata[0].machineSlots[i].sloteid);
+        if (rdata.status === "Pending") {
+          for (let i = 0; i < rdata.machineSlots.length; i++) {
+            // console.log(rdata.machineSlots.length)
+            let rslots = rdata.machineSlots[i].sloteid;
+            // console.log(rdata.machineSlots[i].sloteid);
 
             const filter = { sloteid: rslots };
             const update = {
@@ -334,24 +333,24 @@ router.post(
             const options = {
               upsert: false,
             };
-            data = await machineslot.updateOne(filter, update, options);
+            let data = await machineslot.updateOne(filter, update, options);
             // console.log(data);
 
             updatedClosingStock =
-              rdata[0].machineSlots[i].currentStock +
-              rdata[0].machineSlots[i].refillQuantity;
+              rdata.machineSlots[i].currentStock +
+              rdata.machineSlots[i].refillQuantity;
             // console.log(updatedClosingStock);
-            // console.log(rdata[0].machineSlots[i].currentStock);
-            // console.log(rdata[0].machineSlots[i].refillQuantity);
+            // console.log(rdata.machineSlots[i].currentStock);
+            // console.log(rdata.machineSlots[i].refillQuantity);
             approveddata = await machineslot.updateOne(
-              { sloteid: rdata[0].machineSlots[i].sloteid },
+              { sloteid: rdata.machineSlots[i].sloteid },
               {
                 $set: {
                   closingStock: updatedClosingStock,
-                  currentStock: rdata[0].machineSlots[i].currentStock,
-                  refillQuantity: rdata[0].machineSlots[i].refillQuantity,
-                  saleQuantity: rdata[0].machineSlots[i].saleQuantity,
-                  // materialName: rdata[0].machineSlots[i].materialName,
+                  currentStock: rdata.machineSlots[i].currentStock,
+                  refillQuantity: rdata.machineSlots[i].refillQuantity,
+                  saleQuantity: rdata.machineSlots[i].saleQuantity,
+                  // materialName: rdata.machineSlots[i].materialName,
                 },
               },
               options
@@ -399,7 +398,7 @@ router.post(
               // }
             }
             // console.log(updaterdata.machineSlots);
-            
+
           }
         } else {
           return rc.setResponse(res, {
@@ -419,6 +418,9 @@ router.post(
     // }
   )
 );
+
+// ----------------------------------------------------------------------------------//
+
 
 // not using
 router.get(

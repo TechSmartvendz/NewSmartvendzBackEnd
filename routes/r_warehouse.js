@@ -364,6 +364,20 @@ router.post(
         });
         console.log("productidcheck: ", productidcheck);
 
+        if (!warehouseidcheck) {
+          return rc.setResponse(res, {
+            success: false,
+            msg: "Warehouse not found with the provided name.",
+          });
+        }
+        
+        if (!productidcheck) {
+          return rc.setResponse(res, {
+            success: false,
+            msg: "Product not found with the provided name.",
+          });
+        }
+
         let existingStock = await warehouseStock
           .findOne({
             warehouse: warehouseidcheck._id,
@@ -408,7 +422,7 @@ router.post(
           supplierName: req.body.supplier,
         });
 
-        const gstID = await gstTable.findOne({ hsn_Code: req.body.gst });
+        const gstID = await gstTable.findOne({ hsn_Code: req.body.gstName });
 
         const purchaseStockData = {
           warehouse: warehouseid,
@@ -431,13 +445,14 @@ router.post(
           });
         }
         console.log(newRow);
-        const data = await purchaseStock.addRow(newRow);
-        console.log(data);
-        if (data) {
+        await newRow.save();
+        // const data = await purchaseStock.addRow(newRow);
+        console.log('purchaseStockData: ', newRow);
+        if (newRow) {
           return rc.setResponse(res, {
             success: true,
             msg: "Data Inserted",
-            data: data,
+            data: newRow,
           });
         } else {
           return rc.setResponse(res, {
