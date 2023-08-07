@@ -370,7 +370,7 @@ router.post(
             msg: "Warehouse not found with the provided name.",
           });
         }
-        
+
         if (!productidcheck) {
           return rc.setResponse(res, {
             success: false,
@@ -447,7 +447,7 @@ router.post(
         console.log(newRow);
         await newRow.save();
         // const data = await purchaseStock.addRow(newRow);
-        console.log('purchaseStockData: ', newRow);
+        console.log("purchaseStockData: ", newRow);
         if (newRow) {
           return rc.setResponse(res, {
             success: true,
@@ -956,7 +956,7 @@ router.post(
 
             if (errorFound) {
               rejectdata.push(currentResult);
-              console.log('rejectdata: ', rejectdata);
+              console.log("rejectdata: ", rejectdata);
             } else {
               try {
                 const productdata = await productTable.findOne({
@@ -1030,11 +1030,11 @@ router.post(
             }
           }
 
-          responseMsg="Data Fetched";
-          responseData={
+          responseMsg = "Data Fetched";
+          responseData = {
             dataupload: "success",
             stored_data: storeddata.length,
-          }
+          };
           // console.log('responseMsg: ', responseMsg);
           // console.log('responseData: ', responseData);
 
@@ -1047,11 +1047,11 @@ router.post(
             };
           }
         });
-        return rc.setResponse(res, {
-          success: true,
-          msg: responseMsg,
-          data: responseData,
-        });
+      return rc.setResponse(res, {
+        success: true,
+        msg: responseMsg,
+        data: responseData,
+      });
     } catch (error) {
       console.error(error);
       return rc.setResponse(res, {
@@ -1117,6 +1117,28 @@ router.get(
         msg: "no permission to see purchase list",
         error: { code: 403 },
       });
+    }
+  })
+);
+
+router.get(
+  "/DatalistByWarehouse",
+  // auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (cdata.listStock) {
+      const data = await warehouseStock.find({ warehouse: req.query.id });
+      console.log(data.length);
+      if (data) {
+        return rc.setResponse(res, {
+          success: true,
+          msg: "data fetched",
+          data: data,
+        });
+      }
     }
   })
 );
