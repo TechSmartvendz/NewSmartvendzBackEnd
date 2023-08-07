@@ -22,8 +22,9 @@ const { upload } = require("../middleware/fileUpload");
 router.get(
   "/getallmachines",
   asyncHandler(async (req, res) => {
-    const allmachine = await machines.find().select("machineid companyid");
-    // console.log(allmachine);
+    const allmachine = await machines.find();
+    // .select("machineid companyid");
+    console.log(allmachine);
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
@@ -193,39 +194,69 @@ router.get(
 router.get(
   "/allrefillingrequest",
   asyncHandler(async (req, res) => {
-    const allRefillerRequest = await refillerrequest
-      .find()
-      .select(
-        "id refillerId warehouse refillRequestNumber machineId status isDeleted createdAt updatedAt"
-      )
-      .populate("refillerId", ["_id", "first_name", "user_id"])
-      .populate("machineId")
-      .populate("warehouse");
-    console.log(allRefillerRequest);
-    let data = [];
-    for (let i = 0; i < allRefillerRequest.length; i++) {
-      data.push({
-        _id: allRefillerRequest[i]._id,
-        refillerId: allRefillerRequest[i].refillerId._id,
-        refillerName: allRefillerRequest[i].refillerId.first_name,
-        refillerUserId: allRefillerRequest[i].refillerId.user_id,
-        refillingRequestNumber: allRefillerRequest[i].refillRequestNumber,
-        warehouseid: allRefillerRequest[i].warehouse._id,
-        warehouseName: allRefillerRequest[i].warehouse.wareHouseName,
-        machine: allRefillerRequest[i].machineId.machineid,
-        machineId: allRefillerRequest[i].machineId._id,
-        machineName: allRefillerRequest[i].machineId.machinename,
-        status: allRefillerRequest[i].status,
-        date: allRefillerRequest[i].createdAt,
+    const { status, refillerName, date, wareHouseName, refillRequestNumber, machineName } = req.query;
+
+    const query = {};
+    if (status) {
+      query.status = status;
+    }
+    if (refillerName) {
+      query['refillerId.first_name'] = refillerName;
+    }
+    if (date) {
+      query.createdAt = new Date(date);
+    }
+    if (wareHouseName) {
+      query['warehouse.wareHouseName'] = wareHouseName;
+    }
+    if (refillRequestNumber) {
+      query.refillRequestNumber = refillRequestNumber;
+    }
+    if(machineName){
+      query['machineId.machinename'] = machineName; 
+    }
+
+    try {
+      const allRefillerRequest = await refillerrequest
+        .find(query)
+        .select(
+          "id refillerId warehouse refillRequestNumber machineId status createdAt"
+        )
+        .populate("refillerId", "_id first_name user_id")
+        .populate("machineId", "machineid _id machinename")
+        .populate("warehouse", "_id wareHouseName")
+        .lean();
+
+      const data = allRefillerRequest.map((request) => ({
+        _id: request._id,
+        refillerId: request.refillerId._id,
+        refillerName: request.refillerId.first_name,
+        refillerUserId: request.refillerId.user_id,
+        refillingRequestNumber: request.refillRequestNumber,
+        warehouseid: request.warehouse._id,
+        warehouseName: request.warehouse.wareHouseName,
+        machine: request.machineId.machineid,
+        machineId: request.machineId._id,
+        machineName: request.machineId.machinename,
+        status: request.status,
+        date: request.createdAt,
+      }));
+
+      return rc.setResponse(res, {
+        success: true,
+        msg: "Data fetched",
+        data: data,
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      return rc.setResponse(res, {
+        success: false,
+        msg: "An error occurred while fetching data.",
       });
     }
-    return rc.setResponse(res, {
-      success: true,
-      msg: "Data fetched",
-      data: data,
-    });
   })
 );
+
 
 //------------------refilling request by id--------------------------------//
 
@@ -302,12 +333,12 @@ router.post(
   asyncHandler(
     async (req, res) => {
       const pararms = req.params;
-      console.log('pararms: ', pararms);
+      console.log("pararms: ", pararms);
       if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
         let rdata = await refillerrequest.findOne({
           refillRequestNumber: req.params.refillRequestNumber,
         });
-        console.log('rdata: ', rdata);
+        console.log("rdata: ", rdata);
         // console.log('rdata: ', rdata);
 
         console.log(rdata.machineSlots);
@@ -379,7 +410,7 @@ router.post(
                     },
                   }
                 );
-                console.log("updatewarehousestock",updatewarehousestock);
+                console.log("updatewarehousestock", updatewarehousestock);
               }
 
               // if (updaterdata.returnItems.length != 0) {
@@ -398,7 +429,6 @@ router.post(
               // }
             }
             // console.log(updaterdata.machineSlots);
-
           }
         } else {
           return rc.setResponse(res, {
@@ -420,7 +450,6 @@ router.post(
 );
 
 // ----------------------------------------------------------------------------------//
-
 
 // not using
 router.get(
