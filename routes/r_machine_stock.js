@@ -46,7 +46,7 @@ router.get(
     let ss = [];
     for (let i = 0; i < data.length; i++) {
       productdata = await product.findOne({ _id: data[i].product });
-      // console.log(productdata);
+      // console.log('productdata: ', productdata);
       pdata.push(productdata);
 
       sendData = {
@@ -75,6 +75,7 @@ router.get(
       admin: data[0].admin,
       machineSlot: ss,
     };
+    // console.log('machinedata: ', machinedata);
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
@@ -194,38 +195,45 @@ router.get(
 router.get(
   "/allrefillingrequest",
   asyncHandler(async (req, res) => {
-    const { status, refillerName, date, wareHouseName, refillRequestNumber, machineName } = req.query;
+    const {
+      status,
+      refillerName,
+      date,
+      warehouse,
+      refillRequestNumber,
+      machineName,
+    } = req.query;
 
     const query = {};
     if (status) {
       query.status = status;
     }
     if (refillerName) {
-      query['refillerId.first_name'] = refillerName;
+      query["refillerId.first_name"] = refillerName;
     }
     if (date) {
-      query.createdAt = new Date(date);
+      query.createdAt = date;
     }
-    if (wareHouseName) {
-      query['warehouse.wareHouseName'] = wareHouseName;
+    if (warehouse) {
+      query["warehouse.wareHouseName"] = warehouse;
     }
     if (refillRequestNumber) {
       query.refillRequestNumber = refillRequestNumber;
     }
-    if(machineName){
-      query['machineId.machinename'] = machineName; 
+    if (machineName) {
+      query["machineId.machinename"] = machineName;
     }
-
     try {
       const allRefillerRequest = await refillerrequest
-        .find(query)
-        .select(
-          "id refillerId warehouse refillRequestNumber machineId status createdAt"
+      .find(query)
+      .select(
+        "id refillerId warehouse refillRequestNumber machineId status createdAt"
         )
         .populate("refillerId", "_id first_name user_id")
         .populate("machineId", "machineid _id machinename")
         .populate("warehouse", "_id wareHouseName")
         .lean();
+        // console.log('allRefillerRequest: ', allRefillerRequest);
 
       const data = allRefillerRequest.map((request) => ({
         _id: request._id,
@@ -256,7 +264,6 @@ router.get(
     }
   })
 );
-
 
 //------------------refilling request by id--------------------------------//
 
@@ -333,15 +340,15 @@ router.post(
   asyncHandler(
     async (req, res) => {
       const pararms = req.params;
-      console.log("pararms: ", pararms);
+      // console.log("pararms: ", pararms);
       if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
         let rdata = await refillerrequest.findOne({
           refillRequestNumber: req.params.refillRequestNumber,
         });
-        console.log("rdata: ", rdata);
+        // console.log("rdata: ", rdata);
         // console.log('rdata: ', rdata);
 
-        console.log(rdata.machineSlots);
+        // console.log(rdata.machineSlots);
 
         let approveddata;
         let updatedClosingStock;
@@ -359,6 +366,7 @@ router.post(
                 currentStock: 1,
                 refillQuantity: 1,
                 saleQuantity: 1,
+                product: 1,
               },
             };
             const options = {
@@ -381,6 +389,7 @@ router.post(
                   currentStock: rdata.machineSlots[i].currentStock,
                   refillQuantity: rdata.machineSlots[i].refillQuantity,
                   saleQuantity: rdata.machineSlots[i].saleQuantity,
+                  product: rdata.machineSlots[i].productid
                   // materialName: rdata.machineSlots[i].materialName,
                 },
               },
@@ -393,40 +402,45 @@ router.post(
               { refillRequestNumber: req.params.refillRequestNumber },
               { status: "Approved" }
             );
-            console.log("updaterdata", updaterdata);
-            for (let i = 0; i < updaterdata.machineSlots.length; i++) {
-              if (updaterdata.status === "Approved") {
-                // const checkwarehouse = await warehouseStock.findOne({warehouse: updaterdata.warehouse, product: updaterdata.machineSlots[i].productid});
-                // console.log("checkwarehouse", checkwarehouse);
+            // console.log("updaterdata", updaterdata);
+            const checkrefillerRequest = await refillerrequest.findOne({
+              refillRequestNumber: req.params.refillRequestNumber,
+            });
+            // console.log('checkrefillerRequest: ', checkrefillerRequest);
+            if (checkrefillerRequest.status === "Approved") {
+              for (let i = 0;i < checkrefillerRequest.machineSlots.length;i++) {
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
-                    warehouse: updaterdata.warehouse,
-                    product: updaterdata.machineSlots[i].productid,
+                    warehouse: checkrefillerRequest.warehouse,
+                    product: checkrefillerRequest.machineSlots[i].productid,
                   },
                   {
                     $inc: {
                       productQuantity:
-                        -updaterdata.machineSlots[i].refillQuantity,
+                        -checkrefillerRequest.machineSlots[i].refillQuantity,
                     },
                   }
                 );
-                console.log("updatewarehousestock", updatewarehousestock);
+                // console.log("updatewarehousestock", updatewarehousestock);
               }
-
-              // if (updaterdata.returnItems.length != 0) {
-              //   const updatewarehousestockagain = await warehouseStock.updateOne(
-              //     {
-              //       warehouse: updaterdata.warehouse,
-              //       product: updaterdata.returnItems[i].productid,
-              //     },
-              //     {
-              //       $inc: {
-              //         productQuantity: +updaterdata.returnItems[i].currentStock,
-              //       },
-              //     }
-              //   );
-              //   console.log("updatewarehousestockagain",updatewarehousestockagain);
-              // }
+              if (checkrefillerRequest.returnItems.length != 0) {
+                for (let i = 0; i < checkrefillerRequest.returnItems.length;i++) {
+                  const updatewarehousestockagain =
+                    await warehouseStock.updateOne(
+                      {
+                        warehouse: checkrefillerRequest.warehouse,
+                        product: checkrefillerRequest.returnItems[i].productid,
+                      },
+                      {
+                        $inc: {
+                          productQuantity:
+                            +checkrefillerRequest.returnItems[i].currentStock,
+                        },
+                      }
+                    );
+                  // console.log("updatewarehousestockagain",updatewarehousestockagain);
+                }
+              }
             }
             // console.log(updaterdata.machineSlots);
           }

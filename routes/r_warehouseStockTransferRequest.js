@@ -531,12 +531,13 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     try {
+      // console.log('req.body: ', req.body);
       // console.log("req.body",req.body.machineSlot);
       // console.log("returnitems:",req.body.returnItems);
 
       const { machineId, machineSlot } = req.body;
       const refillerid = req.user.id;
-      console.log(refillerid);
+      // console.log(refillerid);
       // Create the refill request in the database
       const warehouseid = await machinedata.findOne({ _id: machineId });
       // console.log("deletedSlots", req.body.deletedSlots);
