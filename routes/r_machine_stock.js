@@ -225,15 +225,15 @@ router.get(
     }
     try {
       const allRefillerRequest = await refillerrequest
-      .find(query)
-      .select(
-        "id refillerId warehouse refillRequestNumber machineId status createdAt"
+        .find(query)
+        .select(
+          "id refillerId warehouse refillRequestNumber machineId status createdAt"
         )
         .populate("refillerId", "_id first_name user_id")
         .populate("machineId", "machineid _id machinename")
         .populate("warehouse", "_id wareHouseName")
         .lean();
-        // console.log('allRefillerRequest: ', allRefillerRequest);
+      // console.log('allRefillerRequest: ', allRefillerRequest);
 
       const data = allRefillerRequest.map((request) => ({
         _id: request._id,
@@ -389,7 +389,7 @@ router.post(
                   currentStock: rdata.machineSlots[i].currentStock,
                   refillQuantity: rdata.machineSlots[i].refillQuantity,
                   saleQuantity: rdata.machineSlots[i].saleQuantity,
-                  product: rdata.machineSlots[i].productid
+                  product: rdata.machineSlots[i].productid,
                   // materialName: rdata.machineSlots[i].materialName,
                 },
               },
@@ -408,7 +408,11 @@ router.post(
             });
             // console.log('checkrefillerRequest: ', checkrefillerRequest);
             if (checkrefillerRequest.status === "Approved") {
-              for (let i = 0;i < checkrefillerRequest.machineSlots.length;i++) {
+              for (
+                let i = 0;
+                i < checkrefillerRequest.machineSlots.length;
+                i++
+              ) {
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
                     warehouse: checkrefillerRequest.warehouse,
@@ -424,7 +428,11 @@ router.post(
                 // console.log("updatewarehousestock", updatewarehousestock);
               }
               if (checkrefillerRequest.returnItems.length != 0) {
-                for (let i = 0; i < checkrefillerRequest.returnItems.length;i++) {
+                for (
+                  let i = 0;
+                  i < checkrefillerRequest.returnItems.length;
+                  i++
+                ) {
                   const updatewarehousestockagain =
                     await warehouseStock.updateOne(
                       {
