@@ -444,7 +444,7 @@ module.exports.getDataforTablePagination = async (
               maxquantity: 1,
               created_by: "$userinfooutput.first_name",
               product: "$output.productname",
-              "created at": {
+              "date": {
                 $dateToString: {
                   format: "%Y-%m-%d %H:%M:%S",
                   date: "$created_at",

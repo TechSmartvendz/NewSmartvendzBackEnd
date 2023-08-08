@@ -347,7 +347,7 @@ router.post(
     const query = {
       role: req.user.role,
     };
-    console.log("req.body: ", req.body);
+    // console.log("req.body: ", req.body);
     const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
       query
     );
@@ -357,12 +357,12 @@ router.post(
         const warehouseidcheck = await warehouseTable.findOne({
           wareHouseName: req.body.warehouse,
         });
-        console.log("warehouseidcheck: ", warehouseidcheck);
+        // console.log("warehouseidcheck: ", warehouseidcheck);
 
         const productidcheck = await productTable.findOne({
           productname: req.body.product,
         });
-        console.log("productidcheck: ", productidcheck);
+        // console.log("productidcheck: ", productidcheck);
 
         if (!warehouseidcheck) {
           return rc.setResponse(res, {
@@ -388,7 +388,7 @@ router.post(
         // .select("productQuantity sellingPrice admin warehouse product")
 
         console.log("------------existingstock--------------");
-        console.log("existingStock: ", existingStock);
+        // console.log("existingStock: ", existingStock);
         console.log("------------existingstock--------------");
 
         if (existingStock) {
@@ -447,7 +447,7 @@ router.post(
         console.log(newRow);
         await newRow.save();
         // const data = await purchaseStock.addRow(newRow);
-        console.log("purchaseStockData: ", newRow);
+        // console.log("purchaseStockData: ", newRow);
         if (newRow) {
           return rc.setResponse(res, {
             success: true,
@@ -1121,26 +1121,39 @@ router.get(
   })
 );
 
-router.get(
-  "/DatalistByWarehouse",
-  // auth,
-  asyncHandler(async (req, res) => {
-    const query = {
-      role: req.user.role,
-    };
-    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if (cdata.listStock) {
-      const data = await warehouseStock.find({ warehouse: req.query.id });
-      console.log(data.length);
-      if (data) {
-        return rc.setResponse(res, {
-          success: true,
-          msg: "data fetched",
-          data: data,
-        });
-      }
+// get warehouse product by warehouseid
+router.get("/wareHouseProduct/Datalist", auth, asyncHandler(async (req, res) => {
+  const query = { role: req.user.role };
+  try {
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if (!permissions.listStock) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "Permission denied",
+      });
     }
-  })
-);
+    const data = await warehouseStock
+      .find({ warehouse: req.query.id })
+      .populate("product", "_id productname productid")
+      .select("_id product");
+    const productarray = data.map((item) => ({
+      _id: item.product._id,
+      productname: item.product.productname,
+      productid: item.product.productid,
+    }));
+    return rc.setResponse(res, {
+      success: true,
+      msg: "Data fetched",
+      data: productarray,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return rc.setResponse(res, {
+      success: false,
+      msg: "An error occurred while fetching data.",
+    });
+  }
+}));
+
 
 module.exports = router;

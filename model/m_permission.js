@@ -101,22 +101,6 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  refillermanager: {
-    type: Boolean,
-    default: false,
-  },
-  managedc: {
-    type: Boolean,
-    default: false,
-  },
-  managedcaccept: {
-    type: Boolean,
-    default: false,
-  },
-  managecompletedrefillrequest: {
-    type: Boolean,
-    default: false,
-  },
   products: {
     type: Boolean,
     default: false,
@@ -137,19 +121,19 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  refillermanage: {
+  refillermanager: {
     type: Boolean,
     default: false,
   },
-  refillerrequest: {
+  managerefillerrequest: {
     type: Boolean,
     default: false,
   },
-  refillerdc: {
+  refillerrefillingrequest: {
     type: Boolean,
     default: false,
   },
-  refillerdcaccept: {
+  approverefillrequest: {
     type: Boolean,
     default: false,
   },

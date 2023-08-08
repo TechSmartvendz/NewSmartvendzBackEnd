@@ -278,13 +278,12 @@ router.post(
                   });
                 }
 
-                
                 let newRow = {
                   fromWarehouse: fromwarehouse._id,
                   toWarehouse: towarehouse._id,
                   productName: product._id,
                   productQuantity: results[i].quantity,
-                  status: "Pending"
+                  status: "Pending",
                 };
                 const newData = await WarehouseStockTransferRequest(newRow);
                 await newData.save();
