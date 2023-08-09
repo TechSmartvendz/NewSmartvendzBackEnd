@@ -68,6 +68,7 @@ router.get(
       };
       ss.push(sendData);
     }
+    ss.sort((a, b) => a.slot - b.slot);
     // console.log("ss", ss);
     const machinedata = {
       machineId: data[0].machineid,
@@ -346,10 +347,7 @@ router.post(
           refillRequestNumber: req.params.refillRequestNumber,
         });
         // console.log("rdata: ", rdata);
-        // console.log('rdata: ', rdata);
-
         // console.log(rdata.machineSlots);
-
         let approveddata;
         let updatedClosingStock;
 
@@ -374,6 +372,7 @@ router.post(
             };
             let data = await machineslot.updateOne(filter, update, options);
             // console.log(data);
+            console.log("------------data unset--------------");
 
             updatedClosingStock =
               rdata.machineSlots[i].currentStock +
@@ -395,6 +394,7 @@ router.post(
               },
               options
             );
+            console.log("------------new data set------------")
           }
           // console.log(approveddata);
           if (approveddata) {
@@ -402,17 +402,14 @@ router.post(
               { refillRequestNumber: req.params.refillRequestNumber },
               { status: "Approved" }
             );
+            console.log("-----------status approved now--------------")
             // console.log("updaterdata", updaterdata);
             const checkrefillerRequest = await refillerrequest.findOne({
               refillRequestNumber: req.params.refillRequestNumber,
             });
             // console.log('checkrefillerRequest: ', checkrefillerRequest);
             if (checkrefillerRequest.status === "Approved") {
-              for (
-                let i = 0;
-                i < checkrefillerRequest.machineSlots.length;
-                i++
-              ) {
+              for ( let i = 0; i < checkrefillerRequest.machineSlots.length; i++ ) {
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
                     warehouse: checkrefillerRequest.warehouse,
@@ -819,5 +816,10 @@ router.get(
     }
   })
 );
+
+router.delete("/deleteSlots", asyncHandler(async(req,res)=> {
+  const data = await machineslot.deleteMany({machineName: req.body.machineName});
+  return res.send("SLots deleted")
+}))
 
 module.exports = router;
