@@ -530,6 +530,9 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     try {
+      if(req.user.role != "Refiller"){
+        return rc.setResponse(res, { error: { code: 403 } });
+      }
       // console.log('req.body: ', req.body);
       // console.log("req.body",req.body.machineSlot);
       // console.log("returnitems:",req.body.returnItems);

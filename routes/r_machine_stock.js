@@ -17,14 +17,23 @@ const csv = require("csv-parser");
 const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
 
-//------------------------removed auth for now---------------------------------//
-
 router.get(
-  "/getallmachines",
+  "/getallmachines",auth,
   asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if(!permissions.listmachine){
+      return rc.setResponse(res, {
+        success: false,
+        msg: "No permisson to find data",
+        data: {},
+      });
+    };
     const allmachine = await machines.find();
     // .select("machineid companyid");
-    console.log(allmachine);
+    // console.log(allmachine);
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
@@ -34,10 +43,20 @@ router.get(
 );
 
 //------------------------get all slot details by machine Name------------------//
-//------------------------removed auth for now ---------------------------------//
 router.get(
-  "/getallmachineslots",
+  "/getallmachineslots",auth,
   asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    if(!permissions.listMachineSlot){
+      return rc.setResponse(res, {
+        success: false,
+        msg: "No permisson to find data",
+        data: {},
+      });
+    };
     const data = await machineslot.find({ machineid: req.query.machineid });
     // console.log("data", data);
     let productdata;
@@ -194,8 +213,19 @@ router.get(
 //-------------------all refilling request---------------------------------//
 
 router.get(
-  "/allrefillingrequest",
+  "/allrefillingrequest",auth,
   asyncHandler(async (req, res) => {
+    const checkpermisson = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(checkpermisson);
+    if(!permissions.listRefillingRequest){
+      return rc.setResponse(res, {
+        success: false,
+        msg: "No permisson to find data",
+        data: {},
+      });
+    };
     const {
       status,
       refillerName,
@@ -269,8 +299,19 @@ router.get(
 //------------------refilling request by id--------------------------------//
 
 router.get(
-  "/refillRequest/:id",
+  "/refillRequest/:id",auth,
   asyncHandler(async (req, res) => {
+    const checkpermisson = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(checkpermisson);
+    if(!permissions.listRefillingRequest){
+      return rc.setResponse(res, {
+        success: false,
+        msg: "No permisson to find data",
+        data: {},
+      });
+    };
     const refillerRequestById = await refillerrequest
       .findOne({ _id: req.params.id })
       // .select(
