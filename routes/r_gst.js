@@ -11,6 +11,10 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
+      let gsttable = await m_gst.findOne({hsn_Code: req.body.hsn_Code});
+      if(gsttable){
+        return res.send("Already created")
+      }
       let newRow = new m_gst(req.body);
       newRow.admin = req.user.id;
       if (!newRow) {
