@@ -9,10 +9,12 @@ const TableSchema = mongoose.Schema({
     require: true,
     unique: true,
   },
+
   usermanage: {
     type: Boolean,
     default: false,
   },
+
   addnewuser: {
     type: Boolean,
     default: false,
@@ -29,6 +31,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   companymanage: {
     type: Boolean,
     default: false,
@@ -49,6 +52,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   managemachine: {
     type: Boolean,
     default: false,
@@ -65,6 +69,12 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  listMachineSlot: {
+    type: Boolean,
+    default: false,
+  },
+
   employeemanage: {
     type: Boolean,
     default: false,
@@ -81,6 +91,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   countrymanage: {
     type: Boolean,
     default: false,
@@ -101,6 +112,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   products: {
     type: Boolean,
     default: false,
@@ -121,6 +133,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   refillermanager: {
     type: Boolean,
     default: false,
@@ -137,10 +150,16 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  listRefillingRequest: {
+    type: Boolean,
+    default: false,
+  },
+
   transactions: {
     type: Boolean,
     default: false,
   },
+
   warehouseManage: {
     type: Boolean,
     default: false,
@@ -153,18 +172,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  stockManage: {
-    type: Boolean,
-    default: false,
-  },
-  addStock: {
-    type: Boolean,
-    default: false,
-  },
-  listStock: {
-    type: Boolean,
-    default: false,
-  },
+
   supplierManage: {
     type: Boolean,
     default: false,
@@ -177,6 +185,19 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  stockManage: {
+    type: Boolean,
+    default: false,
+  },
+  addStock: {
+    type: Boolean,
+    default: false,
+  },
+  listStock: {
+    type: Boolean,
+    default: false,
+  },
   purchaseStock: {
     type: Boolean,
     default: false,
@@ -185,6 +206,7 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   transferStock: {
     type: Boolean,
     default: false,
@@ -193,10 +215,16 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  acceptStockTransferRequest: {
+    type: Boolean,
+    default: false,
+  },
+
   GST: {
     type: Boolean,
     default: false,
   },
+
   created_at: {
     type: Date,
     default: Date.now,
