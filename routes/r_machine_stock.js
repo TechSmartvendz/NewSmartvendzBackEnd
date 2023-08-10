@@ -79,9 +79,9 @@ router.get(
         productname: pdata[i].productname,
         sloteid: data[i].sloteid,
         closingStock: data[i].closingStock,
-        currentStock: 0,
-        refillQuantity: 0,
-        saleQuantity: 0,
+        currentStock: null,
+        refillQuantity: null,
+        saleQuantity: null,
         delete_status: data[i].delete_status,
         created_at: data[i].created_at,
       };
