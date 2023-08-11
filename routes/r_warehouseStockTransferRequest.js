@@ -530,43 +530,44 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     try {
-      if(req.user.role != "Refiller" || req.user.role != "SuperAdmin"){
+      if (req.user.role == "Refiller" || req.user.role == "SuperAdmin") {
+        // console.log('req.body: ', req.body);
+        // console.log("req.body",req.body.machineSlot);
+        // console.log("returnitems:",req.body.returnItems);
+
+        const { machineId, machineSlot } = req.body;
+        const refillerid = req.user.id;
+        // console.log(refillerid);
+        // Create the refill request in the database
+        const warehouseid = await machinedata.findOne({ _id: machineId });
+        // console.log("deletedSlots", req.body.deletedSlots);
+        // console.log("warehouseid", warehouseid);
+        let updatedSlots;
+        if (!req.body.returnItems) {
+          updatedSlots = null;
+        } else {
+          updatedSlots = req.body.returnItems;
+        }
+        let randomNumber = Math.floor(Math.random() * 100000000000000);
+        let data = new refillRequest({
+          refillerId: refillerid,
+          machineId: machineId,
+          warehouse: warehouseid.warehouse,
+          machineSlots: req.body.machineSlot,
+          returnItems: updatedSlots,
+          refillRequestNumber: randomNumber,
+          status: "Pending",
+        });
+        // console.log("data", data);
+        await data.save();
+        rc.setResponse(res, {
+          success: true,
+          message: "Refill request sent.",
+          data: data,
+        });
+      } else {
         return rc.setResponse(res, { error: { code: 403 } });
       }
-      // console.log('req.body: ', req.body);
-      // console.log("req.body",req.body.machineSlot);
-      // console.log("returnitems:",req.body.returnItems);
-
-      const { machineId, machineSlot } = req.body;
-      const refillerid = req.user.id;
-      // console.log(refillerid);
-      // Create the refill request in the database
-      const warehouseid = await machinedata.findOne({ _id: machineId });
-      // console.log("deletedSlots", req.body.deletedSlots);
-      // console.log("warehouseid", warehouseid);
-      let updatedSlots;
-      if (!req.body.returnItems) {
-        updatedSlots = null;
-      } else {
-        updatedSlots = req.body.returnItems;
-      }
-      let randomNumber = Math.floor(Math.random() * 100000000000000);
-      let data = new refillRequest({
-        refillerId: refillerid,
-        machineId: machineId,
-        warehouse: warehouseid.warehouse,
-        machineSlots: req.body.machineSlot,
-        returnItems: updatedSlots,
-        refillRequestNumber: randomNumber,
-        status: "Pending",
-      });
-      // console.log("data", data);
-      await data.save();
-      rc.setResponse(res, {
-        success: true,
-        message: "Refill request sent.",
-        data: data,
-      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Failed to send refill request." });
