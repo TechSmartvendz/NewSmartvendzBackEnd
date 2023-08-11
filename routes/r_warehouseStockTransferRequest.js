@@ -530,7 +530,7 @@ router.post(
   auth,
   asyncHandler(async (req, res) => {
     try {
-      if(req.user.role != "Refiller"){
+      if(req.user.role != "Refiller" || req.user.role != "SuperAdmin"){
         return rc.setResponse(res, { error: { code: 403 } });
       }
       // console.log('req.body: ', req.body);
