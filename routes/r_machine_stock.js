@@ -18,19 +18,22 @@ const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
 
 router.get(
-  "/getallmachines",auth,
+  "/getallmachines",
+  auth,
   asyncHandler(async (req, res) => {
     const query = {
       role: req.user.role,
     };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if(!permissions.listmachine){
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (!permissions.listmachine) {
       return rc.setResponse(res, {
         success: false,
         msg: "No permisson to find data",
         data: {},
       });
-    };
+    }
     const allmachine = await machines.find();
     // .select("machineid companyid");
     // console.log(allmachine);
@@ -44,19 +47,22 @@ router.get(
 
 //------------------------get all slot details by machine Name------------------//
 router.get(
-  "/getallmachineslots",auth,
+  "/getallmachineslots",
+  auth,
   asyncHandler(async (req, res) => {
     const query = {
       role: req.user.role,
     };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if(!permissions.listMachineSlot){
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (!permissions.listMachineSlot) {
       return rc.setResponse(res, {
         success: false,
         msg: "No permisson to find data",
         data: {},
       });
-    };
+    }
     const data = await machineslot.find({ machineid: req.query.machineid });
     // console.log("data", data);
     let productdata;
@@ -213,19 +219,22 @@ router.get(
 //-------------------all refilling request---------------------------------//
 
 router.get(
-  "/allrefillingrequest",auth,
+  "/allrefillingrequest",
+  auth,
   asyncHandler(async (req, res) => {
     const checkpermisson = {
       role: req.user.role,
     };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(checkpermisson);
-    if(!permissions.listRefillingRequest){
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      checkpermisson
+    );
+    if (!permissions.listRefillingRequest) {
       return rc.setResponse(res, {
         success: false,
         msg: "No permisson to find data",
         data: {},
       });
-    };
+    }
     const {
       status,
       refillerName,
@@ -299,19 +308,22 @@ router.get(
 //------------------refilling request by id--------------------------------//
 
 router.get(
-  "/refillRequest/:id",auth,
+  "/refillRequest/:id",
+  auth,
   asyncHandler(async (req, res) => {
     const checkpermisson = {
       role: req.user.role,
     };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(checkpermisson);
-    if(!permissions.listRefillingRequest){
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      checkpermisson
+    );
+    if (!permissions.listRefillingRequest) {
       return rc.setResponse(res, {
         success: false,
         msg: "No permisson to find data",
         data: {},
       });
-    };
+    }
     const refillerRequestById = await refillerrequest
       .findOne({ _id: req.params.id })
       // .select(
@@ -339,42 +351,6 @@ router.get(
   })
 );
 
-//-------------------- testing refilling request approval --------------------------//
-
-router.post("/testingpulldata", async (req, res) => {
-  const pararms = req.body;
-  const refillrequestid = req.query.id;
-  const data = await refillerrequest
-    .find({ _id: refillrequestid })
-    .select(
-      "id refillerID refillRequestNumber machineId machineSlot status isDeleted slotid"
-    );
-  // const update = await refillerrequest.findByIdAndUpdate({_id: refillrequestid}, {status: true})
-  let dataslots = data[0].machineSlot;
-  res.send(dataslots);
-  if (data[0].status === false) {
-    const approveedit = await machineslot.find({
-      machineName: data[0].machineId,
-    });
-    // console.log(approveedit)
-    console.log(approveedit);
-
-    // const approveddata = await machineslot.findOneAndUpdate()
-    // const approveddata = await machineslot.updateOne(
-    //       { _id: req.params.id },
-    //       {
-    //         $set: {
-    //           closingStock: pararms.closingStock,
-    //           currentStock: pararms.currentStock,
-    //           refillQuantity: pararms.refillQuantity,
-    //           saleQuantity: pararms.saleQuantity,
-    //         },
-    //       }
-    //     );
-  }
-  // return res.send(data);
-});
-
 //------------------for approveadmin request-------------------------//
 router.post(
   "/approverefillrequest/:refillRequestNumber",
@@ -384,9 +360,8 @@ router.post(
       const pararms = req.params;
       // console.log("pararms: ", pararms);
       if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
-        let rdata = await refillerrequest.findOne({
-          refillRequestNumber: req.params.refillRequestNumber,
-        });
+        const refillRequestNumber = req.params.refillRequestNumber;
+        let rdata = await refillerrequest.findOne({ refillRequestNumber });
         // console.log("rdata: ", rdata);
         // console.log(rdata.machineSlots);
         let approveddata;
@@ -430,27 +405,27 @@ router.post(
                   refillQuantity: rdata.machineSlots[i].refillQuantity,
                   saleQuantity: rdata.machineSlots[i].saleQuantity,
                   product: rdata.machineSlots[i].productid,
-                  // materialName: rdata.machineSlots[i].materialName,
                 },
               },
               options
             );
-            console.log("------------new data set------------")
+            console.log("------------new data set------------");
           }
           // console.log(approveddata);
           if (approveddata) {
             const updaterdata = await refillerrequest.findOneAndUpdate(
-              { refillRequestNumber: req.params.refillRequestNumber },
+              { refillRequestNumber },
               { status: "Approved" }
             );
-            console.log("-----------status approved now--------------")
+            console.log("-----------status approved now--------------");
             // console.log("updaterdata", updaterdata);
             const checkrefillerRequest = await refillerrequest.findOne({
-              refillRequestNumber: req.params.refillRequestNumber,
+              refillRequestNumber,
             });
             // console.log('checkrefillerRequest: ', checkrefillerRequest);
             if (checkrefillerRequest.status === "Approved") {
-              for ( let i = 0; i < checkrefillerRequest.machineSlots.length; i++ ) {
+              for (
+                let i = 0; i < checkrefillerRequest.machineSlots.length;i++) {
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
                     warehouse: checkrefillerRequest.warehouse,
@@ -467,10 +442,7 @@ router.post(
               }
               if (checkrefillerRequest.returnItems.length != 0) {
                 for (
-                  let i = 0;
-                  i < checkrefillerRequest.returnItems.length;
-                  i++
-                ) {
+                  let i = 0;i < checkrefillerRequest.returnItems.length;i++) {
                   const updatewarehousestockagain =
                     await warehouseStock.updateOne(
                       {
@@ -858,9 +830,14 @@ router.get(
   })
 );
 
-router.delete("/deleteSlots", asyncHandler(async(req,res)=> {
-  const data = await machineslot.deleteMany({machineName: req.body.machineName});
-  return res.send("SLots deleted")
-}))
+router.delete(
+  "/deleteSlots",
+  asyncHandler(async (req, res) => {
+    const data = await machineslot.deleteMany({
+      machineName: req.body.machineName,
+    });
+    return res.send("SLots deleted");
+  })
+);
 
 module.exports = router;

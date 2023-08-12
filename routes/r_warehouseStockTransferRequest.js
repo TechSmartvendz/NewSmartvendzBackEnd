@@ -557,6 +557,7 @@ router.post(
           returnItems: updatedSlots,
           refillRequestNumber: randomNumber,
           status: "Pending",
+          date: req.body.date
         });
         // console.log("data", data);
         await data.save();
@@ -571,6 +572,35 @@ router.post(
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error: "Failed to send refill request." });
+    }
+  })
+);
+
+router.delete(
+  "/refillrequest/:id",
+  auth,
+  asyncHandler(async (req, res) => {
+    if (req.user.role == "SuperAdmin" || req.user.role == "Admin") {
+      const deleteRequestId = req.params.id;
+      if (!deleteRequestId) {
+        return rc.setResponse(res, {
+          msg: "Missing refillRequestNumber parameter",
+        });
+      }
+      const deleteRequest = await refillRequest.findOneAndDelete({
+        refillRequestNumber: deleteRequestId,
+      });
+      if (!deleteRequest) {
+        return rc.setResponse(res, {
+          msg: "Request not found",
+        });
+      }
+      return rc.setResponse(res, {
+        success: true,
+        msg: "Request deleted",
+      });
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
     }
   })
 );

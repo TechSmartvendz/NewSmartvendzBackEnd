@@ -43,6 +43,7 @@ const refillrequest = new Schema(
       },
     ],
     // oldmachineData: [{ type: String, default: null }],
+    date: { type: Date, default: null },
     status: { type: String, enum: ["Pending", "Approved", "Rejected"] },
     isDeleted: { type: Boolean, default: false },
   },
