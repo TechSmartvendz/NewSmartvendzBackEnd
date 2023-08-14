@@ -21,6 +21,7 @@ router.get(
   "/getallmachines",
   auth,
   asyncHandler(async (req, res) => {
+    // console.log(req.user._id)
     const query = {
       role: req.user.role,
     };
@@ -34,7 +35,7 @@ router.get(
         data: {},
       });
     }
-    const allmachine = await machines.find();
+    const allmachine = await machines.find({refiller: req.user.user_id});
     // .select("machineid companyid");
     // console.log(allmachine);
     return rc.setResponse(res, {

@@ -79,7 +79,8 @@ router.post('/', auth, asyncHandler(
 );
 router.get('/',auth, asyncHandler(
     async (req, res, next) => {
-       const admin=req.user.id
+        // console.log(req.user)
+       const admin=req.user._id
        
         const data = await TableModel.getAllDataForTable(admin);
         // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
@@ -96,24 +97,57 @@ router.get('/',auth, asyncHandler(
         }
     }
 ));
-router.get('/DataList',auth, asyncHandler(
-    async (req, res, next) => {
-       const admin=req.user.id
-        const data = await TableModel.getDataList(admin);
-        // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
-        if (data) {
-            return rc.setResponse(res, {
-                success: true,
-                msg: 'Data Fetched',
-                data: data
-            });
-        } else {
-            return rc.setResponse(res, {
-                msg: "Data not Found"
-            })
-        }
+// router.get('/DataList',auth, asyncHandler(
+//     async (req, res, next) => {
+//        const admin=req.user.id
+//         const data = await TableModel.getDataList(admin);
+//         // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
+//         if (data) {
+//             return rc.setResponse(res, {
+//                 success: true,
+//                 msg: 'Data Fetched',
+//                 data: data
+//             });
+//         } else {
+//             return rc.setResponse(res, {
+//                 msg: "Data not Found"
+//             })
+//         }
+//     }
+// ));
+
+router.get('/DataList', auth, asyncHandler(async(req,res)=> {
+    let role = req.query.role;
+    console.log(req.query)
+    if(role == "Refiller" ){
+        role = "Refiller";
     }
-));
+    if(role == "SuperAdmin"){
+        role = "SuperAdmin";
+    }
+    if(role == "Admin"){
+        role = "Admin";
+    }
+    let filter = {};
+    if(!req.query.role){
+        filter = {};
+    }
+    else{
+        filter = {role:role}
+    }
+    const data = await TableModel.find(filter).select("id user_id last_name first_name");
+    if (data) {
+        return rc.setResponse(res, {
+            success: true,
+            msg: 'Data Fetched',
+            data: data
+        });
+    } else {
+        return rc.setResponse(res, {
+            msg: "Data not Found"
+        })
+    }
+}));
 router.get('/:id', auth, asyncHandler( 
     async (req, res, next) => {
         const admin=req.user.id

@@ -22,6 +22,10 @@ const TableSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  refiller: {
+    type: String,
+    require: true,
+  },
   building: {
     type: String,
     default: "N/A",
