@@ -168,38 +168,38 @@ module.exports.getAllData = async (admin) => {
 module.exports.getAllDataForTable  = async (admin) => {
    // const data = await Table.find({admin:admin},{user_id:1,display_name:1,role:1,admin:1});
     const data= Table.aggregate([
-        {
-          $match: {
-            admin:admin
-          }
-        },
+        // {
+        //   $match: {
+        //     admin:admin
+        //   }
+        // },
         {
             "$project": {
                 _id:1,
                 user_id:1,
                 display_name:1,
                 role:1,
-              "admin": {
-                "$toObjectId": "$admin"
-              }
+            //   "admin": {
+            //     "$toObjectId": "$admin"
+            //   }
             }
           },
-          {
-            "$lookup": {
-              "from": "user_infos",
-              "localField": "admin",
-              "foreignField": "_id",
-              "as": "output"
-            }
-          },
-          { $unwind: "$output" },
+        //   {
+        //     "$lookup": {
+        //       "from": "user_infos",
+        //       "localField": "admin",
+        //       "foreignField": "_id",
+        //       "as": "output"
+        //     }
+        //   },
+        //   { $unwind: "$output" },
         {
           $project: {
             _id:1,
             "user id":"$user_id",
             "display name":"$display_name",
             role:1,
-            admin:"$output.user_id"
+            // admin:"$output.user_id"
         }
         }
       ])
@@ -207,7 +207,7 @@ module.exports.getAllDataForTable  = async (admin) => {
     return data; 
 };
 module.exports.getDataList = async (admin) => {
-    const data = await Table.find({admin:admin},{id:1,user_id:1,user_last_name:1,user_first_name:1});
+    const data = await Table.find({admin:admin},{id:1,user_id:1,last_name:1,first_name:1});
     return data; 
 };
 module.exports.updateById = async (id,newdata,admin) => {
