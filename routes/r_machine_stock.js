@@ -35,7 +35,14 @@ router.get(
         data: {},
       });
     }
-    const allmachine = await machines.find({refiller: req.user.user_id});
+    let filter = {};
+    if(req.user.role == "SuperAdmin" || req.user.role == "Admin"){
+      filter = {}
+    }
+    if(req.user.role == "Refiller"){
+      filter = {refiller: req.user.user_id}
+    }
+    const allmachine = await machines.find(filter);
     // .select("machineid companyid");
     // console.log(allmachine);
     return rc.setResponse(res, {
