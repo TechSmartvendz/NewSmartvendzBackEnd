@@ -28,6 +28,7 @@ router.post(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
+      // console.log(req.body);
       const warehousedata = await warehouse.findOne({wareHouseName: req.body.warehouse});
       newRow = new TableModel(req.body);
       newRow.admin = req.user._id;
@@ -148,7 +149,7 @@ router.put(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewcompany) {
-      const query = { _id: req.params.id };
+      const query = { machineid: req.params.id };
       const data = await TableModel.updateByQuery(query, newData);
       if (data) {
         return rc.setResponse(res, {
@@ -237,7 +238,6 @@ router.post(
         newRow.admin = req.user.id;
         newRow.machineName = cdata.machineid;
         newRow.product = productdata._id;
-        newRow.closingStock = req.body.maxquantity;
         newRow = new TableModelMachineSlot(newRow);
         console.log(newRow);
 

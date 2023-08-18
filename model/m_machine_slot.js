@@ -441,6 +441,7 @@ module.exports.getDataforTablePagination = async (
               _id: 1,
               slot: 1,
               machineid: "$machineoutput.machineid",
+              refiller: "$machineoutput.refiller",
               maxquantity: 1,
               created_by: "$userinfooutput.first_name",
               product: "$output.productname",

@@ -123,6 +123,7 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
         admin: {
           $toObjectId: "$admin",
         },
+        refiller: 1,
       },
     },
     {
@@ -146,6 +147,7 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
         producttype: 1,
         totalslots: 1,
         admin: 1,
+        refiller:1
       },
     },
   ]);
@@ -182,11 +184,12 @@ module.exports.getDataforTable = async () => {
           $toObjectId: "$warehouse",
         },
         // admin: {
-        //   "$toObjectId": "$country"
-        // },
-        admin: {
-          $toObjectId: "$admin",
-        },
+          //   "$toObjectId": "$country"
+          // },
+          admin: {
+            $toObjectId: "$admin",
+          },
+          refiller: 1,
         created_at: 1,
       },
     },
@@ -227,6 +230,7 @@ module.exports.getDataforTable = async () => {
         location: "$location",
         warehouse: "$warehouseoutput.wareHouseName",
         created_by: "$output.user_id",
+        refiller: 1,
         created_at: {
           $dateToString: {
             format: "%Y-%m-%d %H:%M:%S",

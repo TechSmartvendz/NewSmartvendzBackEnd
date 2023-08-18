@@ -334,12 +334,8 @@ router.get(
     }
     const refillerRequestById = await refillerrequest
       .findOne({ _id: req.params.id })
-      // .select(
-      //   "id refillerId warehouse refillRequestNumber machineId status isDeleted createdAt updatedAt"
-      // )
-      // .populate("refillerId", ["_id", "first_name", "user_id"])
-      // .populate("machineId")
-      // .populate("warehouse")
+      .populate("refillerId", ["_id", "first_name", "user_id"])
+      .populate("machineId", ["machineid", "machinename", "location"])
       .populate("machineSlots.productid", [
         "_id",
         "productname",
