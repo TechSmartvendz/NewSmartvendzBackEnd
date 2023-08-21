@@ -119,7 +119,7 @@ router.get(
       // const data = await TableModel.getDataByQueryFilterDataOne(query);
       const machineid = req.params.id
       const data = await TableModel.getDataByQueryFilterDataOneAggregate(machineid);
-      console.log("data",data)
+      // console.log("data",data)
       if (data) {
         return rc.setResponse(res, {
           success: true,

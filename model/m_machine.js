@@ -46,6 +46,18 @@ const TableSchema = mongoose.Schema({
   remark: {
     type: String,
   },
+  cash: {
+    type: Number,
+    default: 0
+  },
+  totalSalesCount: {
+    type: Number,
+    default: 0
+  },
+  salesValue: {
+    type: Number,
+    default: 0
+  },
   created_at: {
     type: Date,
     default: Date.now,
@@ -136,6 +148,24 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
     },
     { $unwind: "$warehouseoutput" },
     {
+      $lookup: {
+        from: "user_infos",
+        localField: "refiller",
+        foreignField: "user_id",
+        as: "refillerOutput",
+      },
+    },
+    { $unwind: "$refillerOutput" },
+    {
+      $lookup: {
+        from: "user_infos",
+        localField: "admin",
+        foreignField: "_id",
+        as: "adminOutput",
+      },
+    },
+    { $unwind: "$adminOutput" },
+    {
       $project: {
         _id: 1,
         machineid: 1,
@@ -146,8 +176,8 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
         location: 1,
         producttype: 1,
         totalslots: 1,
-        admin: 1,
-        refiller:1
+        admin: "$adminOutput.first_name",
+        refiller:"$refillerOutput.first_name"
       },
     },
   ]);
@@ -158,7 +188,7 @@ module.exports.getDataCountByQuery = async (query) => {
   return data;
 };
 module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, machineid: 1 });
+  const data = await Table.find({}, { id: 1, machineid: 1, machinename:1 });
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
