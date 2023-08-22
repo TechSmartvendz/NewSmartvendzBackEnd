@@ -54,149 +54,74 @@ router.get(
 );
 
 //------------------------get all slot details by machine Name------------------//
-// router.get(
-//   "/getallmachineslots",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const query = {
-//       role: req.user.role,
-//     };
-//     const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-//       query
-//     );
-//     if (!permissions.listMachineSlot) {
-//       return rc.setResponse(res, {
-//         success: false,
-//         msg: "No permisson to find data",
-//         data: {},
-//       });
-//     }
-//     const data = await machineslot.find({ machineid: req.query.machineid });
-//     // const machine = await machines.findOne({_id: req.query.machineid}).select("cash totalSalesCount salesValue");
-//     // console.log('machine: ', machine);
-//     // console.log("data", data);
-//     let productdata;
-//     let pdata = [];
-//     let sendData;
-//     let ss = [];
-//     for (let i = 0; i < data.length; i++) {
-//       productdata = await product.findOne({ _id: data[i].product });
-//       // console.log('productdata: ', productdata);
-//       pdata.push(productdata);
-
-//       sendData = {
-//         _id: data[i]._id,
-//         machineid: data[i].machineid,
-//         machineName: data[i].machineName,
-//         slot: data[i].slot,
-//         maxquantity: data[i].maxquantity,
-//         active_status: data[i].active_status,
-//         productid: pdata[i]._id,
-//         productname: pdata[i].productname,
-//         sloteid: data[i].sloteid,
-//         closingStock: data[i].closingStock,
-//         currentStock: null,
-//         refillQuantity: null,
-//         saleQuantity: null,
-//         delete_status: data[i].delete_status,
-//         created_at: data[i].created_at,
-//       };
-//       ss.push(sendData);
-//     }
-//     ss.sort((a, b) => a.slot - b.slot);
-//     // console.log("ss", ss);
-//     const machinedata = {
-//       machineId: data[0].machineid,
-//       machineName: data[0].machineName,
-//       admin: data[0].admin,
-//       machineSlot: ss,
-//       // cash: machine.cash,
-//       // totalSalesCount: machine.totalSalesCount,
-//       // salesValue: machine.salesValue
-//     };
-//     // console.log('machinedata: ', machinedata);
-//     return rc.setResponse(res, {
-//       success: true,
-//       msg: "Data fetched",
-//       data: machinedata,
-//     });
-//   })
-// );
-
 router.get(
   "/getallmachineslots",
   auth,
   asyncHandler(async (req, res) => {
-    try {
-      const query = {
-        role: req.user.role,
-      };
-      const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (!permissions.listMachineSlot) {
-        return rc.setResponse(res, {
-          success: false,
-          msg: "No permission to find data",
-          data: {},
-        });
-      }
-      const machinePromise = machines.findOne({ _id: req.query.machineid }).select("cash totalSalesCount salesValue").exec();
-      const dataPromise = await machineslot.find({ machineid: req.query.machineid }).populate('product');
-
-      const [machine, data] = await Promise.all([machinePromise, dataPromise]);
-
-      const productDataMap = {};
-      const productIds = [];
-      for (const entry of data) {
-        productIds.push(entry.product);
-        productDataMap[entry.product.toString()] = entry.product;
-      }
-
-      const products = await Promise.all(productIds.map(productId => product.findById(productId)));
-
-      const machineSlotData = data.map(entry => ({
-        _id: entry._id,
-        machineid: entry.machineid,
-        machineName: entry.machineName,
-        slot: entry.slot,
-        maxquantity: entry.maxquantity,
-        active_status: entry.active_status,
-        productid: entry.product.toString(),
-        productname: productDataMap[entry.product.toString()].productname,
-        sloteid: entry.sloteid,
-        closingStock: entry.closingStock,
-        currentStock: null,
-        refillQuantity: null,
-        saleQuantity: null,
-        delete_status: entry.delete_status,
-        created_at: entry.created_at,
-      }));
-      machineSlotData.sort((a, b) => a.slot - b.slot);
-      const machineInfo = {
-        machineId: data[0].machineid,
-        machineName: data[0].machineName,
-        admin: data[0].admin,
-        cash: machine.cash,
-        totalSalesCount: machine.totalSalesCount,
-        salesValue: machine.salesValue,
-        machineSlot: machineSlotData,
-      };
-
-      return rc.setResponse(res, {
-        success: true,
-        msg: "Data fetched",
-        data: machineInfo,
-      });
-    } catch (error) {
-      console.error("Error:", error);
+    const query = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (!permissions.listMachineSlot) {
       return rc.setResponse(res, {
         success: false,
-        msg: "An error occurred",
+        msg: "No permisson to find data",
         data: {},
       });
     }
+    const data = await machineslot.find({ machineid: req.query.machineid });
+    // const machine = await machines.findOne({_id: req.query.machineid}).select("cash totalSalesCount salesValue");
+    // console.log('machine: ', machine);
+    // console.log("data", data);
+    let productdata;
+    let pdata = [];
+    let sendData;
+    let ss = [];
+    for (let i = 0; i < data.length; i++) {
+      productdata = await product.findOne({ _id: data[i].product });
+      // console.log('productdata: ', productdata);
+      pdata.push(productdata);
+
+      sendData = {
+        _id: data[i]._id,
+        machineid: data[i].machineid,
+        machineName: data[i].machineName,
+        slot: data[i].slot,
+        maxquantity: data[i].maxquantity,
+        active_status: data[i].active_status,
+        productid: pdata[i]._id,
+        productname: pdata[i].productname,
+        sloteid: data[i].sloteid,
+        closingStock: data[i].closingStock,
+        currentStock: null,
+        refillQuantity: null,
+        saleQuantity: null,
+        delete_status: data[i].delete_status,
+        created_at: data[i].created_at,
+      };
+      ss.push(sendData);
+    }
+    ss.sort((a, b) => a.slot - b.slot);
+    // console.log("ss", ss);
+    const machinedata = {
+      machineId: data[0].machineid,
+      machineName: data[0].machineName,
+      admin: data[0].admin,
+      machineSlot: ss,
+      // cash: machine.cash,
+      // totalSalesCount: machine.totalSalesCount,
+      // totalSalesValue: machine.salesValue
+    };
+    // console.log('machinedata: ', machinedata);
+    return rc.setResponse(res, {
+      success: true,
+      msg: "Data fetched",
+      data: machinedata,
+    });
   })
 );
-
 
 // ---------------- check with aggregation ---------------------------//
 // router.get(
