@@ -72,7 +72,7 @@ router.get(
       });
     }
     const data = await machineslot.find({ machineid: req.query.machineid });
-    // const machine = await machines.findOne({_id: req.query.machineid}).select("cash totalSalesCount salesValue");
+    const machine = await machines.findOne({_id: req.query.machineid}).select("cash totalSalesCount salesValue");
     // console.log('machine: ', machine);
     // console.log("data", data);
     let productdata;
@@ -110,9 +110,9 @@ router.get(
       machineName: data[0].machineName,
       admin: data[0].admin,
       machineSlot: ss,
-      // cash: machine.cash,
-      // totalSalesCount: machine.totalSalesCount,
-      // totalSalesValue: machine.salesValue
+      cash: machine.cash,
+      totalSalesCount: machine.totalSalesCount,
+      totalSalesValue: machine.totalSalesValue
     };
     // console.log('machinedata: ', machinedata);
     return rc.setResponse(res, {
@@ -526,7 +526,7 @@ router.post(
             });
             // console.log('checkrefillerRequest: ', checkrefillerRequest);
             if (checkrefillerRequest.status === "Approved") {
-              // let countSales = await machinedata.findOneAndUpdate({_id: machineId}, {cash: checkrefillerRequest.cash, totalSalesCount:checkrefillerRequest.totalSalesCount, salesValue:checkrefillerRequest.salesValue})
+              let countSales = await machines.findOneAndUpdate({_id: checkrefillerRequest.machineId}, {cash: checkrefillerRequest.sales.cash, totalSalesCount:checkrefillerRequest.sales.totalSalesCount, totalSalesValue:checkrefillerRequest.sales.totalSalesValue})
               for (
                 let i = 0; i < checkrefillerRequest.machineSlots.length;i++) {
                 const updatewarehousestock = await warehouseStock.updateOne(
