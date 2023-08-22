@@ -54,7 +54,7 @@ const TableSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
-  salesValue: {
+  totalSalesValue: {
     type: Number,
     default: 0
   },

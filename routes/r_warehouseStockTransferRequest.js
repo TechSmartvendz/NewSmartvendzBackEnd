@@ -535,7 +535,7 @@ router.post(
         // console.log("req.body",req.body.machineSlot);
         // console.log("returnitems:",req.body.returnItems);
 
-        const { machineId,machineSlot,date, cash, totalSalesCount, salesValue } = req.body;
+        const { machineId,machineSlot,date, sales } = req.body;
         const refillerid = req.user.id;
         // console.log(refillerid);
         // Create the refill request in the database
@@ -558,9 +558,7 @@ router.post(
           refillRequestNumber: randomNumber,
           status: "Pending",
           date: date,
-          // cash: cash,
-          // totalSalesCount:totalSalesCount,
-          // salesValue:salesValue
+          sales: sales
         });
         // console.log("data", data);
         await data.save();
