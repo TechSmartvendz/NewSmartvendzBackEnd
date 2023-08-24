@@ -135,6 +135,7 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
         admin: {
           $toObjectId: "$admin",
         },
+        refillerName: 1,
         refiller: 1,
       },
     },
@@ -177,7 +178,8 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
         producttype: 1,
         totalslots: 1,
         admin: "$adminOutput.first_name",
-        refiller:"$refillerOutput.first_name"
+        refillerName:"$refillerOutput.first_name",
+        refiller: 1
       },
     },
   ]);
