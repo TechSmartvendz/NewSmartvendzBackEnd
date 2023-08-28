@@ -10,7 +10,7 @@ const warehouseTable = require("../model/m_warehouse");
 const productTable = require("../model/m_product");
 const WarehouseStockTransferRequest = require("../model/m_warehouseToWarehouse_Stock_TransferRequest");
 const machine = require("../model/m_machine_slot");
-const warehouseToMachineStockTransferRequest = require("../model/m_warehouseToMachine_Stock_TransferRequest");
+// const warehouseToMachineStockTransferRequest = require("../model/m_warehouseToMachine_Stock_TransferRequest");
 const refillRequest = require("../model/m_refiller_request");
 const machinedata = require("../model/m_machine");
 
@@ -18,12 +18,14 @@ const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
 const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
+const iconv = require("iconv-lite");
 
-// sendStockTransferRequest to warehouse
+// sendStockTransferRequest to warehouse  ------------not using this now--------------
 router.post(
-  "/sendStockTransferRequest",
+  "/sendStockTransferRequestsss",
   auth,
   asyncHandler(async (req, res) => {
+    // console.log(req.body);
     const { fromWarehouse, toWarehouse, productName, quantity } = req.body;
     try {
       // Perform any necessary validation or business logic here before creating the request
@@ -39,6 +41,10 @@ router.post(
       const warehouse = await warehouseStock.findOne({
         warehouse: fromwarehouse._id,
       });
+      // console.log('fromwarehouse: ', fromwarehouse);
+      // console.log('towarehouse: ', towarehouse);
+      // console.log('warehouse: ', warehouse);
+      // console.log('product: ', product);
       // console.log(warehouse.productQuantity);
       if (warehouse.productQuantity < quantity) {
         return rc.setResponse(res, {
@@ -47,10 +53,19 @@ router.post(
         });
       }
       const transferRequest = new WarehouseStockTransferRequest({
-        fromWarehouse: fromwarehouse._id,
-        toWarehouse: towarehouse._id,
-        productName: product._id,
-        productQuantity: quantity,
+        // fromWarehouse: fromwarehouse._id,
+        // toWarehouse: towarehouse._id,
+        // productName: product._id,
+        // productQuantity: quantity,
+        // status: "Pending",
+        transferRequests: [
+          {
+            fromWarehouse: fromwarehouse._id,
+            toWarehouse: towarehouse._id,
+            productName: product._id,
+            productQuantity: quantity,
+          },
+        ],
         status: "Pending",
       });
       await transferRequest.save();
@@ -60,9 +75,60 @@ router.post(
         // data: d
       });
     } catch (error) {
+      console.log(error);
       return rc.setResponse(res, {
         error,
         msg: "Failed to send stock transfer request.",
+      });
+    }
+  })
+);
+// new request of sendStockTransferRequest to warehouse
+router.post(
+  "/sendStockTransferRequest",
+  auth,
+  asyncHandler(async (req, res) => {
+    const transferRequests = req.body; // Array of transfer request objects
+    const combinedData = []; // Array to store combined data for a single transfer request
+
+    try {
+      for (let i = 0; i < transferRequests.length; i++) {
+        const { fromWarehouse, toWarehouse, productName, quantity } =
+          transferRequests[i];
+        const fromwarehouse = await warehouseTable.findOne({
+          wareHouseName: fromWarehouse,
+        });
+        const towarehouse = await warehouseTable.findOne({
+          wareHouseName: toWarehouse,
+        });
+        const product = await productTable.findOne({
+          productname: productName,
+        });
+        combinedData.push({
+          fromWarehouse: fromwarehouse._id,
+          toWarehouse: towarehouse._id,
+          productName: product._id,
+          productQuantity: quantity,
+          status: "Pending",
+        });
+      }
+
+      // Create a single transfer request with all combined data
+      const transferRequest = new WarehouseStockTransferRequest({
+        transferRequests: combinedData,
+        status: "Pending",
+      });
+      await transferRequest.save();
+
+      return rc.setResponse(res, {
+        success: true,
+        msg: "Combined stock transfer request sent.",
+      });
+    } catch (error) {
+      console.log(error);
+      return rc.setResponse(res, {
+        error,
+        msg: "Failed to send combined stock transfer request.",
       });
     }
   })
@@ -108,82 +174,7 @@ router.get(
 );
 
 //-------------------- Bulk upload warehouse to warehouse stock transfer -----------------------------------//
-
-// router.post(
-//   "/sendStockTransferRequest/BulkUpload",
-//   auth,
-//   upload.single("file"),
-//   asyncHandler(async (req, res) => {
-//     if (!req.files || !req.files.csvFile) {
-//       return rc.setResponse(res, {
-//         success: false,
-//         msg: "CSV file not provided.",
-//       });
-//     }
-
-//     const file = req.files.csvFile;
-
-//     try {
-//       const bulkUploadResults = [];
-
-//       fs.createReadStream(file.tempFilePath)
-//         .pipe(csv())
-//         .on("data", async (row) => {
-//           const { fromWarehouse, toWarehouse, productName, quantity } = row;
-
-//           // Perform any necessary validation or business logic here before creating the request
-
-//           // Create a new stock transfer request in the database
-//           const fromwarehouse = await warehouseTable.findOne({
-//             wareHouseName: fromWarehouse,
-//           });
-//           const towarehouse = await warehouseTable.findOne({
-//             wareHouseName: toWarehouse,
-//           });
-//           const product = await productTable.findOne({ productname: productName });
-//           const warehouse = await warehouseStock.findOne({
-//             warehouse: fromwarehouse._id,
-//           });
-
-//           if (warehouse.productQuantity < quantity) {
-//             bulkUploadResults.push({
-//               success: false,
-//               msg: "Warehouse has less quantity for the transfer request.",
-//             });
-//           } else {
-//             // Create a new stock transfer request in the database
-//             const transferRequest = new WarehouseStockTransferRequest({
-//               fromWarehouse: fromwarehouse._id,
-//               toWarehouse: towarehouse._id,
-//               productName: product._id,
-//               productQuantity: quantity,
-//               status: "Pending",
-//             });
-
-//             await transferRequest.save();
-//             bulkUploadResults.push({
-//               success: true,
-//               msg: "Stock transfer request sent.",
-//             });
-//           }
-//         })
-//         .on("end", () => {
-//           return rc.setResponse(res, {
-//             success: true,
-//             msg: "Bulk stock transfer requests sent.",
-//             data: bulkUploadResults,
-//           });
-//         });
-//     } catch (error) {
-//       return rc.setResponse(res, {
-//         error,
-//         msg: "Failed to send bulk stock transfer requests.",
-//       });
-//     }
-//   })
-// );
-
-// new bulk upload warehouse stock
+// /sendStockTransferRequest/ImportCSV
 
 router.post(
   "/sendStockTransferRequest/ImportCSV",
@@ -191,35 +182,43 @@ router.post(
   upload.single("file"),
   asyncHandler(async (req, res) => {
     const results = [];
-    var rejectdata = [];
+    const rejectdata = [];
+    const storeddata = [];
 
     function reject(x) {
       if (x) {
         rejectdata.push(x);
       }
-      return rejectdata;
     }
-
-    var storeddata = [];
 
     function succ(x) {
       if (x) {
         storeddata.push(x);
       }
-      return storeddata;
     }
+
     const query = { role: req.user.role };
-    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    const cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
 
     if (cdata.bulkproductupload) {
-      var path = `public/${req.file.filename}`;
-      fs.createReadStream(path)
-        .pipe(csv({}))
-        .on("data", async (data) => results.push(data))
+      const path = `public/${req.file.filename}`;
+      const readStream = fs
+        .createReadStream(path)
+        .pipe(iconv.decodeStream("utf-8"))
+        .pipe(iconv.encodeStream("utf-8"));
 
+      readStream
+        .pipe(csv({}))
+        .on("data", async (data) => {
+          console.log("Raw data entry:", data);
+          results.push(data);
+        })
         .on("end", async () => {
-          console.log("result", results);
-          for (i = 0; i < results.length; i++) {
+          console.log("results", results);
+          console.log("results", results.length);
+          const transferRequests = [];
+
+          for (let i = 0; i < results.length; i++) {
             if (
               results[i].fromWarehouse == "" ||
               results[i].fromWarehouse == "NA" ||
@@ -256,75 +255,83 @@ router.post(
               console.log(results[i]);
               results[i].error = "quantity is missing";
               const r = reject(results[i]);
-            } else {
-              try {
-                const fromwarehouse = await warehouseTable.findOne({
-                  wareHouseName: results[i].fromWarehouse,
-                });
-                const towarehouse = await warehouseTable.findOne({
-                  wareHouseName: results[i].toWarehouse,
-                });
-                const product = await productTable.findOne({
-                  productname: results[i].productName,
-                });
-                const warehouse = await warehouseStock.findOne({
-                  warehouse: fromwarehouse._id,
-                });
+            }
+            try {
+              const sanitizedData = {
+                fromWarehouse: replaceSpecialChars(results[i].fromWarehouse),
+                toWarehouse: replaceSpecialChars(results[i].toWarehouse),
+                productName: replaceSpecialChars(results[i].productName),
+                quantity: replaceSpecialChars(results[i].quantity),
+              };
 
-                if (warehouse.productQuantity < results[i].quantity) {
-                  return rc.setResponse(res, {
-                    success: false,
-                    msg: "warehouse has less quantity",
-                  });
-                }
+              console.log("Sanitized data entry:", sanitizedData);
 
-                let newRow = {
+              const fromwarehouse = await warehouseTable.findOne({
+                wareHouseName: sanitizedData.fromWarehouse,
+              });
+              const towarehouse = await warehouseTable.findOne({
+                wareHouseName: sanitizedData.toWarehouse,
+              });
+              const product = await productTable.findOne({
+                productname: sanitizedData.productName,
+              });
+              const warehouse = await warehouseStock.findOne({
+                warehouse: fromwarehouse._id,
+              });
+
+              if (
+                !fromwarehouse ||
+                !towarehouse ||
+                !product 
+                // warehouse.productQuantity < sanitizedData.quantity
+              ) {
+                reject({ ...sanitizedData, error: "Invalid data" });
+              } else {
+                transferRequests.push({
                   fromWarehouse: fromwarehouse._id,
                   toWarehouse: towarehouse._id,
                   productName: product._id,
-                  productQuantity: results[i].quantity,
+                  productQuantity: sanitizedData.quantity,
                   status: "Pending",
-                };
-                const newData = await WarehouseStockTransferRequest(newRow);
-                await newData.save();
-                if (newData) {
-                  const r = succ(results[i]);
-                }
-              } catch (e) {
-                console.log(e);
-                if (e.code == 11000) {
-                  results[i].error = "Duplicate Entry";
-                  const r = reject(results[i]);
-                } else {
-                  results[i].error = e;
-                  const r = reject(results[i]);
-                }
+                });
+                succ(sanitizedData);
+              }
+            } catch (e) {
+              console.log("Error processing data:", e);
+              if (e.code === 11000) {
+                reject({ ...sanitizedData, error: "Duplicate Entry" });
+              } else {
+                reject({ ...sanitizedData, error: e });
               }
             }
           }
-          // const r= reject();
-          console.log("storeddata.length", storeddata.length);
-          console.log("rejectdata", rejectdata);
-          console.log("rejectdata.length", rejectdata.length);
+
+          const newTransferRequest = new WarehouseStockTransferRequest({
+            transferRequests: transferRequests,
+            status: "Pending",
+          });
+
+          await newTransferRequest.save();
+
+          console.log("Stored data:", storeddata);
+          console.log("Rejected data:", rejectdata);
+
+          const response = {
+            success: true,
+            msg: "Data Fetched",
+            data: {
+              stored_data: storeddata.length,
+            },
+          };
 
           if (rejectdata.length > 0) {
-            return rc.setResponse(res, {
-              success: true,
-              msg: "Data Fetched",
-              data: {
-                dataupload: "partial upload",
-                reject_data: rejectdata,
-                stored_data: storeddata.length,
-              },
-            });
-            // res.status(200).json({ "dataupload": "error", "reject_data": rejectdata, "stored_data": storeddata.length });
+            response.data.dataupload = "partial upload";
+            response.data.reject_data = rejectdata;
           } else {
-            return rc.setResponse(res, {
-              success: true,
-              msg: "Data Fetched",
-              data: { dataupload: "success", stored_data: storeddata.length },
-            });
+            response.data.dataupload = "success";
           }
+
+          return rc.setResponse(res, response);
         });
     } else {
       return rc.setResponse(res, { error: { code: 403 } });
@@ -332,9 +339,128 @@ router.post(
   })
 );
 
+// function for replace character
+// Replace '�' with space
+function replaceSpecialChars(input) {
+  return input.replace(/�/g, " "); // Replace '�' with space
+}
+
 // ----------------------------------------------------//
 
-// acceptStock Tra nsfer request of warehouse to warehouse
+// acceptStock Transfer request of warehouse to warehouse
+// router.post(
+//   "/acceptStockTransferRequest/:requestId",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     const { requestId } = req.params;
+
+//     try {
+//       const transferRequest = await WarehouseStockTransferRequest.findById(
+//         requestId
+//       );
+//       if (!transferRequest) {
+//         return res
+//           .status(404)
+//           .json({ error: "Stock transfer request not found." });
+//       }
+//       if (transferRequest.status === "Pending") {
+//         await warehouseStock.updateOne(
+//           {
+//             warehouse: transferRequest.fromWarehouse,
+//             product: transferRequest.productName,
+//           },
+//           { $inc: { productQuantity: -transferRequest.productQuantity } }
+//         );
+//         await warehouseStock.updateOne(
+//           {
+//             warehouse: transferRequest.toWarehouse,
+//             product: transferRequest.productName,
+//           },
+//           { $inc: { productQuantity: transferRequest.productQuantity } },
+//           { upsert: true }
+//         );
+
+//         // Update the status of the transfer request
+//         transferRequest.status = "Accepted";
+//         await transferRequest.save();
+//         return rc.setResponse(res, {
+//           success: true,
+//           msg: "Stock transfer request accepted.",
+//         });
+//       } else if (transferRequest.status === "Accepted") {
+//         return rc.setResponse(res, {
+//           success: false,
+//           msg: "request already accepted",
+//         });
+//       }
+//     } catch (error) {
+//       res
+//         .status(500)
+//         .json({ error: "Failed to accept stock transfer request." });
+//     }
+//   })
+// );
+
+// router.post(
+//   "/acceptStockTransferRequest/:requestId",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     const { requestId } = req.params;
+
+//     try {
+//       const transferRequest = await WarehouseStockTransferRequest.findById(
+//         requestId
+//       );
+//       if (!transferRequest) {
+//         return res
+//           .status(404)
+//           .json({ error: "Stock transfer request not found." });
+//       }
+
+//       if (transferRequest.status === "Pending") {
+//         const dataEntries = transferRequest.transferRequests; // Get the array of data entries
+
+//         // Update the stock quantities for each data entry
+//         for (let i = 0; i < dataEntries.length; i++) {
+//           const dataEntry = dataEntries[i];
+//           await warehouseStock.updateOne(
+//             {
+//               warehouse: dataEntry.fromWarehouse,
+//               product: dataEntry.productName,
+//             },
+//             { $inc: { productQuantity: -dataEntry.productQuantity } }
+//           );
+//           await warehouseStock.updateOne(
+//             {
+//               warehouse: dataEntry.toWarehouse,
+//               product: dataEntry.productName,
+//             },
+//             { $inc: { productQuantity: dataEntry.productQuantity } },
+//             { upsert: true }
+//           );
+//         }
+
+//         // Update the status of the transfer request
+//         transferRequest.status = "Accepted";
+//         await transferRequest.save();
+//         return rc.setResponse(res, {
+//           success: true,
+//           msg: "Stock transfer request accepted.",
+//         });
+//       } else if (transferRequest.status === "Accepted") {
+//         return rc.setResponse(res, {
+//           success: false,
+//           msg: "Request already accepted",
+//         });
+//       }
+//     } catch (error) {
+//       res
+//         .status(500)
+//         .json({ error: "Failed to accept stock transfer request." });
+//     }
+//   })
+// );
+
 router.post(
   "/acceptStockTransferRequest/:requestId",
   auth,
@@ -345,27 +471,37 @@ router.post(
       const transferRequest = await WarehouseStockTransferRequest.findById(
         requestId
       );
+      console.log("transferRequest", transferRequest);
       if (!transferRequest) {
         return res
           .status(404)
           .json({ error: "Stock transfer request not found." });
       }
+
       if (transferRequest.status === "Pending") {
-        await warehouseStock.updateOne(
-          {
-            warehouse: transferRequest.fromWarehouse,
-            product: transferRequest.productName,
-          },
-          { $inc: { productQuantity: -transferRequest.productQuantity } }
-        );
-        await warehouseStock.updateOne(
-          {
-            warehouse: transferRequest.toWarehouse,
-            product: transferRequest.productName,
-          },
-          { $inc: { productQuantity: transferRequest.productQuantity } },
-          { upsert: true }
-        );
+        const dataEntries = transferRequest.transferRequests; // Get the array of data entries
+
+        // Update the stock quantities for each data entry
+        for (let i = 0; i < dataEntries.length; i++) {
+          const dataEntry = dataEntries[i];
+          console.log('dataEntry: ', dataEntry);
+          await warehouseStock.updateOne(
+            {
+              warehouse: dataEntry.fromWarehouse,
+              product: dataEntry.productName,
+            },
+            { $inc: { productQuantity: -dataEntry.productQuantity } },
+            { upsert: true } // Add this option
+          );
+          await warehouseStock.updateOne(
+            {
+              warehouse: dataEntry.toWarehouse,
+              product: dataEntry.productName,
+            },
+            { $inc: { productQuantity: dataEntry.productQuantity } },
+            { upsert: true } // Add this option
+          );
+        }
 
         // Update the status of the transfer request
         transferRequest.status = "Accepted";
@@ -377,7 +513,7 @@ router.post(
       } else if (transferRequest.status === "Accepted") {
         return rc.setResponse(res, {
           success: false,
-          msg: "request already accepted",
+          msg: "Request already accepted",
         });
       }
     } catch (error) {
@@ -387,6 +523,9 @@ router.post(
     }
   })
 );
+
+// 
+
 
 // get alltransfer stock request
 router.get(
@@ -401,20 +540,36 @@ router.get(
       const data = await WarehouseStockTransferRequest.find({
         isDeleted: false,
       })
-        .populate("fromWarehouse")
-        .populate("toWarehouse")
-        .populate("productName");
-      // console.log("data", data);
+        // .populate("fromWarehouse")
+        // .populate("toWarehouse")
+        // .populate("productName");
+        .populate("transferRequests.fromWarehouse")
+        .populate("transferRequests.toWarehouse")
+        .populate("transferRequests.productName");
+      console.log("data", data);
       let sendData = [];
+      // for (let i = 0; i < data.length; i++) {
+      //   sendData.push({
+      //     id: data[i]._id,
+      //     fromWarehouse: data[i].fromWarehouse.wareHouseName,
+      //     towarehouse: data[i].toWarehouse.wareHouseName,
+      //     product: data[i].productName.productname,
+      //     productQuantity: data[i].productQuantity,
+      //     status: data[i].status,
+      //   });
+      // }
       for (let i = 0; i < data.length; i++) {
-        sendData.push({
-          id: data[i]._id,
-          fromWarehouse: data[i].fromWarehouse.wareHouseName,
-          towarehouse: data[i].toWarehouse.wareHouseName,
-          product: data[i].productName.productname,
-          productQuantity: data[i].productQuantity,
-          status: data[i].status,
-        });
+        const transferRequests = data[i].transferRequests;
+        for (let j = 0; j < transferRequests.length; j++) {
+          sendData.push({
+            id: data[i]._id,
+            fromWarehouse: transferRequests[j].fromWarehouse.wareHouseName,
+            towarehouse: transferRequests[j].toWarehouse.wareHouseName,
+            product: transferRequests[j].productName.productname,
+            productQuantity: transferRequests[j].productQuantity,
+            status: data[i].status,
+          });
+        }
       }
       if (data) {
         return rc.setResponse(res, {
@@ -535,7 +690,7 @@ router.post(
         // console.log("req.body",req.body.machineSlot);
         // console.log("returnitems:",req.body.returnItems);
 
-        const { machineId,machineSlot,date, sales } = req.body;
+        const { machineId, machineSlot, date, sales } = req.body;
         const refillerid = req.user.id;
         // console.log(refillerid);
         // Create the refill request in the database
@@ -558,7 +713,7 @@ router.post(
           refillRequestNumber: randomNumber,
           status: "Pending",
           date: date,
-          sales: sales
+          sales: sales,
         });
         // console.log("data", data);
         await data.save();

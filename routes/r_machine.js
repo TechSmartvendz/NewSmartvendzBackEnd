@@ -13,6 +13,11 @@ const TableModelCompany = require("../model/m_company");
 const TableModel = require("../model/m_machine");
 const product = require("../model/m_product");
 const warehouse = require("../model/m_warehouse");
+
+const CsvParser = require("json2csv").Parser;
+const csv = require("csv-parser");
+const fs = require("fs");
+const { upload } = require("../middleware/fileUpload");
 //permissions
 //machineconfiguration
 //listmachine
@@ -29,10 +34,12 @@ router.post(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
       // console.log(req.body);
-      const warehousedata = await warehouse.findOne({wareHouseName: req.body.warehouse});
+      const warehousedata = await warehouse.findOne({
+        wareHouseName: req.body.warehouse,
+      });
       newRow = new TableModel(req.body);
       newRow.admin = req.user._id;
-      newRow.warehouse = warehousedata._id
+      newRow.warehouse = warehousedata._id;
       // newRow.country=cdata.id
       if (!newRow) {
         return rc.setResponse(res, {
@@ -52,6 +59,257 @@ router.post(
     }
   })
 );
+
+// Sample upload Machine
+router.get(
+  "/SampleCSV",
+  auth,
+  asyncHandler(async (req, res) => {
+    // console.log("----------------xdxdxgxg--------");
+    const query = {
+      role: req.user.role,
+    };
+    // console.log(query);
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    // console.log(cdata);
+    if (cdata.updatebulkproduct) {
+      const j = {
+        machineid: "",
+        machinename: "",
+        companyid: "",
+        warehouse: "",
+        // refiller: "",
+        // building: "",
+        location: "",
+        // producttype: "",
+        totalslots: "",
+      };
+      const csvFields = ["machineid", "machinename", "companyid", "warehouse", "refiller","building", "location", "producttype", "totalslots"];
+      const csvParser = new CsvParser({ csvFields });
+      const csvdata = csvParser.parse(j);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=SampleImportMachine.csv"
+      );
+      res.status(200).end(csvdata);
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
+// bulk Upload Machines
+router.post(
+  "/bulkUpload/ImportCSV",
+  auth,
+  upload.single("file"),
+  asyncHandler(async (req, res) => {
+    const results = [];
+    var rejectdata = [];
+    let rejectmachines = [];
+
+    function rejectmachinedata(x) {
+      if (x) {
+        rejectmachines.push(x);
+      }
+      return rejectmachines;
+    }
+
+    function reject(x) {
+      if (x) {
+        rejectdata.push(x);
+      }
+      return rejectdata;
+    }
+
+    var storeddata = [];
+
+    function succ(x) {
+      if (x) {
+        storeddata.push(x);
+      }
+      return storeddata;
+    }
+    const query = { role: req.user.role };
+    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+
+    if (cdata.bulkproductupload) {
+      var path = `public/${req.file.filename}`;
+      fs.createReadStream(path)
+        .pipe(csv({}))
+        .on("data", async (data) => results.push(data))
+
+        .on("end", async () => {
+          console.log("result", results);
+          for (i = 0; i < results.length; i++) {
+            if (
+              results[i].machineid == "" ||
+              results[i].machineid == "NA" ||
+              results[i].machineid == "#N/A"
+            ) {
+              console.log(`MachineId is not available`);
+              console.log(results[i]);
+              results[i].error = "MachineId is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].machinename == "" ||
+              results[i].machinename == "NA" ||
+              results[i].machinename == "#N/A"
+            ) {
+              console.log(`machinename is not available`);
+              console.log(results[i]);
+              results[i].error = "machinename is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].companyid == "" ||
+              results[i].companyid == "NA" ||
+              results[i].companyid == "#N/A"
+            ) {
+              console.log(`Max_Quantity is not available`);
+              console.log(results[i]);
+              results[i].error = "Max_Quantity is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].warehouse == "" ||
+              results[i].warehouse == "NA" ||
+              results[i].warehouse == "#N/A"
+            ) {
+              console.log(`warehouse is not available`);
+              console.log(results[i]);
+              results[i].error = "warehouse is missing";
+              const r = reject(results[i]);
+            } else if (
+              results[i].refiller == "" ||
+              results[i].refiller == "NA" ||
+              results[i].refiller == "#N/A"
+            ) {
+              console.log(`refiller is not available`);
+              console.log(results[i]);
+              results[i].error = "refiller is missing";
+              const r = reject(results[i]);
+            }
+            //  else if (
+            //   results[i].buiding == "" ||
+            //   results[i].buiding == "NA" ||
+            //   results[i].buiding == "#N/A"
+            // ) {
+            //   console.log(`buiding is not available`);
+            //   console.log(results[i]);
+            //   results[i].error = "buiding is missing";
+            //   const r = reject(results[i]);
+            // }
+            //  else if (
+            //   results[i].location == "" ||
+            //   results[i].location == "NA" ||
+            //   results[i].location == "#N/A"
+            // ) {
+            //   console.log(`location is not available`);
+            //   console.log(results[i]);
+            //   results[i].error = "location is missing";
+            //   const r = reject(results[i]);
+            // } 
+            // else if (
+            //   results[i].producttype == "" ||
+            //   results[i].producttype == "NA" ||
+            //   results[i].producttype == "#N/A"
+            // ) {
+            //   console.log(`producttype is not available`);
+            //   console.log(results[i]);
+            //   results[i].error = "producttype is missing";
+            //   const r = reject(results[i]);
+            // } 
+            else if (
+              results[i].totalslots == "" ||
+              results[i].totalslots == "NA" ||
+              results[i].totalslots == "#N/A"
+            ) {
+              console.log(`totalslots is not available`);
+              console.log(results[i]);
+              results[i].error = "totalslots is missing";
+              const r = reject(results[i]);
+            } else {
+              try {
+                const checkMachine = await TableModel.find({
+                  machineid: results[i].machineid,
+                });
+                // console.log("machineslotdata",machineslotdata.length);
+                if (checkMachine) {
+                  rejectmachinedata(checkMachine);
+                  // return res.status(500).send("Machine is already created");
+                }
+
+                const warehousedata = await warehouse.findOne({
+                  wareHouseName: results[i].warehouse,
+                });
+                const refillerdata = await TableModelUser.findOne({
+                  first_name: results[i].refiller,
+                });
+                const companydata = await TableModelCompany.findOne({
+                  companyid: results[i].companyid,
+                });
+
+                let newRow = {
+                  machineid: results[i].machineid,
+                  machinename: results[i].machinename,
+                  companyid: companydata.companyid,
+                  warehouse: warehousedata._id,
+                  refiller: refillerdata.user_id,
+                  // building: results[i].building,
+                  // location: results[i].location,
+                  // producttype: results[i].producttype,
+                  totalslots: results[i].totalslots,
+                  admin: req.user._id,
+                };
+                const newData = await TableModel(newRow);
+                // console.log(newData);
+                await newData.save();
+                if (newData) {
+                  const r = succ(results[i]);
+                }
+              } catch (e) {
+                // console.log(e);
+                if (e.code == 11000) {
+                  results[i].error = "Duplicate Entry";
+                  const r = reject(results[i]);
+                } else {
+                  results[i].error = e;
+                  const r = reject(results[i]);
+                }
+              }
+            }
+          }
+          // const r= reject();
+          console.log("storeddata.length", storeddata.length);
+          console.log("rejectdata", rejectdata);
+          console.log("rejectdata.length", rejectdata.length);
+          console.log("rejectmachines", rejectmachines)
+          console.log("rejectmachines", rejectmachines.length)
+
+          if (rejectdata.length > 0) {
+            return rc.setResponse(res, {
+              success: true,
+              msg: "Data Fetched",
+              data: {
+                dataupload: "partial upload",
+                reject_data: rejectdata,
+                stored_data: storeddata.length,
+              },
+            });
+          } else {
+            return rc.setResponse(res, {
+              success: true,
+              msg: "Data Fetched",
+              data: { dataupload: "success", stored_data: storeddata.length },
+            });
+          }
+        });
+    } else {
+      return rc.setResponse(res, { error: { code: 403 } });
+    }
+  })
+);
+
 router.get(
   "/",
   auth,
@@ -117,8 +375,10 @@ router.get(
       //   _id: role,
       // };
       // const data = await TableModel.getDataByQueryFilterDataOne(query);
-      const machineid = req.params.id
-      const data = await TableModel.getDataByQueryFilterDataOneAggregate(machineid);
+      const machineid = req.params.id;
+      const data = await TableModel.getDataByQueryFilterDataOneAggregate(
+        machineid
+      );
       // console.log("data",data)
       if (data) {
         return rc.setResponse(res, {
@@ -140,10 +400,12 @@ router.put(
   "/:id",
   auth,
   asyncHandler(async (req, res, next) => {
-    const warehousedata = await warehouse.findOne({wareHouseName: req.body.warehouse});
+    const warehousedata = await warehouse.findOne({
+      wareHouseName: req.body.warehouse,
+    });
     const newData = req.body;
     newData.admin = req.user.id;
-    newData.warehouse = warehousedata._id
+    newData.warehouse = warehousedata._id;
     const query = {
       role: req.user.role,
     };
