@@ -48,15 +48,15 @@ const TableSchema = mongoose.Schema({
   },
   cash: {
     type: Number,
-    default: 0
+    default: 0,
   },
   totalSalesCount: {
     type: Number,
-    default: 0
+    default: 0,
   },
   totalSalesValue: {
     type: Number,
-    default: 0
+    default: 0,
   },
   created_at: {
     type: Date,
@@ -178,8 +178,8 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
         producttype: 1,
         totalslots: 1,
         admin: "$adminOutput.first_name",
-        refillerName:"$refillerOutput.first_name",
-        refiller: 1
+        refillerName: "$refillerOutput.first_name",
+        refiller: 1,
       },
     },
   ]);
@@ -190,7 +190,7 @@ module.exports.getDataCountByQuery = async (query) => {
   return data;
 };
 module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, machineid: 1, machinename:1 });
+  const data = await Table.find({}, { id: 1, machineid: 1, machinename: 1 });
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
@@ -209,19 +209,17 @@ module.exports.getDataforTable = async () => {
         _id: 1,
         machineid: 1,
         companyid: 1,
+        companyName: 1,
         machinename: 1,
         location: 1,
         totalslots: 1,
         warehouse: {
           $toObjectId: "$warehouse",
         },
-        // admin: {
-          //   "$toObjectId": "$country"
-          // },
-          admin: {
-            $toObjectId: "$admin",
-          },
-          refiller: 1,
+        admin: {
+          $toObjectId: "$admin",
+        },
+        refiller: 1,
         created_at: 1,
       },
     },
@@ -236,6 +234,15 @@ module.exports.getDataforTable = async () => {
     { $unwind: "$output" },
     {
       $lookup: {
+        from: "user_infos",
+        localField: "refiller",
+        foreignField: "user_id",
+        as: "outputRefiller",
+      },
+    },
+    { $unwind: "$outputRefiller" },
+    {
+      $lookup: {
         from: "warehouses",
         localField: "warehouse",
         foreignField: "_id",
@@ -243,15 +250,15 @@ module.exports.getDataforTable = async () => {
       },
     },
     { $unwind: "$warehouseoutput" },
-    // {
-    //   "$lookup": {
-    //     "from": "countries",
-    //     "localField": "country",
-    //     "foreignField": "_id",
-    //     "as": "output2"
-    //   }
-    // },
-    // { $unwind: "$output2" },
+    {
+      $lookup: {
+        from: "companies",
+        localField: "companyid",
+        foreignField: "companyid",
+        as: "outputCompany",
+      },
+    },
+    { $unwind: "$outputCompany" },
     {
       $project: {
         _id: 1,
@@ -259,10 +266,11 @@ module.exports.getDataforTable = async () => {
         total_slots: "$totalslots",
         machine_name: "$machinename",
         company_id: "$companyid",
+        companyName: "$outputCompany.companyname",
         location: "$location",
         warehouse: "$warehouseoutput.wareHouseName",
-        created_by: "$output.user_id",
-        refiller: 1,
+        created_by: "$output.first_name",
+        refiller: "$outputRefiller.first_name",
         created_at: {
           $dateToString: {
             format: "%Y-%m-%d %H:%M:%S",
