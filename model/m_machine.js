@@ -263,7 +263,7 @@ module.exports.getDataforTable = async () => {
       $project: {
         _id: 1,
         machine_id: "$machineid",
-        total_slots: "$totalslots",
+        // total_slots: "$totalslots",
         machine_name: "$machinename",
         company_id: "$companyid",
         companyName: "$outputCompany.companyname",

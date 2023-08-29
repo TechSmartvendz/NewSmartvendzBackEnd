@@ -475,8 +475,10 @@ router.post(
     }
   })
 );
-// ----------------------------*************************-----------------------------//
 
+// ----------------------------*************************-----------------------------//
+// -----Filters added in this request ---------//
+// -----can also fid by warehouseName and productName-----------//
 // get purchase stock list
 router.get(
   "/purchasestocklist",
@@ -486,9 +488,24 @@ router.get(
       role: req.user.role,
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    console.log(req.query);
+    let filters ;
+    if (req.query.warehouse) {
+      // filters["warehouse.wareHouseName"] = req.query.warehouse;
+      const warehousedetail = await warehouseTable.findOne({wareHouseName: req.query.warehouse});
+      console.log('warehousedetail: ', warehousedetail);
+      filters ={ warehouse: warehousedetail._id};
+    }
+    if (req.query.productname) {
+      const productdetail = await productTable.findOne({productname: req.query.productname});
+      console.log('productdetail: ', productdetail);
+      filters ={ product: productdetail._id};
+    }
+    console.log('filters: ', filters);
+    
     if (cdata.purchaseStockList) {
       const data = await purchaseStock
-        .find()
+        .find(filters)
         .populate("warehouse", [
           "wareHouseName",
           "email",
@@ -1122,38 +1139,42 @@ router.get(
 );
 
 // get warehouse product by warehouseid
-router.get("/wareHouseProduct/Datalist", auth, asyncHandler(async (req, res) => {
-  const query = { role: req.user.role };
-  try {
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if (!permissions.listStock) {
+router.get(
+  "/wareHouseProduct/Datalist",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = { role: req.user.role };
+    try {
+      const permissions =
+        await TableModelPermission.getDataByQueryFilterDataOne(query);
+      if (!permissions.listStock) {
+        return rc.setResponse(res, {
+          success: false,
+          msg: "Permission denied",
+        });
+      }
+      const data = await warehouseStock
+        .find({ warehouse: req.query.id })
+        .populate("product", "_id productname productid")
+        .select("_id product");
+      const productarray = data.map((item) => ({
+        _id: item.product._id,
+        productname: item.product.productname,
+        productid: item.product.productid,
+      }));
+      return rc.setResponse(res, {
+        success: true,
+        msg: "Data fetched",
+        data: productarray,
+      });
+    } catch (error) {
+      console.error("Error:", error);
       return rc.setResponse(res, {
         success: false,
-        msg: "Permission denied",
+        msg: "An error occurred while fetching data.",
       });
     }
-    const data = await warehouseStock
-      .find({ warehouse: req.query.id })
-      .populate("product", "_id productname productid")
-      .select("_id product");
-    const productarray = data.map((item) => ({
-      _id: item.product._id,
-      productname: item.product.productname,
-      productid: item.product.productid,
-    }));
-    return rc.setResponse(res, {
-      success: true,
-      msg: "Data fetched",
-      data: productarray,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    return rc.setResponse(res, {
-      success: false,
-      msg: "An error occurred while fetching data.",
-    });
-  }
-}));
-
+  })
+);
 
 module.exports = router;
