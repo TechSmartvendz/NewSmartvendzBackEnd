@@ -11,6 +11,7 @@ const user_infos = require("../model/m_user_info");
 const warehouseStock = require("../model/m_warehouse_Stock");
 const TableModelPermission = require("../model/m_permission");
 const product = require("../model/m_product");
+const warehouseTable = require("../model/m_warehouse");
 
 const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
@@ -343,7 +344,7 @@ router.get(
       machineName,
     } = req.query;
 
-    const query = {};
+    let filters ;
     // query created for filtering 
     const query2 = {};
     // query2 created beacuse if refiller login it should only see his approved request or else if superadmin or admin then they should be able to see all approved request
@@ -352,24 +353,27 @@ router.get(
       console.log(query2);
     }
     if (status) {
-      query.status = status;
+      filters = {status: status};
     }
     if (refillerName) {
-      query['refillerId.first_name'] = { $regex: new RegExp(refillerName, 'i') };
+      const refillerdetail = await user_infos.findOne({first_name: refillerName});
+      filters = {refillerId: refillerdetail._id };
     }
     if (date) {
-      query.createdAt = date;
+      filters = {createdAt: date}
     }
     if (warehouse) {
-      query['warehouse.wareHouseName'] = warehouse;
+      const warehousedetail = await warehouseTable.findOne({wareHouseName: warehouse});
+      filters = {warehouse: warehousedetail._id};
     }
     if (refillRequestNumber) {
-      query.refillRequestNumber = refillRequestNumber;
+      filters = {refillRequestNumber: refillRequestNumber}
     }
     if (machineName) {
-      query['machineId.machinename'] = machineName;
+      const machinedetail = await machines.findOne({machinename: machineName});
+      filters = {machineId: machinedetail._id};
     }
-    const mergedQuery = Object.assign({}, query, query2);
+    const mergedQuery = Object.assign({}, filters, query2);
     try {
       const allRefillerRequest = await refillerrequest
       .find(mergedQuery)
@@ -412,7 +416,6 @@ router.get(
 );
 
 //------------------refilling request by id--------------------------------//
-
 router.get(
   "/refillRequest/:id",
   auth,

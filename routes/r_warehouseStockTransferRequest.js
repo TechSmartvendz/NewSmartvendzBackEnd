@@ -9,8 +9,6 @@ const warehouseStock = require("../model/m_warehouse_Stock");
 const warehouseTable = require("../model/m_warehouse");
 const productTable = require("../model/m_product");
 const WarehouseStockTransferRequest = require("../model/m_warehouseToWarehouse_Stock_TransferRequest");
-const machine = require("../model/m_machine_slot");
-// const warehouseToMachineStockTransferRequest = require("../model/m_warehouseToMachine_Stock_TransferRequest");
 const refillRequest = require("../model/m_refiller_request");
 const machinedata = require("../model/m_machine");
 
@@ -19,6 +17,7 @@ const csv = require("csv-parser");
 const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
 const iconv = require("iconv-lite");
+const path = require("path");
 
 // sendStockTransferRequest to warehouse  ------------not using this now--------------
 router.post(
@@ -282,7 +281,7 @@ router.post(
               if (
                 !fromwarehouse ||
                 !towarehouse ||
-                !product 
+                !product
                 // warehouse.productQuantity < sanitizedData.quantity
               ) {
                 reject({ ...sanitizedData, error: "Invalid data" });
@@ -484,7 +483,7 @@ router.post(
         // Update the stock quantities for each data entry
         for (let i = 0; i < dataEntries.length; i++) {
           const dataEntry = dataEntries[i];
-          console.log('dataEntry: ', dataEntry);
+          console.log("dataEntry: ", dataEntry);
           await warehouseStock.updateOne(
             {
               warehouse: dataEntry.fromWarehouse,
@@ -524,8 +523,7 @@ router.post(
   })
 );
 
-// 
-
+//
 
 // get alltransfer stock request
 router.get(
@@ -758,6 +756,121 @@ router.delete(
     } else {
       return rc.setResponse(res, { error: { code: 403 } });
     }
+  })
+);
+
+const generateSalesReports = async (startDate, endDate) => {
+  try {
+    const salesReport = [];
+
+    const refillRequests = await refillRequest
+      .find({
+        createdAt: { $gte: startDate, $lte: endDate },
+        status: "Approved",
+      })
+      .populate("machineId", "machinename")
+      .populate("warehouse", "wareHouseName")
+      .populate("refillerId", "first_name")
+      .populate("machineSlots.productid", "productname productid sellingprice");
+
+    for (const request of refillRequests) {
+      for (const slot of request.machineSlots) {
+        if (slot.saleQuantity > 0) {
+          const product = slot.productid;
+          const machine = request.machineId;
+          const warehouse = request.warehouse;
+          const refiller = request.refillerId;
+          // console.log('refiller: ', refiller);
+
+          const saleEntry = {
+            productName: product.productname,
+            productCode: product.productid,
+            MRP: product.sellingprice,
+            machineName: machine.machinename,
+            warehouseName: warehouse.wareHouseName,
+            refillerName: refiller.first_name,
+            saleQuantity: slot.saleQuantity,
+            date: request.createdAt,
+          };
+          salesReport.push(saleEntry);
+        }
+      }
+    }
+
+    return salesReport;
+  } catch (error) {
+    console.error("Error generating sales report:", error);
+    return null;
+  }
+};
+
+router.get(
+  "/salesreport/exportCSV",
+  asyncHandler(async (req, res) => {
+    // const startDate = new Date("2023-08-01");
+    // const endDate = new Date("2023-08-25");
+    const startDate = req.query.start;
+    const endDate = req.query.end;
+    const salesReport = [];
+    function pushData(x) {
+      if (x) {
+        salesReport.push(x);
+      }
+      return salesReport;
+    }
+    const data = await generateSalesReports(startDate, endDate);
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        const report = {
+          productName: data[i].productName,
+          productCode: data[i].productCode,
+          MRP: data[i].MRP,
+          machineName: data[i].machineName,
+          warehouseName: data[i].warehouseName,
+          refillerName: data[i].refillerName,
+          saleQuantity: data[i].saleQuantity,
+          date: data[i].date.toLocaleString({ timezone: "Asia/Kolkata" }),
+        };
+        pushData(report);
+      }
+      const csvFields = [
+        "productName",
+        "productCode",
+        "MRP",
+        "machineName",
+        "warehouseName",
+        "refillerName",
+        "saleQuantity",
+        "date",
+      ];
+      const csvParser = new CsvParser({ csvFields });
+      const csvData = csvParser.parse(salesReport);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=public/salesReport.csv"
+      );
+      res.status(200).end(csvData);
+    } else {
+      res.status(200).json({ error: "Report not found" });
+    }
+    // return res.send(data);
+  })
+);
+
+router.get(
+  "/salesreport",
+  asyncHandler(async (req, res) => {
+    const startDate = req.query.start;
+    const endDate = req.query.end;
+
+    const data = await generateSalesReports(startDate, endDate);
+
+    return rc.setResponse(res, {
+      success: true,
+      msg: `Sales report from ${startDate} to ${endDate}`,
+      data: data,
+    });
   })
 );
 
