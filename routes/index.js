@@ -16,11 +16,12 @@ router.post(
     const user_id = req.body.user_id;
     const password = req.body.password;
     const sendData = await TableModel.getLoginData(user_id);
-    // console.log(sendData);
+    console.log(sendData);
     if (sendData) {
       const passwordmatch = await bcrypt.compare(password, sendData.password);
       const data = {
         username: sendData.first_name,
+        role: sendData.role,
         token: sendData.token
       };
       if (passwordmatch) {

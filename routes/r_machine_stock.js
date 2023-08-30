@@ -17,6 +17,7 @@ const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
 const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
+const { machine } = require("os");
 
 router.get(
   "/getallmachines",
@@ -37,11 +38,11 @@ router.get(
       });
     }
     let filter = {};
-    if(req.user.role == "SuperAdmin" || req.user.role == "Admin"){
-      filter = {}
+    if (req.user.role == "SuperAdmin" || req.user.role == "Admin") {
+      filter = {};
     }
-    if(req.user.role == "Refiller"){
-      filter = {refiller: req.user.user_id}
+    if (req.user.role == "Refiller") {
+      filter = { refiller: req.user.user_id };
     }
     const allmachine = await machines.find(filter);
     // .select("machineid companyid");
@@ -73,7 +74,9 @@ router.get(
       });
     }
     const data = await machineslot.find({ machineid: req.query.machineid });
-    const machine = await machines.findOne({_id: req.query.machineid}).select("cash totalSalesCount salesValue");
+    const machine = await machines
+      .findOne({ _id: req.query.machineid })
+      .select("cash totalSalesCount salesValue");
     // console.log('machine: ', machine);
     // console.log("data", data);
     let productdata;
@@ -113,7 +116,7 @@ router.get(
       machineSlot: ss,
       cash: machine.cash,
       totalSalesCount: machine.totalSalesCount,
-      totalSalesValue: machine.totalSalesValue
+      totalSalesValue: machine.totalSalesValue,
     };
     // console.log('machinedata: ', machinedata);
     return rc.setResponse(res, {
@@ -319,19 +322,21 @@ router.get(
 //   })
 // );
 router.get(
-  '/allrefillingrequest',
+  "/allrefillingrequest",
   auth,
   asyncHandler(async (req, res) => {
     const checkPermission = {
       role: req.user.role,
     };
     // permissions to check if this user has permission to view this data or not
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(checkPermission);
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      checkPermission
+    );
 
     if (!permissions.listRefillingRequest) {
       return rc.setResponse(res, {
         success: false,
-        msg: 'No permission to find data',
+        msg: "No permission to find data",
         data: {},
       });
     }
@@ -344,45 +349,66 @@ router.get(
       machineName,
     } = req.query;
 
-    let filters ;
-    // query created for filtering 
+    let filters = [];
+    // query created for filtering
     const query2 = {};
     // query2 created beacuse if refiller login it should only see his approved request or else if superadmin or admin then they should be able to see all approved request
-    if(req.user.role == "Refiller"){
+    if (req.user.role == "Refiller") {
       query2.refillerId = req.user._id;
       console.log(query2);
     }
     if (status) {
-      filters = {status: status};
+      // filters = { status: status };
+      filters.push({ status: status });
     }
     if (refillerName) {
-      const refillerdetail = await user_infos.findOne({first_name: refillerName});
-      filters = {refillerId: refillerdetail._id };
+      const refillerdetail = await user_infos.findOne({
+        first_name: refillerName,
+      });
+      // filters = { refillerId: refillerdetail._id };
+      filters.push({ refillerId: refillerdetail._id });
     }
     if (date) {
-      filters = {createdAt: date}
+      // filters = { createdAt: date };
+      // filters.push({ createdAt: date });
+      const clientDate = date; // Create a Date object from the client's date string
+      const cdate = new Date(clientDate)
+      console.log('clientDate: ', cdate);
+      const iso8601Date = cdate.toISOString();
+
+      filters.push({createdAt : "2023-08-19T04:33:48.822+00:00"}); // Use the formatted date for filtering
     }
     if (warehouse) {
-      const warehousedetail = await warehouseTable.findOne({wareHouseName: warehouse});
-      filters = {warehouse: warehousedetail._id};
+      const warehousedetail = await warehouseTable.findOne({
+        wareHouseName: warehouse,
+      });
+      // filters = { warehouse: warehousedetail._id };
+      filters.push({ warehouse: warehousedetail._id });
     }
     if (refillRequestNumber) {
-      filters = {refillRequestNumber: refillRequestNumber}
+      // filters = { refillRequestNumber: refillRequestNumber };
+      filters.push({ refillRequestNumber: refillRequestNumber });
     }
     if (machineName) {
-      const machinedetail = await machines.findOne({machinename: machineName});
-      filters = {machineId: machinedetail._id};
+      const machinedetail = await machines.findOne({
+        machinename: machineName,
+      });
+      // filters = { machineId: machinedetail._id };
+      filters.push({ machineId: machinedetail._id });
     }
-    const mergedQuery = Object.assign({}, filters, query2);
+    // const mergedQuery = Object.assign({}, filters, query2);
+    const mergedQuery = { $and: [query2, ...filters] };
     try {
       const allRefillerRequest = await refillerrequest
-      .find(mergedQuery)
-      .select('id refillerId warehouse refillRequestNumber machineId status createdAt')
-      .populate('refillerId', '_id first_name user_id')
-      .populate('machineId', 'machineid _id machinename')
-      .populate('warehouse', '_id wareHouseName')
-      .lean();
-      
+        .find(mergedQuery)
+        .select(
+          "id refillerId warehouse refillRequestNumber machineId status createdAt"
+        )
+        .populate("refillerId", "_id first_name user_id")
+        .populate("machineId", "machineid _id machinename")
+        .populate("warehouse", "_id wareHouseName")
+        .lean();
+
       // console.log('allRefillerRequest: ', allRefillerRequest);
 
       const data = allRefillerRequest.map((request) => ({
@@ -402,14 +428,14 @@ router.get(
 
       return rc.setResponse(res, {
         success: true,
-        msg: 'Data fetched',
+        msg: "Data fetched",
         data: data,
       });
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       return rc.setResponse(res, {
         success: false,
-        msg: 'An error occurred while fetching data.',
+        msg: "An error occurred while fetching data.",
       });
     }
   })
@@ -529,9 +555,19 @@ router.post(
             });
             // console.log('checkrefillerRequest: ', checkrefillerRequest);
             if (checkrefillerRequest.status === "Approved") {
-              let countSales = await machines.findOneAndUpdate({_id: checkrefillerRequest.machineId}, {cash: checkrefillerRequest.sales.cash, totalSalesCount:checkrefillerRequest.sales.totalSalesCount, totalSalesValue:checkrefillerRequest.sales.totalSalesValue})
+              let countSales = await machines.findOneAndUpdate(
+                { _id: checkrefillerRequest.machineId },
+                {
+                  cash: checkrefillerRequest.sales.cash,
+                  totalSalesCount: checkrefillerRequest.sales.totalSalesCount,
+                  totalSalesValue: checkrefillerRequest.sales.totalSalesValue,
+                }
+              );
               for (
-                let i = 0; i < checkrefillerRequest.machineSlots.length;i++) {
+                let i = 0;
+                i < checkrefillerRequest.machineSlots.length;
+                i++
+              ) {
                 const updatewarehousestock = await warehouseStock.updateOne(
                   {
                     warehouse: checkrefillerRequest.warehouse,
@@ -548,7 +584,10 @@ router.post(
               }
               if (checkrefillerRequest.returnItems.length != 0) {
                 for (
-                  let i = 0;i < checkrefillerRequest.returnItems.length;i++) {
+                  let i = 0;
+                  i < checkrefillerRequest.returnItems.length;
+                  i++
+                ) {
                   const updatewarehousestockagain =
                     await warehouseStock.updateOne(
                       {
@@ -945,5 +984,55 @@ router.delete(
     return res.send("SLots deleted");
   })
 );
+
+router.get("/exportdatarefill", auth, asyncHandler(async(req,res)=> {
+  const query = {
+    role: req.user.role,
+  };
+  const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+    query
+  );
+  if (!permissions.listMachineSlot) {
+    return rc.setResponse(res, {
+      success: false,
+      msg: "No permisson to find data",
+      data: {},
+    });
+  }
+  try {
+    const machinesData = await machines.find({ refiller: req.query.refiller });
+    const machineIds = machinesData.map(machine => machine.machineid);
+
+    const machineslotdata = await machineslot
+    .find({ machineName: { $in: machineIds } })
+    .select("machineName slot product currentStock");
+    const productIds = [...new Set(machineslotdata.map(slot => slot.product))];
+
+    // Fetch product data using the unique product ids
+    const productData = await product.find({ _id: { $in: productIds } });
+
+    // Create a map of product ids to their corresponding product data
+    const productMap = new Map(productData.map(product => [product._id.toString(), product]));
+
+    sendData = machineslotdata.map(slot => ({
+      machineName: slot.machineName,
+      slot: slot.slot,
+      product: productMap.get(slot.product.toString()).productname,
+      currentStock: 0,
+    }));
+
+    return rc.setResponse(res, {
+      success: true,
+      msg: "Data fetched",
+      data: sendData,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return rc.setResponse(res, {
+      success: false,
+      msg: "An error occurred while fetching data.",
+    });
+  }
+}))
 
 module.exports = router;

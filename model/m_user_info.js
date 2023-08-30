@@ -130,7 +130,7 @@ module.exports.addRow = async (newRow) => {
 //TODO:THIS IS USING at /User/:id
 module.exports.getLoginData = async (user_id) => {
 
-    const data = await Table.findOne({user_id:user_id},{first_name:1,token:1,password:1},);
+    const data = await Table.findOne({user_id:user_id},{first_name:1,token:1,password:1, role:1},);
     return data; 
 };
 //TODO:THIS IS USING at Not using right now
