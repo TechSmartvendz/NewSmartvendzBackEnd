@@ -13,11 +13,14 @@ const TableModelPermission = require("../model/m_permission");
 const product = require("../model/m_product");
 const warehouseTable = require("../model/m_warehouse");
 
+const validator = require('express-joi-validation').createValidator();
+const {getAllMachineSlots} = require("../validation/machine_stock");
+const {refillSheet} = require("../validation/r_machine_stock");
+
 const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
 const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
-const { machine } = require("os");
 
 router.get(
   "/getallmachines",
@@ -57,7 +60,8 @@ router.get(
 
 //------------------------get all slot details by machine Name------------------//
 router.get(
-  "/getallmachineslots",
+  "/getallmachineslots", 
+  validator.query(getAllMachineSlots),
   auth,
   asyncHandler(async (req, res) => {
     const query = {
@@ -372,11 +376,11 @@ router.get(
       // filters = { createdAt: date };
       // filters.push({ createdAt: date });
       const clientDate = date; // Create a Date object from the client's date string
-      const cdate = new Date(clientDate)
-      console.log('clientDate: ', cdate);
+      const cdate = new Date(clientDate);
+      console.log("clientDate: ", cdate);
       const iso8601Date = cdate.toISOString();
 
-      filters.push({createdAt : "2023-08-19T04:33:48.822+00:00"}); // Use the formatted date for filtering
+      filters.push({ createdAt: "2023-08-19T04:33:48.822+00:00" }); // Use the formatted date for filtering
     }
     if (warehouse) {
       const warehousedetail = await warehouseTable.findOne({
@@ -985,54 +989,145 @@ router.delete(
   })
 );
 
-router.get("/exportdatarefill", auth, asyncHandler(async(req,res)=> {
-  const query = {
-    role: req.user.role,
-  };
-  const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-    query
-  );
-  if (!permissions.listMachineSlot) {
-    return rc.setResponse(res, {
-      success: false,
-      msg: "No permisson to find data",
-      data: {},
-    });
-  }
-  try {
-    const machinesData = await machines.find({ refiller: req.query.refiller });
-    const machineIds = machinesData.map(machine => machine.machineid);
+router.get(
+  "/refillSheet", validator.query(refillSheet), auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (!permissions.listMachineSlot) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "No permisson to find data",
+        data: {},
+      });
+    }
+    try {
+      const machinesData = await machines.find({
+        refiller: req.query.refiller,
+      });
+      const machineIds = machinesData.map((machine) => machine.machineid);
+      const machineslotdata = await machineslot
+        .find({ machineName: { $in: machineIds } })
+        .select("machineName slot product currentStock");
+      const productIds = [
+        ...new Set(machineslotdata.map((slot) => slot.product)),
+      ];
+      const productData = await product.find({ _id: { $in: productIds } });
+      const productMap = new Map(
+        productData.map((product) => [product._id.toString(), product])
+      );
 
-    const machineslotdata = await machineslot
-    .find({ machineName: { $in: machineIds } })
-    .select("machineName slot product currentStock");
-    const productIds = [...new Set(machineslotdata.map(slot => slot.product))];
+      const machineDataMap = new Map();
+      machineslotdata.forEach((slot) => {
+        const machineName = slot.machineName;
+        if (!machineDataMap.has(machineName)) {
+          machineDataMap.set(machineName, []);
+        }
+        machineDataMap.get(machineName).push({
+          slot: slot.slot,
+          product: productMap.get(slot.product.toString()).productname,
+          currentStock: slot.currentStock,
+        });
+      });
 
-    // Fetch product data using the unique product ids
-    const productData = await product.find({ _id: { $in: productIds } });
+      const groupedData = Array.from(
+        machineDataMap,
+        ([machineName, stock]) => ({
+          machineName,
+          stock,
+        })
+      );
 
-    // Create a map of product ids to their corresponding product data
-    const productMap = new Map(productData.map(product => [product._id.toString(), product]));
+      return rc.setResponse(res, {
+        success: true,
+        msg: "Data fetched",
+        data: groupedData,
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      return rc.setResponse(res, {
+        success: false,
+        msg: "An error occurred while fetching data.",
+      });
+    }
+  })
+);
 
-    sendData = machineslotdata.map(slot => ({
-      machineName: slot.machineName,
-      slot: slot.slot,
-      product: productMap.get(slot.product.toString()).productname,
-      currentStock: 0,
-    }));
-
-    return rc.setResponse(res, {
-      success: true,
-      msg: "Data fetched",
-      data: sendData,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    return rc.setResponse(res, {
-      success: false,
-      msg: "An error occurred while fetching data.",
-    });
-  }
-}))
+router.get(
+  "/refillSheetExportCSV", validator.query(refillSheet), auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (!permissions.listMachineSlot) {
+      return rc.setResponse(res, {
+        success: false,
+        msg: "No permisson to find data",
+        data: {},
+      });
+    }
+    const refillfile = [];
+    function pushData(x) {
+      if (x) {
+        refillfile.push(x);
+      }
+      return refillfile;
+    }
+    try {
+      const machinesData = await machines.find({
+        refiller: req.query.refiller,
+      });
+      const machineIds = machinesData.map((machine) => machine.machineid);
+      const machineslotdata = await machineslot
+        .find({ machineName: { $in: machineIds } })
+        .select("machineName slot product currentStock");
+      const productIds = [
+        ...new Set(machineslotdata.map((slot) => slot.product)),
+      ];
+      const productData = await product.find({ _id: { $in: productIds } });
+      const productMap = new Map(
+        productData.map((product) => [product._id.toString(), product])
+      );
+      sendData = machineslotdata.map((slot) => ({
+        machineName: slot.machineName,
+        slot: slot.slot,
+        product: productMap.get(slot.product.toString()).productname,
+        stock: 0,
+      }));
+      let data;
+      for (let i = 0; i < sendData.length; i++) {
+        data = {
+          machineName: sendData[i].machineName,
+          slot: sendData[i].slot,
+          product: sendData[i].product,
+          stock: sendData[i].stock,
+        };
+        pushData(data);
+      }
+      const csvFields = ["machineName", "slot", "product", "stock"];
+      const csvParser = new CsvParser({ csvFields });
+      const csvData = csvParser.parse(refillfile);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=public/refillFile.csv"
+      );
+      res.status(200).end(csvData);
+    } catch (error) {
+      console.error("Error:", error);
+      return rc.setResponse(res, {
+        success: false,
+        msg: "An error occurred while fetching data.",
+      });
+    }
+  })
+);
 
 module.exports = router;
