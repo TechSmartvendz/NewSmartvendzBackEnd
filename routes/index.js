@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const TableModel = require("../model/m_user_info");
 const rc = require("./../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
+const validator = require('express-joi-validation').createValidator();
+const {userLogin} = require("../validation/user");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -11,12 +13,12 @@ router.get("/", function (req, res, next) {
 });
 
 router.post(
-  "/api/Login",
+  "/api/Login", validator.body(userLogin),
   asyncHandler(async (req, res) => {
     const user_id = req.body.user_id;
     const password = req.body.password;
     const sendData = await TableModel.getLoginData(user_id);
-    console.log(sendData);
+    // console.log(sendData);
     if (sendData) {
       const passwordmatch = await bcrypt.compare(password, sendData.password);
       const data = {
