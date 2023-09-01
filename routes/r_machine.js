@@ -13,6 +13,7 @@ const TableModelCompany = require("../model/m_company");
 const TableModel = require("../model/m_machine");
 const product = require("../model/m_product");
 const warehouse = require("../model/m_warehouse");
+const userDetails = require("../model/m_user_info");
 
 const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
@@ -84,7 +85,17 @@ router.get(
         // producttype: "",
         totalslots: "",
       };
-      const csvFields = ["machineid", "machinename", "companyid", "warehouse", "refiller","building", "location", "producttype", "totalslots"];
+      const csvFields = [
+        "machineid",
+        "machinename",
+        "companyid",
+        "warehouse",
+        "refiller",
+        "building",
+        "location",
+        "producttype",
+        "totalslots",
+      ];
       const csvParser = new CsvParser({ csvFields });
       const csvdata = csvParser.parse(j);
       res.setHeader("Content-Type", "text/csv");
@@ -199,16 +210,16 @@ router.post(
             //   results[i].error = "buiding is missing";
             //   const r = reject(results[i]);
             // }
-            //  else if (
-            //   results[i].location == "" ||
-            //   results[i].location == "NA" ||
-            //   results[i].location == "#N/A"
-            // ) {
-            //   console.log(`location is not available`);
-            //   console.log(results[i]);
-            //   results[i].error = "location is missing";
-            //   const r = reject(results[i]);
-            // } 
+            else if (
+              results[i].location == "" ||
+              results[i].location == "NA" ||
+              results[i].location == "#N/A"
+            ) {
+              console.log(`location is not available`);
+              console.log(results[i]);
+              results[i].error = "location is missing";
+              const r = reject(results[i]);
+            }
             // else if (
             //   results[i].producttype == "" ||
             //   results[i].producttype == "NA" ||
@@ -218,7 +229,7 @@ router.post(
             //   console.log(results[i]);
             //   results[i].error = "producttype is missing";
             //   const r = reject(results[i]);
-            // } 
+            // }
             else if (
               results[i].totalslots == "" ||
               results[i].totalslots == "NA" ||
@@ -256,7 +267,7 @@ router.post(
                   warehouse: warehousedata._id,
                   refiller: refillerdata.user_id,
                   // building: results[i].building,
-                  // location: results[i].location,
+                  location: results[i].location,
                   // producttype: results[i].producttype,
                   totalslots: results[i].totalslots,
                   admin: req.user._id,
@@ -283,8 +294,8 @@ router.post(
           console.log("storeddata.length", storeddata.length);
           console.log("rejectdata", rejectdata);
           console.log("rejectdata.length", rejectdata.length);
-          console.log("rejectmachines", rejectmachines)
-          console.log("rejectmachines", rejectmachines.length)
+          console.log("rejectmachines", rejectmachines);
+          console.log("rejectmachines", rejectmachines.length);
 
           if (rejectdata.length > 0) {
             return rc.setResponse(res, {
@@ -319,18 +330,73 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listcompany) {
-      const admin = req.user.id;
-      const data = await TableModel.getDataforTable(admin);
-      if (data) {
+      if (req.user.role == "Admin") {
+        console.log("admin");
+        const adminId = req.user.admin;
+        const checkdata = await TableModel.find({ admin: req.user._id }).select(
+          "_id machineid machinename totalslots warehouse admin refiller created_at"
+        );
+
+        const warehouseIds = checkdata
+          .map((item) => item.warehouse)
+          .filter(Boolean);
+        const adminIds = checkdata.map((item) => item.admin).filter(Boolean);
+        const refillerIds = checkdata
+          .map((item) => item.refiller)
+          .filter(Boolean);
+
+        const [warehouses, admins, refillers] = await Promise.all([
+          warehouse
+            .find({ _id: { $in: warehouseIds } })
+            .select("_id wareHouseName"),
+          userDetails.find({ _id: { $in: adminIds } }).select("_id first_name"),
+          userDetails
+            .find({ user_id: { $in: refillerIds } })
+            .select("_id first_name"),
+        ]);
+
+        const data = checkdata.map((item) => {
+          const warehouse = warehouses.find(
+            (wh) => wh._id.toString() === item.warehouse
+          );
+          const admin = admins.find((ad) => ad._id.toString() === item.admin);
+          const refiller = refillers.find(
+            (ref) => ref._id.toString() === item.refiller
+          );
+
+          return {
+            _id: item._id,
+            machineid: item.machineid,
+            machineName: item.machinename,
+            totalslots: item.totalslots,
+            warehouse: warehouse ? warehouse.wareHouseName : "",
+            admin: admin ? admin.first_name : "",
+            refiller: refiller ? refiller.first_name : "",
+            created_at: item.created_at,
+          };
+        });
+
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
           data: data,
         });
-      } else {
-        return rc.setResponse(res, {
-          msg: "Data not Found",
-        });
+      }
+      else{
+        const admin = req.user.id;
+        // console.log('admin: ', admin);
+        const data = await TableModel.getDataforTable(admin);
+        if (data) {
+          return rc.setResponse(res, {
+            success: true,
+            msg: "Data Fetched",
+            data: data,
+          });
+        } else {
+          return rc.setResponse(res, {
+            msg: "Data not Found",
+          });
+        }
       }
     } else {
       return rc.setResponse(res, { error: { code: 403 } });
