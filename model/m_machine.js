@@ -208,8 +208,8 @@ module.exports.getDataforTable = async () => {
       $project: {
         _id: 1,
         machineid: 1,
-        companyid: 1,
-        companyName: 1,
+        // companyid: 1,
+        // companyName: 1,
         machinename: 1,
         // location: 1,
         totalslots: 1,
@@ -250,15 +250,15 @@ module.exports.getDataforTable = async () => {
       },
     },
     { $unwind: "$warehouseoutput" },
-    {
-      $lookup: {
-        from: "companies",
-        localField: "companyid",
-        foreignField: "companyid",
-        as: "outputCompany",
-      },
-    },
-    { $unwind: "$outputCompany" },
+    // {
+    //   $lookup: {
+    //     from: "companies",
+    //     localField: "companyid",
+    //     foreignField: "companyid",
+    //     as: "outputCompany",
+    //   },
+    // },
+    // { $unwind: "$outputCompany" },
     {
       $project: {
         _id: 1,

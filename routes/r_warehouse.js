@@ -1013,7 +1013,16 @@ router.post(
                   await newstock.save();
                   console.log("---------new stock created ---------------");
                 }
+                const dateParts = currentResult.date.split("-");
+                const day = parseInt(dateParts[0]);
+                const month = parseInt(dateParts[1]) - 1; // Months are 0-indexed
+                const year = parseInt(dateParts[2]);
+              
+                // Create a Date object
+                const purchaseDate = new Date(year, month, day);
 
+                
+              
                 let purchaseStockData = {
                   warehouse: warehousedata._id,
                   product: productdata._id,
@@ -1025,7 +1034,7 @@ router.post(
                   GRN_Number: currentResult.GRN_Number,
                   gst: gstID._id,
                   admin: req.user._id,
-                  date: currentResult.date,
+                  date: purchaseDate,
                 };
 
                 let newRow = await purchaseStock(purchaseStockData);
@@ -1063,12 +1072,12 @@ router.post(
               stored_data: storeddata.length,
             };
           }
+          return rc.setResponse(res, {
+            success: true,
+            msg: responseMsg,
+            data: responseData,
+          });
         });
-      return rc.setResponse(res, {
-        success: true,
-        msg: responseMsg,
-        data: responseData,
-      });
     } catch (error) {
       console.error(error);
       return rc.setResponse(res, {

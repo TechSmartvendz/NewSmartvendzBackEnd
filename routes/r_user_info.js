@@ -150,12 +150,12 @@ router.get('/DataList', auth, asyncHandler(async(req,res)=> {
 }));
 router.get('/:id', auth, asyncHandler( 
     async (req, res, next) => {
-        const admin=req.user.id
+        const admin=req.user._id
         const id = req.params.id;
         if (req.user.role === "SuperAdmin") {
         const query={
             _id:id,
-            admin:admin
+            // admin:admin
         }
         const data = await TableModel.getDataByQueryFilterDataOne(query);
         if (data) {
