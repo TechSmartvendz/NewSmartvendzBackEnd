@@ -142,7 +142,7 @@ router.put(
       if (req.body.role) {
         const query = { _id: req.params.id };
         const data = await TableModel.updateByQuery(query, newData);
-        console.log(data);
+        // console.log(data);
         if (data) {
           return rc.setResponse(res, {
             success: true,
