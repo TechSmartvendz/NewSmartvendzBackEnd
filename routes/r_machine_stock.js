@@ -13,9 +13,9 @@ const TableModelPermission = require("../model/m_permission");
 const product = require("../model/m_product");
 const warehouseTable = require("../model/m_warehouse");
 
-const validator = require('express-joi-validation').createValidator();
-const {getAllMachineSlots} = require("../validation/machine_stock");
-const {refillSheet} = require("../validation/r_machine_stock");
+const validator = require("express-joi-validation").createValidator();
+const { getAllMachineSlots } = require("../validation/machine_stock");
+const { refillSheet } = require("../validation/r_machine_stock");
 
 const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
@@ -60,7 +60,7 @@ router.get(
 
 //------------------------get all slot details by machine Name------------------//
 router.get(
-  "/getallmachineslots", 
+  "/getallmachineslots",
   validator.query(getAllMachineSlots),
   auth,
   asyncHandler(async (req, res) => {
@@ -77,7 +77,12 @@ router.get(
         data: {},
       });
     }
-    const data = await machineslot.find({ machineid: req.query.machineid });
+    const data = await machineslot
+      .find({ machineid: req.query.machineid })
+      .select(
+        "slot machineid machineName machineid sloteid closingStock currentStock refillQuantity saleQuantity product"
+      )
+      .lean();
     const machine = await machines
       .findOne({ _id: req.query.machineid })
       .select("cash totalSalesCount salesValue");
@@ -88,7 +93,10 @@ router.get(
     let sendData;
     let ss = [];
     for (let i = 0; i < data.length; i++) {
-      productdata = await product.findOne({ _id: data[i].product });
+      productdata = await product
+        .findOne({ _id: data[i].product })
+        .select("productid productname")
+        .lean();
       // console.log('productdata: ', productdata);
       pdata.push(productdata);
 
@@ -97,8 +105,8 @@ router.get(
         machineid: data[i].machineid,
         machineName: data[i].machineName,
         slot: data[i].slot,
-        maxquantity: data[i].maxquantity,
-        active_status: data[i].active_status,
+        // maxquantity: data[i].maxquantity,
+        // active_status: data[i].active_status,
         productid: pdata[i]._id,
         productname: pdata[i].productname,
         sloteid: data[i].sloteid,
@@ -106,7 +114,7 @@ router.get(
         currentStock: null,
         refillQuantity: null,
         saleQuantity: null,
-        delete_status: data[i].delete_status,
+        // delete_status: data[i].delete_status,
         created_at: data[i].created_at,
       };
       ss.push(sendData);
@@ -325,6 +333,8 @@ router.get(
 //     }
 //   })
 // );
+
+// --------------------------ALL Refilling Request------------------------//
 router.get(
   "/allrefillingrequest",
   auth,
@@ -356,51 +366,50 @@ router.get(
     let filters = [];
     // query created for filtering
     const query2 = {};
+
+    if (req.user.role === "Admin") {
+      const machinesCreatedByAdmin = await machines.find({ admin: req.user._id }).select('_id');
+      const machineIdsCreatedByAdmin = machinesCreatedByAdmin.map((machine) => machine._id);
+      filters.push({ machineId: { $in: machineIdsCreatedByAdmin } });
+    }
+
     // query2 created beacuse if refiller login it should only see his approved request or else if superadmin or admin then they should be able to see all approved request
     if (req.user.role == "Refiller") {
       query2.refillerId = req.user._id;
       console.log(query2);
     }
     if (status) {
-      // filters = { status: status };
       filters.push({ status: status });
     }
     if (refillerName) {
       const refillerdetail = await user_infos.findOne({
         first_name: refillerName,
       });
-      // filters = { refillerId: refillerdetail._id };
       filters.push({ refillerId: refillerdetail._id });
     }
     if (date) {
-      // filters = { createdAt: date };
-      // filters.push({ createdAt: date });
       const clientDate = date; // Create a Date object from the client's date string
       const cdate = new Date(clientDate);
-      console.log("clientDate: ", cdate);
+      // console.log("clientDate: ", cdate);
       const iso8601Date = cdate.toISOString();
 
-      filters.push({ createdAt: "2023-08-19T04:33:48.822+00:00" }); // Use the formatted date for filtering
+      filters.push({ createdAt: iso8601Date }); // Use the formatted date for filtering
     }
     if (warehouse) {
       const warehousedetail = await warehouseTable.findOne({
         wareHouseName: warehouse,
       });
-      // filters = { warehouse: warehousedetail._id };
       filters.push({ warehouse: warehousedetail._id });
     }
     if (refillRequestNumber) {
-      // filters = { refillRequestNumber: refillRequestNumber };
       filters.push({ refillRequestNumber: refillRequestNumber });
     }
     if (machineName) {
       const machinedetail = await machines.findOne({
         machinename: machineName,
       });
-      // filters = { machineId: machinedetail._id };
       filters.push({ machineId: machinedetail._id });
     }
-    // const mergedQuery = Object.assign({}, filters, query2);
     const mergedQuery = { $and: [query2, ...filters] };
     try {
       const allRefillerRequest = await refillerrequest
@@ -990,7 +999,9 @@ router.delete(
 );
 
 router.get(
-  "/refillSheet", validator.query(refillSheet), auth,
+  "/refillSheet",
+  validator.query(refillSheet),
+  auth,
   asyncHandler(async (req, res) => {
     const query = {
       role: req.user.role,
@@ -1058,7 +1069,9 @@ router.get(
 );
 
 router.get(
-  "/refillSheetExportCSV", validator.query(refillSheet), auth,
+  "/refillSheetExportCSV",
+  validator.query(refillSheet),
+  auth,
   asyncHandler(async (req, res) => {
     const query = {
       role: req.user.role,

@@ -331,12 +331,10 @@ router.get(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listcompany) {
       if (req.user.role == "Admin") {
-        console.log("admin");
-        const adminId = req.user.admin;
+        // console.log("admin");
         const checkdata = await TableModel.find({ admin: req.user._id }).select(
           "_id machineid machinename totalslots warehouse admin refiller created_at"
         );
-
         const warehouseIds = checkdata
           .map((item) => item.warehouse)
           .filter(Boolean);
@@ -347,23 +345,21 @@ router.get(
 
         const [warehouses, admins, refillers] = await Promise.all([
           warehouse
-            .find({ _id: { $in: warehouseIds } })
-            .select("_id wareHouseName"),
+          .find({ _id: { $in: warehouseIds } })
+          .select("_id wareHouseName"),
           userDetails.find({ _id: { $in: adminIds } }).select("_id first_name"),
           userDetails
-            .find({ user_id: { $in: refillerIds } })
-            .select("_id first_name"),
+          .find({ user_id: { $in: refillerIds } })
+          .select("_id first_name"),
         ]);
-
         const data = checkdata.map((item) => {
           const warehouse = warehouses.find(
             (wh) => wh._id.toString() === item.warehouse
           );
           const admin = admins.find((ad) => ad._id.toString() === item.admin);
           const refiller = refillers.find(
-            (ref) => ref._id.toString() === item.refiller
-          );
-
+            (ref) => ref.first_name.toString() === item.refiller
+            );
           return {
             _id: item._id,
             machineid: item.machineid,
