@@ -61,7 +61,7 @@ router.get(
 //------------------------get all slot details by machine Name------------------//
 router.get(
   "/getallmachineslots",
-  validator.query(getAllMachineSlots),
+  // validator.query(getAllMachineSlots),
   auth,
   asyncHandler(async (req, res) => {
     const query = {
@@ -79,9 +79,9 @@ router.get(
     }
     const data = await machineslot
       .find({ machineid: req.query.machineid })
-      .select(
-        "slot machineid machineName machineid sloteid closingStock currentStock refillQuantity saleQuantity product"
-      )
+      // .select(
+        // "slot machineid machineName machineid sloteid closingStock currentStock refillQuantity saleQuantity product "
+      // )
       .lean();
     const machine = await machines
       .findOne({ _id: req.query.machineid })
@@ -105,8 +105,8 @@ router.get(
         machineid: data[i].machineid,
         machineName: data[i].machineName,
         slot: data[i].slot,
-        // maxquantity: data[i].maxquantity,
-        // active_status: data[i].active_status,
+        maxquantity: data[i].maxquantity,
+        active_status: data[i].active_status,
         productid: pdata[i]._id,
         productname: pdata[i].productname,
         sloteid: data[i].sloteid,
@@ -114,7 +114,7 @@ router.get(
         currentStock: null,
         refillQuantity: null,
         saleQuantity: null,
-        // delete_status: data[i].delete_status,
+        delete_status: data[i].delete_status,
         created_at: data[i].created_at,
       };
       ss.push(sendData);
