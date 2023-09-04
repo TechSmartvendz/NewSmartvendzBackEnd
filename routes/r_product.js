@@ -43,7 +43,7 @@ router.get(
         sellingprice: "",
         mass: "",
         unit: "",
-        HSN_code: "",
+        // HSN_code: "",
       };
       const csvFields = [
         "productid",
@@ -53,7 +53,7 @@ router.get(
         "sellingprice",
         "mass",
         "unit",
-        "HSN_code",
+        // "HSN_code",
       ];
       const csvParser = new CsvParser({ csvFields });
       const csvdata = csvParser.parse(j);
@@ -97,7 +97,7 @@ router.post(
             sellingprice: data[i].sellingprice,
             mass: data[i].mass,
             unit: data[i].unit,
-            HSN_code: data[i].HSN_code,
+            // HSN_code: data[i].HSN_code,
           };
           console.log(j);
           transaction(j);
