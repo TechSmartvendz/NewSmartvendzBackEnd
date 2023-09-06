@@ -95,7 +95,7 @@ router.get(
     for (let i = 0; i < data.length; i++) {
       productdata = await product
         .findOne({ _id: data[i].product })
-        .select("productid productname")
+        .select("productid productname sellingprice")
         .lean();
       // console.log('productdata: ', productdata);
       pdata.push(productdata);
@@ -106,15 +106,16 @@ router.get(
         machineName: data[i].machineName,
         slot: data[i].slot,
         maxquantity: data[i].maxquantity,
-        active_status: data[i].active_status,
+        // active_status: data[i].active_status,
         productid: pdata[i]._id,
         productname: pdata[i].productname,
+        productprice: pdata[i].sellingprice,
         sloteid: data[i].sloteid,
         closingStock: data[i].closingStock,
         currentStock: null,
         refillQuantity: null,
         saleQuantity: null,
-        delete_status: data[i].delete_status,
+        // delete_status: data[i].delete_status,
         created_at: data[i].created_at,
       };
       ss.push(sendData);
@@ -130,7 +131,7 @@ router.get(
       totalSalesCount: machine.totalSalesCount,
       totalSalesValue: machine.totalSalesValue,
     };
-    // console.log('machinedata: ', machinedata);
+    console.log('machinedata: ', machinedata);
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",

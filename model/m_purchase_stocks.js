@@ -16,6 +16,24 @@ const purchaseStocks = new Schema(
     admin: { type: String, default: null },
     isDeleted: { type: Boolean, default: false },
   },
+  // {
+  //   warehouse: { type: Schema.Types.ObjectId, ref: "warehouse", index: true },
+  //   supplier: { type: Schema.Types.ObjectId, ref: "supplier", index: true },
+  //   products: [
+  //     {
+  //       product: { type: Schema.Types.ObjectId, ref: "product" },
+  //       productQuantity: { type: Number, default: 0 },
+  //       sellingPrice: { type: Number, default: 0 },
+  //       totalPrice: { type: Number, default: 0 },
+  //       gst: { type: Schema.Types.ObjectId, ref: "m_gst" },
+  //     },
+  //   ],
+  //   invoiceNumber: { type: Number, default: 0 },
+  //   GRN_Number: { type: Number, default: 0 },
+  //   date: { type: Date, default: Date.now, required: true, index: true },
+  //   admin: { type: String, default: null },
+  //   isDeleted: { type: Boolean, default: false },
+  // },
   {
     timestamps: true,
   }
@@ -24,7 +42,10 @@ const purchaseStocks = new Schema(
 purchaseStocks.set("toJSON");
 purchaseStocks.set("toObject");
 
-const Table = (module.exports = mongoose.model("purchaseStocks", purchaseStocks));
+const Table = (module.exports = mongoose.model(
+  "purchaseStocks",
+  purchaseStocks
+));
 
 module.exports.addRow = async (newRow) => {
   const data = await newRow.save();
@@ -98,15 +119,15 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
           {
             $project: {
               _id: 1,
-              "productName": "$productoutput.productname",
-              "warehouse": "$warehouseoutput.wareHouseName",
-              "supplier": "$supplier.supplierName",
+              productName: "$productoutput.productname",
+              warehouse: "$warehouseoutput.wareHouseName",
+              supplier: "$supplier.supplierName",
               productQuantity: 1,
               sellingPrice: 1,
               totalPrice: 1,
               invoiceNumber: 1,
               GRN_Number: 1,
-              "date": {
+              date: {
                 $dateToString: {
                   format: "%Y-%m-%d %H:%M:%S",
                   date: "$date",
