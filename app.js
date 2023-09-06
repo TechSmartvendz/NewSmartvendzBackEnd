@@ -99,11 +99,13 @@ app.use("/api", supplier);
 app.use("/api", warestocktransferrequest);
 app.use("/api/tax", gst);
 //TODO:catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use( (req, res, next) => {
   // next(createError(404));
-  return rc.setResponse(res, {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  rc.setResponse(res, {
     msg: "API not Found:404",
   });
+  next();
 });
 
 app.listen(port, () => {
