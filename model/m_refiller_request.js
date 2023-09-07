@@ -12,12 +12,14 @@ const refillrequest = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "warehouse",
       required: true,
+      index: true
     },
-    refillRequestNumber: { type: String, default: null, unique: true },
+    refillRequestNumber: { type: String, default: null, unique: true , index: true},
     machineId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "machine",
       required: true,
+      index: true
     },
     machineSlots: [
       {
@@ -26,8 +28,8 @@ const refillrequest = new Schema(
         currentStock: { type: Number, default: 0 },
         refillQuantity: { type: Number, default: 0 },
         saleQuantity: { type: Number, default: 0 },
-        productid: { type: Schema.Types.ObjectId, ref: "product" },
-        sloteid: { type: String, default: false },
+        productid: { type: Schema.Types.ObjectId, ref: "product", index: true },
+        sloteid: { type: String, default: false, index: true },
       },
     ],
     returnItems: [
@@ -37,8 +39,8 @@ const refillrequest = new Schema(
         currentStock: { type: Number, default: 0 },
         refillQuantity: { type: Number, default: 0 },
         saleQuantity: { type: Number, default: 0 },
-        productid: { type: Schema.Types.ObjectId, ref: "product" },
-        sloteid: { type: String, default: false },
+        productid: { type: Schema.Types.ObjectId, ref: "product", index: true },
+        sloteid: { type: String, default: false, index: true },
       },
     ],
     date: { type: Date, default: null },
