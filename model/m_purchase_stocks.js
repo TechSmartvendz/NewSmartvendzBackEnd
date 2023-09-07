@@ -2,38 +2,38 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const purchaseStocks = new Schema(
-  {
-    warehouse: { type: Schema.Types.ObjectId, ref: "warehouse" },
-    product: { type: Schema.Types.ObjectId, ref: "product" },
-    supplier: { type: Schema.Types.ObjectId, ref: "supplier" },
-    productQuantity: { type: Number, default: 0 },
-    sellingPrice: { type: Number, default: 0 },
-    totalPrice: { type: Number, default: 0 },
-    invoiceNumber: { type: Number, default: 0 },
-    GRN_Number: { type: Number, default: 0 },
-    gst: { type: Schema.Types.ObjectId, ref: "m_gst" },
-    date: { type: Date, default: null, require: true },
-    admin: { type: String, default: null },
-    isDeleted: { type: Boolean, default: false },
-  },
   // {
-  //   warehouse: { type: Schema.Types.ObjectId, ref: "warehouse", index: true },
-  //   supplier: { type: Schema.Types.ObjectId, ref: "supplier", index: true },
-  //   products: [
-  //     {
-  //       product: { type: Schema.Types.ObjectId, ref: "product" },
-  //       productQuantity: { type: Number, default: 0 },
-  //       sellingPrice: { type: Number, default: 0 },
-  //       totalPrice: { type: Number, default: 0 },
-  //       gst: { type: Schema.Types.ObjectId, ref: "m_gst" },
-  //     },
-  //   ],
+  //   warehouse: { type: Schema.Types.ObjectId, ref: "warehouse" },
+  //   product: { type: Schema.Types.ObjectId, ref: "product" },
+  //   supplier: { type: Schema.Types.ObjectId, ref: "supplier" },
+  //   productQuantity: { type: Number, default: 0 },
+  //   sellingPrice: { type: Number, default: 0 },
+  //   totalPrice: { type: Number, default: 0 },
   //   invoiceNumber: { type: Number, default: 0 },
   //   GRN_Number: { type: Number, default: 0 },
-  //   date: { type: Date, default: Date.now, required: true, index: true },
+  //   gst: { type: Schema.Types.ObjectId, ref: "m_gst" },
+  //   date: { type: Date, default: null, require: true },
   //   admin: { type: String, default: null },
   //   isDeleted: { type: Boolean, default: false },
   // },
+  {
+    warehouse: { type: Schema.Types.ObjectId, ref: "warehouse", index: true },
+    supplier: { type: Schema.Types.ObjectId, ref: "supplier", index: true },
+    products: [
+      {
+        product: { type: Schema.Types.ObjectId, ref: "product" },
+        productQuantity: { type: Number, default: 0 },
+        sellingPrice: { type: Number, default: 0 },
+        totalPrice: { type: Number, default: 0 },
+        // gst: { type: Schema.Types.ObjectId, ref: "m_gst" },
+      },
+    ],
+    invoiceNumber: { type: Number, default: 0 },
+    GRN_Number: { type: Number, default: 0},
+    date: { type: Date, default: Date.now, required: true, index: true },
+    admin: { type: String, default: null },
+    isDeleted: { type: Boolean, default: false },
+  },
   {
     timestamps: true,
   }
