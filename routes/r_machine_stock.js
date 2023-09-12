@@ -131,7 +131,7 @@ router.get(
       totalSalesCount: machine.totalSalesCount,
       totalSalesValue: machine.totalSalesValue,
     };
-    console.log('machinedata: ', machinedata);
+    // console.log('machinedata: ', machinedata);
     return rc.setResponse(res, {
       success: true,
       msg: "Data fetched",
@@ -377,7 +377,7 @@ router.get(
     // query2 created beacuse if refiller login it should only see his approved request or else if superadmin or admin then they should be able to see all approved request
     if (req.user.role == "Refiller") {
       query2.refillerId = req.user._id;
-      console.log(query2);
+      // console.log(query2);
     }
     if (status) {
       filters.push({ status: status });

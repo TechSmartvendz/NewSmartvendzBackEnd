@@ -209,13 +209,13 @@ router.post(
                 newRow.admin = req.user._id;
                 // newRow.HSN_code = hsncodedata._id;
                 const data = await TableModel.addRow(newRow);
-                console.log('data: ', data);
+                // console.log("data: ", data);
                 if (data) {
                   const r = succ(results[i]);
                 }
               } catch (e) {
                 if (e.code == 11000) {
-                  console.log(e)
+                  // console.log(e);
                   results[i].error = "Duplicate Entry";
                   const r = reject(results[i]);
                 }
@@ -223,9 +223,9 @@ router.post(
             }
           }
           // const r= reject();
-          console.log("storeddata",storeddata.length);
-          console.log("rejectdata",rejectdata);
-          console.log("rejectdata",rejectdata.length);
+          // console.log("storeddata", storeddata.length);
+          // console.log("rejectdata", rejectdata);
+          // console.log("rejectdata", rejectdata.length);
 
           if (rejectdata.length > 0) {
             return rc.setResponse(res, {
@@ -246,7 +246,7 @@ router.post(
             });
           }
         });
-    // return res.send("ok")
+      // return res.send("ok")
     } else {
       return rc.setResponse(res, { error: { code: 403 } });
     }
@@ -440,10 +440,11 @@ router.delete(
       let query = {
         role: req.user.role,
       };
-      var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-      if (cdata.addnewcompany) {
+      // var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+      // if (cdata.addnewcompany) {
+      if (req.user.role === "SuperAdmin") {
         const id = req.params.id;
-        query = { _id: req.params.id };
+        query = { _id: id };
         // const rdata = await TableModel.getDataByQueryFilterDataOne(query);
         // query={role:rdata.role}
         // const count = await TableModelUser.getDataCountByQuery(query);

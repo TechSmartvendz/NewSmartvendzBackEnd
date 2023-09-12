@@ -19,6 +19,9 @@ const { upload } = require("../middleware/fileUpload");
 const iconv = require("iconv-lite");
 const path = require("path");
 
+const validator = require('express-joi-validation').createValidator();
+const {salesReport} = require("../validation/sales_report");
+
 // sendStockTransferRequest to warehouse  ------------not using this now--------------
 router.post(
   "/sendStockTransferRequestsss",
@@ -763,28 +766,28 @@ const generateSalesReports = async (startDate, endDate) => {
   try {
     const salesReport = [];
 
-    const refillRequests = await refillRequest
-      .find({
-        createdAt: { $gte: startDate, $lte: endDate },
-        status: "Approved",
-      })
-      .populate("machineId", "machinename")
-      .populate("warehouse", "wareHouseName")
-      .populate("refillerId", "first_name")
-      .populate("machineSlots.productid", "productname productid sellingprice");
-
+    const refillRequests = await Promise.resolve(refillRequest
+    .find({
+      createdAt: { $gte: startDate, $lte: endDate },
+      status: "Approved",
+    })
+    .populate("machineId", "machinename")
+    .populate("warehouse", "wareHouseName")
+    .populate("refillerId", "first_name")
+    .populate("machineSlots.productid", "productname productid sellingprice"));
+    
     for (const request of refillRequests) {
       for (const slot of request.machineSlots) {
         if (slot.saleQuantity > 0) {
-          const product = slot.productid;
+          const product = slot.productid? slot.productid: "";
           const machine = request.machineId;
           const warehouse = request.warehouse;
           const refiller = request.refillerId;
           // console.log('refiller: ', refiller);
 
           const saleEntry = {
-            productName: product.productname,
-            productCode: product.productid,
+            productCode: product.productid? product.productid: "NOPRODUCT",
+            productName: product.productname? product.productname : "NOPRODUCT",
             MRP: product.sellingprice,
             machineName: machine.machinename,
             warehouseName: warehouse.wareHouseName,
@@ -805,7 +808,7 @@ const generateSalesReports = async (startDate, endDate) => {
 };
 
 router.get(
-  "/salesreport/exportCSV",
+  "/salesreport/exportCSV", validator.query(salesReport), auth,
   asyncHandler(async (req, res) => {
     // const startDate = new Date("2023-08-01");
     // const endDate = new Date("2023-08-25");
@@ -859,7 +862,7 @@ router.get(
 );
 
 router.get(
-  "/salesreport",
+  "/salesreport",validator.query(salesReport),
   asyncHandler(async (req, res) => {
     const startDate = req.query.start;
     const endDate = req.query.end;
