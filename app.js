@@ -10,6 +10,7 @@ const cors = require("cors");
 const cjs = require("crypto-js");
 const mongoose = require("mongoose");
 var path = require("path");
+const logger = require('./logger/logger');
 
 //TODO:import inital configuration and connection checks
 require("./config/dbconn");
@@ -107,6 +108,9 @@ app.use( (req, res, next) => {
   });
   next();
 });
+
+// logger.info('This is an info message');
+// logger.error('This is an error message');
 
 app.listen(port, () => {
   console.log(`connection is setup at ${port}`);

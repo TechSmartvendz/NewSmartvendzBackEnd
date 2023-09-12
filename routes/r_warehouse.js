@@ -27,9 +27,9 @@ router.post(
     const query = {
       role: req.user.role,
     };
-    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addWareHouse) {
-      newRow = new warehouseTable(req.body);
+      let newRow = new warehouseTable(req.body);
       newRow.admin = req.user._id;
       if (!newRow) {
         return rc.setResponse(res, {
@@ -70,7 +70,7 @@ router.get(
     const query = {
       role: req.user.role,
     };
-    var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listWarehouse) {
       const data = await warehouseTable
         .find({ isDeleted: false })
@@ -1464,12 +1464,13 @@ router.get(
       }
       const data = await warehouseStock
         .find({ warehouse: req.query.id })
-        .populate("product", "_id productname productid")
-        .select("_id product");
+        .populate("product", "_id productname productid sellingprice")
+        .select("_id product sellingprice");
       const productarray = data.map((item) => ({
         _id: item.product._id,
         productname: item.product.productname,
         productid: item.product.productid,
+        sellingproce: item.product.sellingprice
       }));
       return rc.setResponse(res, {
         success: true,
