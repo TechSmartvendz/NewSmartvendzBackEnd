@@ -19,8 +19,8 @@ const { upload } = require("../middleware/fileUpload");
 const iconv = require("iconv-lite");
 const path = require("path");
 
-const validator = require('express-joi-validation').createValidator();
-const {salesReport} = require("../validation/sales_report");
+const validator = require("express-joi-validation").createValidator();
+const { salesReport } = require("../validation/sales_report");
 
 // sendStockTransferRequest to warehouse  ------------not using this now--------------
 router.post(
@@ -90,33 +90,35 @@ router.post(
   "/sendStockTransferRequest",
   auth,
   asyncHandler(async (req, res) => {
-    const transferRequests = req.body; // Array of transfer request objects
+    // const transferRequests = req.body; // Array of transfer request objects
     const combinedData = []; // Array to store combined data for a single transfer request
 
     try {
-      for (let i = 0; i < transferRequests.length; i++) {
-        const { fromWarehouse, toWarehouse, productName, quantity } =
-          transferRequests[i];
-        const fromwarehouse = await warehouseTable.findOne({
-          wareHouseName: fromWarehouse,
-        });
-        const towarehouse = await warehouseTable.findOne({
-          wareHouseName: toWarehouse,
-        });
+      const fromwarehouse = await warehouseTable.findOne({
+        wareHouseName: req.body.fromWarehouse,
+      });
+      const towarehouse = await warehouseTable.findOne({
+        wareHouseName: req.body.toWarehouse,
+      });
+      for (let i = 0; i < req.body.transferRequests.length; i++) {
+        // const { fromWarehouse, toWarehouse, productName, quantity } =
+        const { productName, quantity } = req.body.transferRequests[i];
         const product = await productTable.findOne({
           productname: productName,
         });
         combinedData.push({
-          fromWarehouse: fromwarehouse._id,
-          toWarehouse: towarehouse._id,
           productName: product._id,
           productQuantity: quantity,
-          status: "Pending",
+          // fromWarehouse: fromwarehouse._id,
+          // toWarehouse: towarehouse._id,
+          // status: "Pending",
         });
       }
 
       // Create a single transfer request with all combined data
       const transferRequest = new WarehouseStockTransferRequest({
+        fromWarehouse: fromwarehouse._id,
+        toWarehouse: towarehouse._id,
         transferRequests: combinedData,
         status: "Pending",
       });
@@ -547,7 +549,7 @@ router.get(
         .populate("transferRequests.fromWarehouse")
         .populate("transferRequests.toWarehouse")
         .populate("transferRequests.productName");
-      console.log("data", data);
+      // console.log("data", data);
       let sendData = [];
       // for (let i = 0; i < data.length; i++) {
       //   sendData.push({
@@ -766,28 +768,35 @@ const generateSalesReports = async (startDate, endDate) => {
   try {
     const salesReport = [];
 
-    const refillRequests = await Promise.resolve(refillRequest
-    .find({
-      createdAt: { $gte: startDate, $lte: endDate },
-      status: "Approved",
-    })
-    .populate("machineId", "machinename")
-    .populate("warehouse", "wareHouseName")
-    .populate("refillerId", "first_name")
-    .populate("machineSlots.productid", "productname productid sellingprice"));
-    
+    const refillRequests = await Promise.resolve(
+      refillRequest
+        .find({
+          createdAt: { $gte: startDate, $lte: endDate },
+          status: "Approved",
+        })
+        .populate("machineId", "machinename")
+        .populate("warehouse", "wareHouseName")
+        .populate("refillerId", "first_name")
+        .populate(
+          "machineSlots.productid",
+          "productname productid sellingprice"
+        )
+    );
+
     for (const request of refillRequests) {
       for (const slot of request.machineSlots) {
         if (slot.saleQuantity > 0) {
-          const product = slot.productid? slot.productid: "";
+          const product = slot.productid ? slot.productid : "";
           const machine = request.machineId;
           const warehouse = request.warehouse;
           const refiller = request.refillerId;
           // console.log('refiller: ', refiller);
 
           const saleEntry = {
-            productCode: product.productid? product.productid: "NOPRODUCT",
-            productName: product.productname? product.productname : "NOPRODUCT",
+            productCode: product.productid ? product.productid : "NOPRODUCT",
+            productName: product.productname
+              ? product.productname
+              : "NOPRODUCT",
             MRP: product.sellingprice,
             machineName: machine.machinename,
             warehouseName: warehouse.wareHouseName,
@@ -808,7 +817,9 @@ const generateSalesReports = async (startDate, endDate) => {
 };
 
 router.get(
-  "/salesreport/exportCSV", validator.query(salesReport), auth,
+  "/salesreport/exportCSV",
+  validator.query(salesReport),
+  auth,
   asyncHandler(async (req, res) => {
     // const startDate = new Date("2023-08-01");
     // const endDate = new Date("2023-08-25");
@@ -822,11 +833,12 @@ router.get(
       return salesReport;
     }
     const data = await generateSalesReports(startDate, endDate);
+    // console.log("data",data)
     if (data) {
       for (let i = 0; i < data.length; i++) {
         const report = {
-          productName: data[i].productName,
-          productCode: data[i].productCode,
+          productName: data[i].productName ? data[i].productName : "No Product",
+          productCode: data[i].productCode ? data[i].productCode : "No Product",
           MRP: data[i].MRP,
           machineName: data[i].machineName,
           warehouseName: data[i].warehouseName,
@@ -853,7 +865,7 @@ router.get(
         "Content-Disposition",
         "attachment; filename=public/salesReport.csv"
       );
-      res.status(200).end(csvData);
+      return res.status(200).end(csvData);
     } else {
       res.status(200).json({ error: "Report not found" });
     }
@@ -862,7 +874,8 @@ router.get(
 );
 
 router.get(
-  "/salesreport",validator.query(salesReport),
+  "/salesreport",
+  validator.query(salesReport),
   asyncHandler(async (req, res) => {
     const startDate = req.query.start;
     const endDate = req.query.end;

@@ -2,18 +2,20 @@ const mongoose = require("mongoose");
 
 const WarehouseToWarehouseStockTransferRequest = new mongoose.Schema(
   {
-    transferRequests:[{
-      fromWarehouse: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "warehouse",
+    fromWarehouse: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "warehouse",
+    },
+    toWarehouse: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "warehouse",
+    },
+    transferRequests: [
+      {
+        productName: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+        productQuantity: { type: Number, default: 0, minimum: 0 },
       },
-      toWarehouse: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "warehouse",
-      },
-      productName: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
-      productQuantity: { type: Number, default: 0, minimum: 0 },
-    }],
+    ],
     status: {
       type: String,
       enum: ["Pending", "Accepted", "Rejected"],
