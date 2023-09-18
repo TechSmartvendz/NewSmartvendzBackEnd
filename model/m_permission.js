@@ -224,7 +224,10 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-
+  salesReport:{
+    type: Boolean,
+    default: false,
+  },
   created_at: {
     type: Date,
     default: Date.now,
