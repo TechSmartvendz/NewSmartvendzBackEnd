@@ -11,6 +11,7 @@ const productTable = require("../model/m_product");
 const WarehouseStockTransferRequest = require("../model/m_warehouseToWarehouse_Stock_TransferRequest");
 const refillRequest = require("../model/m_refiller_request");
 const machinedata = require("../model/m_machine");
+const user_infos = require("../model/m_user_info");
 
 const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
@@ -764,16 +765,42 @@ router.delete(
   })
 );
 
-const generateSalesReports = async (startDate, endDate) => {
+const generateSalesReports = async (
+  startDate,
+  endDate,
+  machineNameFilter,
+  refillerNameFilter
+) => {
   try {
     const salesReport = [];
 
+    const queryFilters = {
+      createdAt: { $gte: startDate, $lte: endDate },
+      status: "Approved",
+    };
+
+    if (machineNameFilter) {
+      const machine = await machinedata
+        .findOne({ machinename: machineNameFilter })
+        .select("_id machineid machinename");
+      // console.log('machine: ', machine);
+      if (machine) {
+        queryFilters["machineId"] = machine._id;
+      }
+    }
+
+    if (refillerNameFilter) {
+      const refiller = await user_infos
+        .findOne({ first_name: refillerNameFilter })
+        .select("_id user_id first_name");
+      if (refiller) {
+        queryFilters["refillerId"] = refiller._id;
+      }
+    }
+
     const refillRequests = await Promise.resolve(
       refillRequest
-        .find({
-          createdAt: { $gte: startDate, $lte: endDate },
-          status: "Approved",
-        })
+        .find(queryFilters)
         .populate("machineId", "machinename")
         .populate("warehouse", "wareHouseName")
         .populate("refillerId", "first_name")
@@ -819,12 +846,14 @@ const generateSalesReports = async (startDate, endDate) => {
 router.get(
   "/salesreport/exportCSV",
   validator.query(salesReport),
-  auth,
+  // auth,
   asyncHandler(async (req, res) => {
     // const startDate = new Date("2023-08-01");
     // const endDate = new Date("2023-08-25");
     const startDate = req.query.start;
     const endDate = req.query.end;
+    const machineNameFilter = req.query.machineNameFilter;
+    const refillerNameFilter = req.query.refillerNameFilter;
     const salesReport = [];
     function pushData(x) {
       if (x) {
@@ -832,7 +861,12 @@ router.get(
       }
       return salesReport;
     }
-    const data = await generateSalesReports(startDate, endDate);
+    const data = await generateSalesReports(
+      startDate,
+      endDate,
+      machineNameFilter,
+      refillerNameFilter
+    );
     // console.log("data",data)
     if (data) {
       for (let i = 0; i < data.length; i++) {
@@ -879,8 +913,14 @@ router.get(
   asyncHandler(async (req, res) => {
     const startDate = req.query.start;
     const endDate = req.query.end;
-
-    const data = await generateSalesReports(startDate, endDate);
+    const machineNameFilter = req.query.machineNameFilter;
+    const refillerNameFilter = req.query.refillerNameFilter;
+    const data = await generateSalesReports(
+      startDate,
+      endDate,
+      machineNameFilter,
+      refillerNameFilter
+    );
 
     return rc.setResponse(res, {
       success: true,
