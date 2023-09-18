@@ -1021,7 +1021,9 @@ router.get(
       const machinesData = await machines.find({
         refiller: req.query.refiller,
       });
+      // console.log('machinesData: ', machinesData);
       const machineIds = machinesData.map((machine) => machine.machineid);
+      const machinename = machinesData.map((machine) => machine.machinename);
       const machineslotdata = await machineslot
         .find({ machineName: { $in: machineIds } })
         .select("machineName slot product currentStock");
@@ -1053,6 +1055,12 @@ router.get(
           stock,
         })
       );
+      groupedData.forEach((item) => {
+        const machine = machinesData.find((m) => m.machineid === item.machineName);
+        if (machine) {
+          item.machineName = machine.machinename;
+        }
+      });
 
       return rc.setResponse(res, {
         success: true,
