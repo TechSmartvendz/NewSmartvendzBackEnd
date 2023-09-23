@@ -118,7 +118,7 @@ router.get('/',auth, asyncHandler(
 
 router.get('/DataList', auth, asyncHandler(async(req,res)=> {
     let role = req.query.role;
-    console.log(req.query)
+    // console.log(req.query)
     if(role == "Refiller" ){
         role = "Refiller";
     }
