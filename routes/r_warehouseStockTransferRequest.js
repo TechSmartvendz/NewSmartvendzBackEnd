@@ -101,7 +101,7 @@ router.post(
       const towarehouse = await warehouseTable.findOne({
         wareHouseName: req.body.toWarehouse,
       });
-      for (let i = 0; i < req.body.transferRequests.length; i++) {
+      for (let i = 0; i < req.body.products.length; i++) {
         // const { fromWarehouse, toWarehouse, productName, quantity } =
         const { productName, quantity } = req.body.transferRequests[i];
         const product = await productTable.findOne({
@@ -120,7 +120,7 @@ router.post(
       const transferRequest = new WarehouseStockTransferRequest({
         fromWarehouse: fromwarehouse._id,
         toWarehouse: towarehouse._id,
-        transferRequests: combinedData,
+        products: combinedData,
         status: "Pending",
       });
       await transferRequest.save();
@@ -736,6 +736,15 @@ router.post(
   })
 );
 
+// edit Refill Request
+// router.put("/refill/request/:id", auth, asyncHandler(async(req,res)=> {
+//   const data  = await refillRequest.findOne({id: req.params.id});
+//   const updatedata = req.body;
+//   if(data){
+//     const update = await refillRequest.findOneAndUpdate(data, {} )
+//   }
+// }))
+
 router.delete(
   "/refillrequest/:id",
   auth,
@@ -808,10 +817,34 @@ const generateSalesReports = async (
           "machineSlots.productid",
           "productname productid sellingprice"
         )
+        .populate("returnItems.productid", "productname productid sellingprice")
     );
 
     for (const request of refillRequests) {
       for (const slot of request.machineSlots) {
+        if (slot.saleQuantity > 0) {
+          const product = slot.productid ? slot.productid : "";
+          const machine = request.machineId;
+          const warehouse = request.warehouse;
+          const refiller = request.refillerId;
+          // console.log('refiller: ', refiller);
+
+          const saleEntry = {
+            productCode: product.productid ? product.productid : "NOPRODUCT",
+            productName: product.productname
+              ? product.productname
+              : "NOPRODUCT",
+            MRP: product.sellingprice,
+            machineName: machine.machinename,
+            warehouseName: warehouse.wareHouseName,
+            refillerName: refiller.first_name,
+            saleQuantity: slot.saleQuantity,
+            date: request.createdAt,
+          };
+          salesReport.push(saleEntry);
+        }
+      }
+      for (const slot of request.returnItems) {
         if (slot.saleQuantity > 0) {
           const product = slot.productid ? slot.productid : "";
           const machine = request.machineId;

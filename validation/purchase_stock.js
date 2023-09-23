@@ -12,7 +12,7 @@ exports.purchaseStockValidate = Joi.object().keys({
     supplier: Joi.string().required(),
     products: Joi.array().items(productSchema).min(1).required(),
     date: Joi.date().iso().required(),
-    invoiceNumber: Joi.number().integer().min(0).required(),
+    invoiceNumber: Joi.string().required(),
 });
 
 exports.getpurchasestockbyid = Joi.object().keys({
