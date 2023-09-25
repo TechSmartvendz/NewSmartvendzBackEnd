@@ -108,7 +108,7 @@ router.get(
         maxquantity: data[i].maxquantity,
         // active_status: data[i].active_status,
         productid: pdata[i]._id,
-        productname: pdata[i].productname,
+        productname: `${pdata[i].productname} - ${pdata[i].sellingprice}Rs`,
         productprice: pdata[i].sellingprice,
         sloteid: data[i].sloteid,
         closingStock: data[i].closingStock,

@@ -532,64 +532,141 @@ router.post(
 //
 
 // get alltransfer stock request
+// router.get(
+//   "/alltransferRequest/Datalist",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     const query = {
+//       role: req.user.role,
+//     };
+//     let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+//     if (cdata.listTransferStock) {
+//       const data = await WarehouseStockTransferRequest.find({
+//         isDeleted: false,
+//       })
+//         // .populate("fromWarehouse")
+//         // .populate("toWarehouse")
+//         // .populate("productName");
+//         .populate("fromWarehouse", "wareHouseName")
+//         .populate("toWarehouse", "wareHouseName")
+//         .populate("transferRequests.productName");
+//       // console.log('data: ', data);
+//       // console.log("data", data);
+//       let sendData = [];
+//       // for (let i = 0; i < data.length; i++) {
+//       //   sendData.push({
+//       //     id: data[i]._id,
+//       //     fromWarehouse: data[i].fromWarehouse.wareHouseName,
+//       //     towarehouse: data[i].toWarehouse.wareHouseName,
+//       //     product: data[i].productName.productname,
+//       //     productQuantity: data[i].productQuantity,
+//       //     status: data[i].status,
+//       //   });
+//       // }
+//       for (let i = 0; i < data.length; i++) {
+//         const transferRequests = data[i].transferRequests;
+//         for (let j = 0; j < transferRequests.length; j++) {
+//           sendData.push({
+//             id: data[i]._id,
+//             fromWarehouse: data[i].fromWarehouse
+//               ? data[i].fromWarehouse.wareHouseName
+//               : "N/A",
+//             toWarehouse: data[i].towarehouse
+//               ? data[i].toWarehouse.wareHouseName
+//               : "N/A",
+//             product: transferRequests[j].productName.productname,
+//             productQuantity: transferRequests[j].productQuantity,
+//             status: data[i].status,
+//           });
+//         }
+//       }
+//       if (data) {
+//         return rc.setResponse(res, {
+//           success: true,
+//           msg: "Data fetched",
+//           data: sendData,
+//         });
+//       } else {
+//         return rc.setResponse(res, {
+//           msg: "Data not found",
+//         });
+//       }
+//       // console.log(sendData);
+//     } else {
+//       return rc.setResponse(res, { error: { code: 403 } });
+//     }
+//   })
+// );
+
 router.get(
-  "/alltransferRequest/Datalist",
+  "/allTransferStockRequest",
   auth,
   asyncHandler(async (req, res) => {
     const query = {
       role: req.user.role,
     };
-    let cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if (cdata.listTransferStock) {
-      const data = await WarehouseStockTransferRequest.find({
-        isDeleted: false,
-      })
-      // .populate("fromWarehouse")
-      // .populate("toWarehouse")
-      // .populate("productName");
-      .populate("fromWarehouse", "wareHouseName")
-      .populate("toWarehouse", "wareHouseName")
-      .populate("transferRequests.productName");
-      // console.log('data: ', data);
-      // console.log("data", data);
-      let sendData = [];
-      // for (let i = 0; i < data.length; i++) {
-      //   sendData.push({
-      //     id: data[i]._id,
-      //     fromWarehouse: data[i].fromWarehouse.wareHouseName,
-      //     towarehouse: data[i].toWarehouse.wareHouseName,
-      //     product: data[i].productName.productname,
-      //     productQuantity: data[i].productQuantity,
-      //     status: data[i].status,
-      //   });
-      // }
-      for (let i = 0; i < data.length; i++) {
-        const transferRequests = data[i].transferRequests;
-        for (let j = 0; j < transferRequests.length; j++) {
-          sendData.push({
-            id: data[i]._id,
-            fromWarehouse: data[i].fromWarehouse? data[i].fromWarehouse.wareHouseName: "N/A",
-            toWarehouse: data[i].towarehouse? data[i].toWarehouse.wareHouseName: "N/A",
-            product: transferRequests[j].productName.productname,
-            productQuantity: transferRequests[j].productQuantity,
-            status: data[i].status,
-          });
-        }
-      }
+    let permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (permissions.listTransferStock) {
+      const data = await WarehouseStockTransferRequest.find()
+        .select("fromWarehouse toWarehouse status createdAt")
+        .populate("fromWarehouse", "wareHouseName")
+        .populate("toWarehouse", "wareHouseName")
+      // console.log(data);
+
+      const sendData = data.map((index) => ({
+        _id: index._id,
+        fromWarehouse: index?.fromWarehouse?.wareHouseName,
+        toWarehouse: index?.toWarehouse?.wareHouseName,
+        status: index.status,
+        createdAt: index.createdAt,
+      }));
       if (data) {
         return rc.setResponse(res, {
           success: true,
-          msg: "Data fetched",
           data: sendData,
         });
-      } else {
+      }
+    }
+  })
+);
+
+router.get(
+  "/allTransferStockRequestbyid",
+  auth,
+  asyncHandler(async (req, res) => {
+    const query = {
+      role: req.user.role,
+    };
+    let permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+      query
+    );
+    if (permissions.listTransferStock) {
+      const data = await WarehouseStockTransferRequest.findOne({_id: req.query.id})
+        .select("fromWarehouse toWarehouse transferRequests status createdAt")
+        .populate("fromWarehouse", "wareHouseName")
+        .populate("toWarehouse", "wareHouseName")
+        .populate("transferRequests.productName", "productname");
+      // console.log(data);
+
+      const sendData = {
+        _id: data._id,
+        fromWarehouse: data?.fromWarehouse?.wareHouseName,
+        toWarehouse: data?.toWarehouse?.wareHouseName,
+        products: data.transferRequests.map((request) => ({
+          productName: request.productName.productname,
+          productQuantity: request.productQuantity,
+        })),
+        status: data.status,
+        createdAt: data.createdAt,
+      };
+      if (data) {
         return rc.setResponse(res, {
-          msg: "Data not found",
+          success: true,
+          data: sendData,
         });
       }
-      // console.log(sendData);
-    } else {
-      return rc.setResponse(res, { error: { code: 403 } });
     }
   })
 );

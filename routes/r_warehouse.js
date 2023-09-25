@@ -800,13 +800,13 @@ router.get(
     const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
       query
     );
-    console.log(req.query);
+    // console.log(req.query);
     let filters;
     if (req.query.warehouse) {
       const warehousedetail = await warehouseTable.findOne({
         wareHouseName: req.query.warehouse,
       });
-      console.log("warehousedetail: ", warehousedetail);
+      // console.log("warehousedetail: ", warehousedetail);
       filters = { warehouse: warehousedetail._id };
       // filters.warehouse = warehousedetail._id;
     }
@@ -814,7 +814,7 @@ router.get(
       const productdetail = await productTable.findOne({
         productname: req.query.productname,
       });
-      console.log("productdetail: ", productdetail);
+      // console.log("productdetail: ", productdetail);
       filters = { product: productdetail._id };
       // filters.product = productdetail._id;
     }
@@ -822,7 +822,7 @@ router.get(
       const supplierdetail = await supplierTable.findOne({
         supplierName: req.query.supplier,
       });
-      console.log("productdetail: ", supplierdetail);
+      // console.log("productdetail: ", supplierdetail);
       filters = { supplier: supplierdetail._id };
       // filters.supplier = supplierdetail._id;
     }
@@ -834,7 +834,7 @@ router.get(
       filters = { GRN_Number: req.query.grn_number };
       // filters.GRN_Number = req.query.grn_number;
     }
-    console.log("filters: ", filters);
+    // console.log("filters: ", filters);
 
     if (permissions.purchaseStockList) {
       const allpurchase = await purchaseStock
