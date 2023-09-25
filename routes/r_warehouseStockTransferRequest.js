@@ -103,7 +103,7 @@ router.post(
       });
       for (let i = 0; i < req.body.products.length; i++) {
         // const { fromWarehouse, toWarehouse, productName, quantity } =
-        const { productName, quantity } = req.body.transferRequests[i];
+        const { productName, quantity } = req.body.products[i];
         const product = await productTable.findOne({
           productname: productName,
         });
@@ -120,7 +120,7 @@ router.post(
       const transferRequest = new WarehouseStockTransferRequest({
         fromWarehouse: fromwarehouse._id,
         toWarehouse: towarehouse._id,
-        products: combinedData,
+        transferRequests: combinedData,
         status: "Pending",
       });
       await transferRequest.save();
@@ -476,7 +476,7 @@ router.post(
       const transferRequest = await WarehouseStockTransferRequest.findById(
         requestId
       );
-      console.log("transferRequest", transferRequest);
+      // console.log("transferRequest", transferRequest);
       if (!transferRequest) {
         return res
           .status(404)
@@ -489,7 +489,7 @@ router.post(
         // Update the stock quantities for each data entry
         for (let i = 0; i < dataEntries.length; i++) {
           const dataEntry = dataEntries[i];
-          console.log("dataEntry: ", dataEntry);
+          // console.log("dataEntry: ", dataEntry);
           await warehouseStock.updateOne(
             {
               warehouse: dataEntry.fromWarehouse,
@@ -544,12 +544,13 @@ router.get(
       const data = await WarehouseStockTransferRequest.find({
         isDeleted: false,
       })
-        // .populate("fromWarehouse")
-        // .populate("toWarehouse")
-        // .populate("productName");
-        .populate("transferRequests.fromWarehouse")
-        .populate("transferRequests.toWarehouse")
-        .populate("transferRequests.productName");
+      // .populate("fromWarehouse")
+      // .populate("toWarehouse")
+      // .populate("productName");
+      .populate("fromWarehouse", "wareHouseName")
+      .populate("toWarehouse", "wareHouseName")
+      .populate("transferRequests.productName");
+      // console.log('data: ', data);
       // console.log("data", data);
       let sendData = [];
       // for (let i = 0; i < data.length; i++) {
@@ -567,8 +568,8 @@ router.get(
         for (let j = 0; j < transferRequests.length; j++) {
           sendData.push({
             id: data[i]._id,
-            fromWarehouse: transferRequests[j].fromWarehouse.wareHouseName,
-            towarehouse: transferRequests[j].toWarehouse.wareHouseName,
+            fromWarehouse: data[i].fromWarehouse? data[i].fromWarehouse.wareHouseName: "N/A",
+            toWarehouse: data[i].towarehouse? data[i].toWarehouse.wareHouseName: "N/A",
             product: transferRequests[j].productName.productname,
             productQuantity: transferRequests[j].productQuantity,
             status: data[i].status,
