@@ -353,118 +353,6 @@ function replaceSpecialChars(input) {
 // ----------------------------------------------------//
 
 // acceptStock Transfer request of warehouse to warehouse
-// router.post(
-//   "/acceptStockTransferRequest/:requestId",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const { requestId } = req.params;
-
-//     try {
-//       const transferRequest = await WarehouseStockTransferRequest.findById(
-//         requestId
-//       );
-//       if (!transferRequest) {
-//         return res
-//           .status(404)
-//           .json({ error: "Stock transfer request not found." });
-//       }
-//       if (transferRequest.status === "Pending") {
-//         await warehouseStock.updateOne(
-//           {
-//             warehouse: transferRequest.fromWarehouse,
-//             product: transferRequest.productName,
-//           },
-//           { $inc: { productQuantity: -transferRequest.productQuantity } }
-//         );
-//         await warehouseStock.updateOne(
-//           {
-//             warehouse: transferRequest.toWarehouse,
-//             product: transferRequest.productName,
-//           },
-//           { $inc: { productQuantity: transferRequest.productQuantity } },
-//           { upsert: true }
-//         );
-
-//         // Update the status of the transfer request
-//         transferRequest.status = "Accepted";
-//         await transferRequest.save();
-//         return rc.setResponse(res, {
-//           success: true,
-//           msg: "Stock transfer request accepted.",
-//         });
-//       } else if (transferRequest.status === "Accepted") {
-//         return rc.setResponse(res, {
-//           success: false,
-//           msg: "request already accepted",
-//         });
-//       }
-//     } catch (error) {
-//       res
-//         .status(500)
-//         .json({ error: "Failed to accept stock transfer request." });
-//     }
-//   })
-// );
-
-// router.post(
-//   "/acceptStockTransferRequest/:requestId",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const { requestId } = req.params;
-
-//     try {
-//       const transferRequest = await WarehouseStockTransferRequest.findById(
-//         requestId
-//       );
-//       if (!transferRequest) {
-//         return res
-//           .status(404)
-//           .json({ error: "Stock transfer request not found." });
-//       }
-
-//       if (transferRequest.status === "Pending") {
-//         const dataEntries = transferRequest.transferRequests; // Get the array of data entries
-
-//         // Update the stock quantities for each data entry
-//         for (let i = 0; i < dataEntries.length; i++) {
-//           const dataEntry = dataEntries[i];
-//           await warehouseStock.updateOne(
-//             {
-//               warehouse: dataEntry.fromWarehouse,
-//               product: dataEntry.productName,
-//             },
-//             { $inc: { productQuantity: -dataEntry.productQuantity } }
-//           );
-//           await warehouseStock.updateOne(
-//             {
-//               warehouse: dataEntry.toWarehouse,
-//               product: dataEntry.productName,
-//             },
-//             { $inc: { productQuantity: dataEntry.productQuantity } },
-//             { upsert: true }
-//           );
-//         }
-
-//         // Update the status of the transfer request
-//         transferRequest.status = "Accepted";
-//         await transferRequest.save();
-//         return rc.setResponse(res, {
-//           success: true,
-//           msg: "Stock transfer request accepted.",
-//         });
-//       } else if (transferRequest.status === "Accepted") {
-//         return rc.setResponse(res, {
-//           success: false,
-//           msg: "Request already accepted",
-//         });
-//       }
-//     } catch (error) {
-//       res
-//         .status(500)
-//         .json({ error: "Failed to accept stock transfer request." });
-//     }
-//   })
-// );
 
 router.post(
   "/acceptStockTransferRequest/:requestId",
@@ -484,31 +372,37 @@ router.post(
       }
 
       if (transferRequest.status === "Pending") {
-        const dataEntries = transferRequest.transferRequests; // Get the array of data entries
+        const fromWarehouseId = transferRequest.fromWarehouse; // Get the fromWarehouse ID
+        // console.log("fromWarehouseId: ", fromWarehouseId);
+        const toWarehouseId = transferRequest.toWarehouse; // Get the toWarehouse ID
+        // console.log("toWarehouseId: ", toWarehouseId);
+        const transferRequests = transferRequest.transferRequests;
+        // console.log("transferRequests: ", transferRequests);
 
         // Update the stock quantities for each data entry
-        for (let i = 0; i < dataEntries.length; i++) {
-          const dataEntry = dataEntries[i];
-          // console.log("dataEntry: ", dataEntry);
+        for (let i = 0; i < transferRequests.length; i++) {
+          const transferReq = transferRequests[i];
+          const productNameId = transferReq.productName; // Get the product ID
+
           await warehouseStock.updateOne(
             {
-              warehouse: dataEntry.fromWarehouse,
-              product: dataEntry.productName,
+              warehouse: fromWarehouseId,
+              product: productNameId,
             },
-            { $inc: { productQuantity: -dataEntry.productQuantity } },
+            { $inc: { productQuantity: -transferReq.productQuantity } },
             { upsert: true } // Add this option
           );
           await warehouseStock.updateOne(
             {
-              warehouse: dataEntry.toWarehouse,
-              product: dataEntry.productName,
+              warehouse: toWarehouseId,
+              product: productNameId,
             },
-            { $inc: { productQuantity: dataEntry.productQuantity } },
+            { $inc: { productQuantity: transferReq.productQuantity } },
             { upsert: true } // Add this option
           );
         }
 
-        // Update the status of the transfer request
+        //   // Update the status of the transfer request
         transferRequest.status = "Accepted";
         await transferRequest.save();
         return rc.setResponse(res, {
@@ -528,8 +422,6 @@ router.post(
     }
   })
 );
-
-//
 
 // get alltransfer stock request
 // router.get(
@@ -612,7 +504,7 @@ router.get(
       const data = await WarehouseStockTransferRequest.find()
         .select("fromWarehouse toWarehouse status createdAt")
         .populate("fromWarehouse", "wareHouseName")
-        .populate("toWarehouse", "wareHouseName")
+        .populate("toWarehouse", "wareHouseName");
       // console.log(data);
 
       const sendData = data.map((index) => ({
@@ -643,7 +535,9 @@ router.get(
       query
     );
     if (permissions.listTransferStock) {
-      const data = await WarehouseStockTransferRequest.findOne({_id: req.query.id})
+      const data = await WarehouseStockTransferRequest.findOne({
+        _id: req.query.id,
+      })
         .select("fromWarehouse toWarehouse transferRequests status createdAt")
         .populate("fromWarehouse", "wareHouseName")
         .populate("toWarehouse", "wareHouseName")
@@ -670,96 +564,6 @@ router.get(
     }
   })
 );
-
-// warehouse to machine transfer request
-// router.post(
-//   "/sendStockTransfertoMachineRequest",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const { fromWarehouseId, toMachineId, productId, quantity } = req.body;
-
-//     try {
-//       // Perform any necessary validation or business logic here before creating the request
-
-//       // Create a new stock transfer request in the database
-//       const transferRequest = new warehouseToMachineStockTransferRequest({
-//         fromWarehouseId,
-//         toMachineId,
-//         productId,
-//         quantity,
-//         status: "Pending", // You can set an initial status for the request, such as 'Pending'
-//       });
-//       await transferRequest.save();
-
-//       res.status(200).json({ message: "Stock transfer request sent." });
-//     } catch (error) {
-//       res.status(500).json({ error: "Failed to send stock transfer request." });
-//     }
-//   })
-// );
-
-// accept stock transfer request of warehouse to machines
-// router.post(
-//   "/acceptstocktranferfromwarehousetomachine/:requestId",
-//   auth,
-//   asyncHandler(async (req, res) => {
-//     const { requestId } = req.params;
-
-//     try {
-//       // Find the stock transfer request in the database
-//       const transferRequest =
-//         await warehouseToMachineStockTransferRequest.findById(requestId);
-
-//       if (!transferRequest) {
-//         return res
-//           .status(404)
-//           .json({ error: "Stock transfer request not found." });
-//       }
-
-//       // Perform any additional validation or business logic here before updating the stock
-
-//       // Update the stock in the machine
-//       if (transferRequest.status == "Pending") {
-//         await machine.updateOne(
-//           {
-//             machineId: transferRequest.toMachineId,
-//             productId: transferRequest.productId,
-//           },
-//           { $inc: { closingStock: transferRequest.quantity } },
-//           { upsert: true }
-//         );
-
-//         // Update the stock in the warehouse
-//         await warehouseStock.updateOne(
-//           {
-//             warehouseId: transferRequest.warehouseId,
-//             productId: transferRequest.productId,
-//           },
-//           { $inc: { productQuantity: -transferRequest.quantity } }
-//         );
-
-//         // Update the status of the transfer request
-//         transferRequest.status = "Accepted";
-//         await transferRequest.save();
-
-//         // res.status(200).json({ message: "Stock transfer request accepted." });
-//         return rc.setResponse(res, {
-//           success: true,
-//           msg: "Stock transfer to machine request accepted",
-//         });
-//       } else if (transferRequest.status === "Accepted") {
-//         return rc.setResponse(res, {
-//           success: false,
-//           msg: "request already accepted",
-//         });
-//       }
-//     } catch (error) {
-//       res
-//         .status(500)
-//         .json({ error: "Failed to accept stock transfer request." });
-//     }
-//   })
-// );
 
 // New refiller request
 router.post(

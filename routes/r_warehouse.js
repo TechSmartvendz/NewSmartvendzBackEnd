@@ -516,7 +516,16 @@ router.post(
             success: false,
             msg: "Supplier not found with the provided name.",
           });
-        }
+        };
+
+        const invoiceNumberCheck = purchaseStock.find({invoiceNumber: req.body.invoiceNumber});
+
+        if(invoiceNumberCheck) {
+          return rc.setResponse(res, {
+            success: false,
+            msg: "Request already created with this invoice Number"
+          });
+        };
 
         const products = [];
 
