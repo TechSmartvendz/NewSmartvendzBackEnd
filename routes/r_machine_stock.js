@@ -336,374 +336,312 @@ router.get(
 // );
 
 // --------------------------ALL Refilling Request------------------------//
-router.get(
-  "/allrefillingrequest",
-  auth,
-  asyncHandler(async (req, res) => {
-    const checkPermission = {
-      role: req.user.role,
-    };
-    // permissions to check if this user has permission to view this data or not
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-      checkPermission
-    );
+// router.get(
+//   "/allrefillingrequest",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     const checkPermission = {
+//       role: req.user.role,
+//     };
+//     // permissions to check if this user has permission to view this data or not
+//     const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+//       checkPermission
+//     );
 
-    if (!permissions.listRefillingRequest) {
-      return rc.setResponse(res, {
-        success: false,
-        msg: "No permission to find data",
-        data: {},
-      });
-    }
-    const {
-      status,
-      refillerName,
-      date,
-      warehouse,
-      refillRequestNumber,
-      machineName,
-    } = req.query;
+//     if (!permissions.listRefillingRequest) {
+//       return rc.setResponse(res, {
+//         success: false,
+//         msg: "No permission to find data",
+//         data: {},
+//       });
+//     }
+//     const {
+//       status,
+//       refillerName,
+//       date,
+//       warehouse,
+//       refillRequestNumber,
+//       machineName,
+//     } = req.query;
 
-    let filters = [];
-    // query created for filtering
-    const query2 = {};
+//     let filters = [];
+//     // query created for filtering
+//     const query2 = {};
 
-    if (req.user.role === "Admin") {
-      const machinesCreatedByAdmin = await machines.find({ admin: req.user._id }).select('_id');
-      const machineIdsCreatedByAdmin = machinesCreatedByAdmin.map((machine) => machine._id);
-      filters.push({ machineId: { $in: machineIdsCreatedByAdmin } });
-    }
+//     if (req.user.role === "Admin") {
+//       const machinesCreatedByAdmin = await machines.find({ admin: req.user._id }).select('_id');
+//       const machineIdsCreatedByAdmin = machinesCreatedByAdmin.map((machine) => machine._id);
+//       filters.push({ machineId: { $in: machineIdsCreatedByAdmin } });
+//     }
 
-    // query2 created beacuse if refiller login it should only see his approved request or else if superadmin or admin then they should be able to see all approved request
-    if (req.user.role == "Refiller") {
-      query2.refillerId = req.user._id;
-      // console.log(query2);
-    }
-    if (status) {
-      filters.push({ status: status });
-    }
-    if (refillerName) {
-      const refillerdetail = await user_infos.findOne({
-        first_name: refillerName,
-      });
-      filters.push({ refillerId: refillerdetail._id });
-    }
-    if (date) {
-      const clientDate = date; // Create a Date object from the client's date string
-      const cdate = new Date(clientDate);
-      // console.log("clientDate: ", cdate);
-      const iso8601Date = cdate.toISOString();
+//     // query2 created beacuse if refiller login it should only see his approved request or else if superadmin or admin then they should be able to see all approved request
+//     if (req.user.role == "Refiller") {
+//       query2.refillerId = req.user._id;
+//       // console.log(query2);
+//     }
+//     if (status) {
+//       filters.push({ status: status });
+//     }
+//     if (refillerName) {
+//       const refillerdetail = await user_infos.findOne({
+//         first_name: refillerName,
+//       });
+//       filters.push({ refillerId: refillerdetail._id });
+//     }
+//     if (date) {
+//       const clientDate = date; // Create a Date object from the client's date string
+//       const cdate = new Date(clientDate);
+//       // console.log("clientDate: ", cdate);
+//       const iso8601Date = cdate.toISOString();
 
-      filters.push({ createdAt: iso8601Date }); // Use the formatted date for filtering
-    }
-    if (warehouse) {
-      const warehousedetail = await warehouseTable.findOne({
-        wareHouseName: warehouse,
-      });
-      filters.push({ warehouse: warehousedetail._id });
-    }
-    if (refillRequestNumber) {
-      filters.push({ refillRequestNumber: refillRequestNumber });
-    }
-    if (machineName) {
-      const machinedetail = await machines.findOne({
-        machinename: machineName,
-      });
-      filters.push({ machineId: machinedetail._id });
-    }
-    const mergedQuery = { $and: [query2, ...filters] };
-    try {
-      const allRefillerRequest = await refillerrequest
-        .find(mergedQuery)
-        .select(
-          "id refillerId warehouse refillRequestNumber machineId status createdAt"
-        )
-        .populate("refillerId", "_id first_name user_id")
-        .populate("machineId", "machineid _id machinename")
-        .populate("warehouse", "_id wareHouseName")
-        .lean();
+//       filters.push({ createdAt: iso8601Date }); // Use the formatted date for filtering
+//     }
+//     if (warehouse) {
+//       const warehousedetail = await warehouseTable.findOne({
+//         wareHouseName: warehouse,
+//       });
+//       filters.push({ warehouse: warehousedetail._id });
+//     }
+//     if (refillRequestNumber) {
+//       filters.push({ refillRequestNumber: refillRequestNumber });
+//     }
+//     if (machineName) {
+//       const machinedetail = await machines.findOne({
+//         machinename: machineName,
+//       });
+//       filters.push({ machineId: machinedetail._id });
+//     }
+//     const mergedQuery = { $and: [query2, ...filters] };
+//     try {
+//       const allRefillerRequest = await refillerrequest
+//         .find(mergedQuery)
+//         .select(
+//           "id refillerId warehouse refillRequestNumber machineId status createdAt"
+//         )
+//         .populate("refillerId", "_id first_name user_id")
+//         .populate("machineId", "machineid _id machinename")
+//         .populate("warehouse", "_id wareHouseName")
+//         .lean();
 
-      // console.log('allRefillerRequest: ', allRefillerRequest);
+//       // console.log('allRefillerRequest: ', allRefillerRequest);
 
-      const data = allRefillerRequest.map((request) => ({
-        _id: request._id,
-        refillerId: request.refillerId._id,
-        refillerName: request.refillerId.first_name,
-        refillerUserId: request.refillerId.user_id,
-        refillingRequestNumber: request.refillRequestNumber,
-        warehouseid: request.warehouse._id,
-        warehouseName: request.warehouse.wareHouseName,
-        machine: request.machineId.machineid,
-        machineId: request.machineId._id,
-        machineName: request.machineId.machinename,
-        status: request.status,
-        date: request.createdAt,
-      }));
+//       const data = allRefillerRequest.map((request) => ({
+//         _id: request._id,
+//         refillerId: request.refillerId._id,
+//         refillerName: request.refillerId.first_name,
+//         refillerUserId: request.refillerId.user_id,
+//         refillingRequestNumber: request.refillRequestNumber,
+//         warehouseid: request.warehouse._id,
+//         warehouseName: request.warehouse.wareHouseName,
+//         machine: request.machineId.machineid,
+//         machineId: request.machineId._id,
+//         machineName: request.machineId.machinename,
+//         status: request.status,
+//         date: request.createdAt,
+//       }));
 
-      return rc.setResponse(res, {
-        success: true,
-        msg: "Data fetched",
-        data: data,
-      });
-    } catch (error) {
-      console.error("Error:", error);
-      return rc.setResponse(res, {
-        success: false,
-        msg: "An error occurred while fetching data.",
-      });
-    }
-  })
-);
+//       return rc.setResponse(res, {
+//         success: true,
+//         msg: "Data fetched",
+//         data: data,
+//       });
+//     } catch (error) {
+//       console.error("Error:", error);
+//       return rc.setResponse(res, {
+//         success: false,
+//         msg: "An error occurred while fetching data.",
+//       });
+//     }
+//   })
+// );
 
 //------------------refilling request by id--------------------------------//
-router.get(
-  "/refillRequest/:id",
-  auth,
-  asyncHandler(async (req, res) => {
-    const checkpermisson = {
-      role: req.user.role,
-    };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-      checkpermisson
-    );
-    if (!permissions.listRefillingRequest) {
-      return rc.setResponse(res, {
-        success: false,
-        msg: "No permisson to find data",
-        data: {},
-      });
-    }
-    const refillerRequestById = await refillerrequest
-      .findOne({ _id: req.params.id })
-      .populate("refillerId", ["_id", "first_name", "user_id"])
-      .populate("machineId", ["machineid", "machinename", "location"])
-      .populate("machineSlots.productid", [
-        "_id",
-        "productname",
-        "sellingprice",
-      ])
-      .populate("returnItems.productid", [
-        "_id",
-        "productname",
-        "sellingprice",
-      ]);
-    const data = refillerRequestById;
-    return rc.setResponse(res, {
-      success: true,
-      msg: "Data fetched",
-      data: data,
-    });
-  })
-);
-
-//------------------for approveadmin request-------------------------//
-router.post(
-  "/approverefillrequest/:refillRequestNumber",
-  auth,
-  asyncHandler(
-    async (req, res) => {
-      const pararms = req.params;
-      // console.log("pararms: ", pararms);
-      if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
-        const refillRequestNumber = req.params.refillRequestNumber;
-        let rdata = await refillerrequest.findOne({ refillRequestNumber });
-        // console.log("rdata: ", rdata);
-        // console.log(rdata.machineSlots);
-        let approveddata;
-        let updatedClosingStock;
-
-        if (rdata.status === "Pending") {
-          for (let i = 0; i < rdata.machineSlots.length; i++) {
-            // console.log(rdata.machineSlots.length)
-            let rslots = rdata.machineSlots[i].sloteid;
-            // console.log(rdata.machineSlots[i].sloteid);
-
-            const filter = { sloteid: rslots };
-            const update = {
-              $unset: {
-                closingStock: 1,
-                currentStock: 1,
-                refillQuantity: 1,
-                saleQuantity: 1,
-                product: 1,
-              },
-            };
-            const options = {
-              upsert: false,
-            };
-            let data = await machineslot.updateOne(filter, update, options);
-            // console.log(data);
-            console.log("------------data unset--------------");
-
-            updatedClosingStock =
-              rdata.machineSlots[i].currentStock +
-              rdata.machineSlots[i].refillQuantity;
-            // console.log(updatedClosingStock);
-            // console.log(rdata.machineSlots[i].currentStock);
-            // console.log(rdata.machineSlots[i].refillQuantity);
-            approveddata = await machineslot.updateOne(
-              { sloteid: rdata.machineSlots[i].sloteid },
-              {
-                $set: {
-                  closingStock: updatedClosingStock,
-                  currentStock: rdata.machineSlots[i].currentStock,
-                  refillQuantity: rdata.machineSlots[i].refillQuantity,
-                  saleQuantity: rdata.machineSlots[i].saleQuantity,
-                  product: rdata.machineSlots[i].productid,
-                },
-              },
-              options
-            );
-            console.log("------------new data set------------");
-          }
-          // console.log(approveddata);
-          if (approveddata) {
-            const updaterdata = await refillerrequest.findOneAndUpdate(
-              { refillRequestNumber },
-              { status: "Approved" }
-            );
-            console.log("-----------status approved now--------------");
-            // console.log("updaterdata", updaterdata);
-            const checkrefillerRequest = await refillerrequest.findOne({
-              refillRequestNumber,
-            });
-            // console.log('checkrefillerRequest: ', checkrefillerRequest);
-            if (checkrefillerRequest.status === "Approved") {
-              let countSales = await machines.findOneAndUpdate(
-                { _id: checkrefillerRequest.machineId },
-                {
-                  cash: checkrefillerRequest.sales.cash,
-                  totalSalesCount: checkrefillerRequest.sales.totalSalesCount,
-                  totalSalesValue: checkrefillerRequest.sales.totalSalesValue,
-                }
-              );
-              for (
-                let i = 0;
-                i < checkrefillerRequest.machineSlots.length;
-                i++
-              ) {
-                const updatewarehousestock = await warehouseStock.updateOne(
-                  {
-                    warehouse: checkrefillerRequest.warehouse,
-                    product: checkrefillerRequest.machineSlots[i].productid,
-                  },
-                  {
-                    $inc: {
-                      productQuantity:
-                        -checkrefillerRequest.machineSlots[i].refillQuantity,
-                    },
-                  }
-                );
-                // console.log("updatewarehousestock", updatewarehousestock);
-              }
-              if (checkrefillerRequest.returnItems.length != 0) {
-                for (
-                  let i = 0;
-                  i < checkrefillerRequest.returnItems.length;
-                  i++
-                ) {
-                  const updatewarehousestockagain =
-                    await warehouseStock.updateOne(
-                      {
-                        warehouse: checkrefillerRequest.warehouse,
-                        product: checkrefillerRequest.returnItems[i].productid,
-                      },
-                      {
-                        $inc: {
-                          productQuantity:
-                            +checkrefillerRequest.returnItems[i].currentStock,
-                        },
-                      }
-                    );
-                  // console.log("updatewarehousestockagain",updatewarehousestockagain);
-                }
-              }
-            }
-            // console.log(updaterdata.machineSlots);
-          }
-        } else {
-          return rc.setResponse(res, {
-            success: false,
-            msg: "Request is already approved",
-          });
-        }
-      } else {
-        return rc.setResponse(res, { error: { code: 403 } });
-      }
-      // return res.send("done");
-      return rc.setResponse(res, {
-        success: true,
-        msg: "data updated",
-      });
-    }
-    // }
-  )
-);
-
-// ----------------------------------------------------------------------------------//
-
-// not using
-router.get(
-  "/refillingproductchangerequest",
-  asyncHandler(async (req, res) => {
-    const pararms = req.query;
-    const rdata = await refillerrequest
-      .find({ refillRequestNumber: pararms.refillRequestNumber })
-      .select("_id refillerID refillRequestNumber machineId machineSlot");
-    let updateRData = [];
-    for (let i = 0; i < rdata[0].machineSlot.length; i++) {
-      // console.log("----------------------loop------------");
-      if (rdata[0].machineSlots[i].refillQuantity <= 0) {
-        // console.log("less than 0");
-        updateRData.push(rdata[0].machineSlots[i]);
-      }
-    }
-    console.log(rdata[0].id);
-    const data = {};
-    return rc.setResponse(res, {
-      success: true,
-      msg: "got data",
-      data: updateRData,
-    });
-  })
-);
-
-// router.put(
-//   "/updaterefillingproducts",
+// router.get(
+//   "/refillRequest/:id",
+//   auth,
 //   asyncHandler(async (req, res) => {
-//     const pararms = req.body;
-//     const updatedSlotId = pararms.requestId
-
-//     const updatedSlots = {
-//       slot: pararms.slot,
-//       closingStock: pararms.closingStock,
-//       currentStock: pararms.currentStock,
-//       refillQuantity: pararms.refillQuantity,
-//       saleQuantity: pararms.saleQuantity,
-//       materialName: pararms.materialName,
+//     const checkpermisson = {
+//       role: req.user.role,
 //     };
-
-//     const rdata = await refillerrequest.findByIdAndUpdate(
-//       { _id: req.query.id },
-//       {
-//         $set: {
-//           "machineSlot.$[elem]": updatedSlots,
-//         },
-//       },
-//       {
-//         new: true,
-//         arrayFilters: [{ "elem._id": updatedSlotId }],
-//       }
+//     const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+//       checkpermisson
 //     );
+//     if (!permissions.listRefillingRequest) {
+//       return rc.setResponse(res, {
+//         success: false,
+//         msg: "No permisson to find data",
+//         data: {},
+//       });
+//     }
+//     const refillerRequestById = await refillerrequest
+//       .findOne({ _id: req.params.id })
+//       .populate("refillerId", ["_id", "first_name", "user_id"])
+//       .populate("machineId", ["machineid", "machinename", "location"])
+//       .populate("machineSlots.productid", [
+//         "_id",
+//         "productname",
+//         "sellingprice",
+//       ])
+//       .populate("returnItems.productid", [
+//         "_id",
+//         "productname",
+//         "sellingprice",
+//       ]);
+//     const data = refillerRequestById;
 //     return rc.setResponse(res, {
 //       success: true,
-//       msg: "data updated",
-//       data: rdata,
+//       msg: "Data fetched",
+//       data: data,
 //     });
 //   })
 // );
 
-// Sample csv file for bulk upload slots
+//------------------for approveadmin request-------------------------//
+// router.post(
+//   "/approverefillrequest/:refillRequestNumber",
+//   auth,
+//   asyncHandler(
+//     async (req, res) => {
+//       const pararms = req.params;
+//       // console.log("pararms: ", pararms);
+//       if (req.user.role === "SuperAdmin" || req.user.role === "Admin") {
+//         const refillRequestNumber = req.params.refillRequestNumber;
+//         let rdata = await refillerrequest.findOne({ refillRequestNumber });
+//         // console.log("rdata: ", rdata);
+//         // console.log(rdata.machineSlots);
+//         let approveddata;
+//         let updatedClosingStock;
+
+//         if (rdata.status === "Pending") {
+//           for (let i = 0; i < rdata.machineSlots.length; i++) {
+//             // console.log(rdata.machineSlots.length)
+//             let rslots = rdata.machineSlots[i].sloteid;
+//             // console.log(rdata.machineSlots[i].sloteid);
+
+//             const filter = { sloteid: rslots };
+//             const update = {
+//               $unset: {
+//                 closingStock: 1,
+//                 currentStock: 1,
+//                 refillQuantity: 1,
+//                 saleQuantity: 1,
+//                 product: 1,
+//               },
+//             };
+//             const options = {
+//               upsert: false,
+//             };
+//             let data = await machineslot.updateOne(filter, update, options);
+//             // console.log(data);
+//             console.log("------------data unset--------------");
+
+//             updatedClosingStock =
+//               rdata.machineSlots[i].currentStock +
+//               rdata.machineSlots[i].refillQuantity;
+//             // console.log(updatedClosingStock);
+//             // console.log(rdata.machineSlots[i].currentStock);
+//             // console.log(rdata.machineSlots[i].refillQuantity);
+//             approveddata = await machineslot.updateOne(
+//               { sloteid: rdata.machineSlots[i].sloteid },
+//               {
+//                 $set: {
+//                   closingStock: updatedClosingStock,
+//                   currentStock: rdata.machineSlots[i].currentStock,
+//                   refillQuantity: rdata.machineSlots[i].refillQuantity,
+//                   saleQuantity: rdata.machineSlots[i].saleQuantity,
+//                   product: rdata.machineSlots[i].productid,
+//                 },
+//               },
+//               options
+//             );
+//             console.log("------------new data set------------");
+//           }
+//           // console.log(approveddata);
+//           if (approveddata) {
+//             const updaterdata = await refillerrequest.findOneAndUpdate(
+//               { refillRequestNumber },
+//               { status: "Approved" }
+//             );
+//             console.log("-----------status approved now--------------");
+//             // console.log("updaterdata", updaterdata);
+//             const checkrefillerRequest = await refillerrequest.findOne({
+//               refillRequestNumber,
+//             });
+//             // console.log('checkrefillerRequest: ', checkrefillerRequest);
+//             if (checkrefillerRequest.status === "Approved") {
+//               let countSales = await machines.findOneAndUpdate(
+//                 { _id: checkrefillerRequest.machineId },
+//                 {
+//                   cash: checkrefillerRequest.sales.cash,
+//                   totalSalesCount: checkrefillerRequest.sales.totalSalesCount,
+//                   totalSalesValue: checkrefillerRequest.sales.totalSalesValue,
+//                 }
+//               );
+//               for (
+//                 let i = 0;
+//                 i < checkrefillerRequest.machineSlots.length;
+//                 i++
+//               ) {
+//                 const updatewarehousestock = await warehouseStock.updateOne(
+//                   {
+//                     warehouse: checkrefillerRequest.warehouse,
+//                     product: checkrefillerRequest.machineSlots[i].productid,
+//                   },
+//                   {
+//                     $inc: {
+//                       productQuantity:
+//                         -checkrefillerRequest.machineSlots[i].refillQuantity,
+//                     },
+//                   }
+//                 );
+//                 // console.log("updatewarehousestock", updatewarehousestock);
+//               }
+//               if (checkrefillerRequest.returnItems.length != 0) {
+//                 for (
+//                   let i = 0;
+//                   i < checkrefillerRequest.returnItems.length;
+//                   i++
+//                 ) {
+//                   const updatewarehousestockagain =
+//                     await warehouseStock.updateOne(
+//                       {
+//                         warehouse: checkrefillerRequest.warehouse,
+//                         product: checkrefillerRequest.returnItems[i].productid,
+//                       },
+//                       {
+//                         $inc: {
+//                           productQuantity:
+//                             +checkrefillerRequest.returnItems[i].currentStock,
+//                         },
+//                       }
+//                     );
+//                   // console.log("updatewarehousestockagain",updatewarehousestockagain);
+//                 }
+//               }
+//             }
+//             // console.log(updaterdata.machineSlots);
+//           }
+//         } else {
+//           return rc.setResponse(res, {
+//             success: false,
+//             msg: "Request is already approved",
+//           });
+//         }
+//       } else {
+//         return rc.setResponse(res, { error: { code: 403 } });
+//       }
+//       // return res.send("done");
+//       return rc.setResponse(res, {
+//         success: true,
+//         msg: "data updated",
+//       });
+//     }
+//     // }
+//   )
+// );
+
+// ----------------------------------------------------------------------------------//
+
 
 // sample csv file for bulk upload slots
 router.get(

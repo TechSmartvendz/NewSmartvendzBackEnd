@@ -512,7 +512,7 @@ router.get(
         fromWarehouse: index?.fromWarehouse?.wareHouseName,
         toWarehouse: index?.toWarehouse?.wareHouseName,
         status: index.status,
-        createdAt: index.createdAt,
+        createdAt: index.createdAt.toLocaleString(),
       }));
       if (data) {
         return rc.setResponse(res, {
@@ -553,7 +553,7 @@ router.get(
           productQuantity: request.productQuantity,
         })),
         status: data.status,
-        createdAt: data.createdAt,
+        createdAt: data.createdAt.toLocaleString(),
       };
       if (data) {
         return rc.setResponse(res, {
@@ -566,57 +566,57 @@ router.get(
 );
 
 // New refiller request
-router.post(
-  "/refill/request",
-  auth,
-  asyncHandler(async (req, res) => {
-    try {
-      if (req.user.role == "Refiller" || req.user.role == "SuperAdmin") {
-        // console.log('req.body: ', req.body);
-        // console.log("req.body",req.body.machineSlot);
-        // console.log("returnitems:",req.body.returnItems);
+// router.post(
+//   "/refill/request",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     try {
+//       if (req.user.role == "Refiller" || req.user.role == "SuperAdmin") {
+//         // console.log('req.body: ', req.body);
+//         // console.log("req.body",req.body.machineSlot);
+//         // console.log("returnitems:",req.body.returnItems);
 
-        const { machineId, machineSlot, date, sales } = req.body;
-        const refillerid = req.user.id;
-        // console.log(refillerid);
-        // Create the refill request in the database
-        const warehouseid = await machinedata.findOne({ _id: machineId });
-        // console.log("deletedSlots", req.body.deletedSlots);
-        // console.log("warehouseid", warehouseid);
-        let updatedSlots;
-        if (!req.body.returnItems) {
-          updatedSlots = null;
-        } else {
-          updatedSlots = req.body.returnItems;
-        }
-        let randomNumber = Math.floor(Math.random() * 100000000000000);
-        let data = new refillRequest({
-          refillerId: refillerid,
-          machineId: machineId,
-          warehouse: warehouseid.warehouse,
-          machineSlots: machineSlot,
-          returnItems: updatedSlots,
-          refillRequestNumber: randomNumber,
-          status: "Pending",
-          date: date,
-          sales: sales,
-        });
-        // console.log("data", data);
-        await data.save();
-        rc.setResponse(res, {
-          success: true,
-          message: "Refill request sent.",
-          data: data,
-        });
-      } else {
-        return rc.setResponse(res, { error: { code: 403 } });
-      }
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ error: "Failed to send refill request." });
-    }
-  })
-);
+//         const { machineId, machineSlot, date, sales } = req.body;
+//         const refillerid = req.user.id;
+//         // console.log(refillerid);
+//         // Create the refill request in the database
+//         const warehouseid = await machinedata.findOne({ _id: machineId });
+//         // console.log("deletedSlots", req.body.deletedSlots);
+//         // console.log("warehouseid", warehouseid);
+//         let updatedSlots;
+//         if (!req.body.returnItems) {
+//           updatedSlots = null;
+//         } else {
+//           updatedSlots = req.body.returnItems;
+//         }
+//         let randomNumber = Math.floor(Math.random() * 100000000000000);
+//         let data = new refillRequest({
+//           refillerId: refillerid,
+//           machineId: machineId,
+//           warehouse: warehouseid.warehouse,
+//           machineSlots: machineSlot,
+//           returnItems: updatedSlots,
+//           refillRequestNumber: randomNumber,
+//           status: "Pending",
+//           date: date,
+//           sales: sales,
+//         });
+//         // console.log("data", data);
+//         await data.save();
+//         rc.setResponse(res, {
+//           success: true,
+//           message: "Refill request sent.",
+//           data: data,
+//         });
+//       } else {
+//         return rc.setResponse(res, { error: { code: 403 } });
+//       }
+//     } catch (error) {
+//       console.log(error);
+//       return res.status(500).json({ error: "Failed to send refill request." });
+//     }
+//   })
+// );
 
 // edit Refill Request
 // router.put("/refill/request/:id", auth, asyncHandler(async(req,res)=> {
@@ -627,34 +627,34 @@ router.post(
 //   }
 // }))
 
-router.delete(
-  "/refillrequest/:id",
-  auth,
-  asyncHandler(async (req, res) => {
-    if (req.user.role == "SuperAdmin" || req.user.role == "Admin") {
-      const deleteRequestId = req.params.id;
-      if (!deleteRequestId) {
-        return rc.setResponse(res, {
-          msg: "Missing refillRequestNumber parameter",
-        });
-      }
-      const deleteRequest = await refillRequest.findOneAndDelete({
-        refillRequestNumber: deleteRequestId,
-      });
-      if (!deleteRequest) {
-        return rc.setResponse(res, {
-          msg: "Request not found",
-        });
-      }
-      return rc.setResponse(res, {
-        success: true,
-        msg: "Request deleted",
-      });
-    } else {
-      return rc.setResponse(res, { error: { code: 403 } });
-    }
-  })
-);
+// router.delete(
+//   "/refillrequest/:id",
+//   auth,
+//   asyncHandler(async (req, res) => {
+//     if (req.user.role == "SuperAdmin" || req.user.role == "Admin") {
+//       const deleteRequestId = req.params.id;
+//       if (!deleteRequestId) {
+//         return rc.setResponse(res, {
+//           msg: "Missing refillRequestNumber parameter",
+//         });
+//       }
+//       const deleteRequest = await refillRequest.findOneAndDelete({
+//         refillRequestNumber: deleteRequestId,
+//       });
+//       if (!deleteRequest) {
+//         return rc.setResponse(res, {
+//           msg: "Request not found",
+//         });
+//       }
+//       return rc.setResponse(res, {
+//         success: true,
+//         msg: "Request deleted",
+//       });
+//     } else {
+//       return rc.setResponse(res, { error: { code: 403 } });
+//     }
+//   })
+// );
 
 const generateSalesReports = async (
   startDate,

@@ -2,13 +2,7 @@ require("dotenv").config();
 
 var express = require("express");
 const cookieParser = require("cookie-parser");
-const CsvParser = require("json2csv").Parser;
-const multer = require("multer");
-const csv = require("csv-parser");
-const fs = require("fs");
 const cors = require("cors");
-const cjs = require("crypto-js");
-const mongoose = require("mongoose");
 var path = require("path");
 const logger = require('./logger/logger');
 
@@ -79,6 +73,7 @@ const warehouse = require("./routes/r_warehouse");
 const supplier = require("./routes/r_suppllier");
 const warestocktransferrequest = require("./routes/r_warehouseStockTransferRequest");
 const gst = require("./routes/r_gst");
+const refillerRequest = require("./routes/r_refillerRequest");
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
 app.use("/api/User", userInformation);
@@ -99,6 +94,7 @@ app.use("/api", warehouse);
 app.use("/api", supplier);
 app.use("/api", warestocktransferrequest);
 app.use("/api/tax", gst);
+app.use("/api", refillerRequest);
 //TODO:catch 404 and forward to error handler
 app.use( (req, res, next) => {
   // next(createError(404));
