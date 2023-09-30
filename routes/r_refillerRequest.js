@@ -12,7 +12,7 @@ const machinedata = require("../model/m_machine");
 const machineslot = require("../model/m_machine_slot");
 
 const user_infos = require("../model/m_user_info");
-
+const warehouseTable = require("../model/m_warehouse");
 const warehouseStock = require("../model/m_warehouse_Stock");
 
 // ------------- New refiller request------------------
@@ -303,7 +303,7 @@ router.put(
     const { machineId, machineSlot, date, sales, returnItems } = req.body;
 
     try {
-      if (req.user.role === "Refiller" || req.user.role === "SuperAdmin") {
+      if (req.user.role === "Admin" || req.user.role === "SuperAdmin") {
         // Find the existing refill request by ID
         const existingRequest = await refillRequest.findById(id);
 
@@ -399,12 +399,18 @@ router.get(
       filters.push({ refillerId: refillerdetail._id });
     }
     if (date) {
-      const clientDate = date; // Create a Date object from the client's date string
-      const cdate = new Date(clientDate);
-      // console.log("clientDate: ", cdate);
-      const iso8601Date = cdate.toISOString();
+      const clientDate = new Date(date);
+      const startDate = new Date(clientDate);
+      startDate.setHours(0, 0, 0, 0);
 
-      filters.push({ createdAt: iso8601Date }); // Use the formatted date for filtering
+      const endDate = new Date(clientDate);
+      endDate.setHours(23, 59, 59, 999);
+      filters.push({
+        createdAt: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+      });
     }
     if (warehouse) {
       const warehousedetail = await warehouseTable.findOne({
@@ -464,5 +470,6 @@ router.get(
     }
   })
 );
+// ---------------------------------------------------------//
 
 module.exports = router;
