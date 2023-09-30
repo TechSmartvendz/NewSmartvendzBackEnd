@@ -85,7 +85,7 @@ router.get(
       .lean();
     const machine = await machines
       .findOne({ _id: req.query.machineid })
-      .select("cash totalSalesCount salesValue");
+      .select("cash totalSalesCount totalSalesValue");
     // console.log('machine: ', machine);
     // console.log("data", data);
     let productdata;
@@ -125,7 +125,6 @@ router.get(
     const machinedata = {
       machineId: data[0].machineid,
       machineName: data[0].machineName,
-      admin: data[0].admin,
       machineSlot: ss,
       cash: machine.cash,
       totalSalesCount: machine.totalSalesCount,
