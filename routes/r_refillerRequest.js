@@ -375,7 +375,7 @@ router.get(
     const query2 = {};
 
     if (req.user.role === "Admin") {
-      const machinesCreatedByAdmin = await machines
+      const machinesCreatedByAdmin = await machinedata
         .find({ admin: req.user._id })
         .select("_id");
       const machineIdsCreatedByAdmin = machinesCreatedByAdmin.map(
@@ -422,7 +422,7 @@ router.get(
       filters.push({ refillRequestNumber: refillRequestNumber });
     }
     if (machineName) {
-      const machinedetail = await machines.findOne({
+      const machinedetail = await machinedata.findOne({
         machinename: machineName,
       });
       filters.push({ machineId: machinedetail._id });
