@@ -78,9 +78,9 @@ router.get(
       });
     }
     const data = await machineslot
-    .find({ machineid: req.query.machineid })
-    .select(
-      "_id slot machineid machineName machineid slot maxquantity sloteid closingStock product created_at"
+      .find({ machineid: req.query.machineid })
+      .select(
+        "_id slot machineid machineName machineid slot maxquantity sloteid closingStock product created_at"
       )
       .lean();
     const machine = await machines
@@ -641,7 +641,6 @@ router.get(
 
 // ----------------------------------------------------------------------------------//
 
-
 // sample csv file for bulk upload slots
 router.get(
   "/MachineSlot/SampleCSV",
@@ -963,7 +962,7 @@ router.get(
       const machinename = machinesData.map((machine) => machine.machinename);
       const machineslotdata = await machineslot
         .find({ machineName: { $in: machineIds } })
-        .select("machineName slot product currentStock");
+        .select("machineName slot product closingStock");
       const productIds = [
         ...new Set(machineslotdata.map((slot) => slot.product)),
       ];
@@ -978,12 +977,24 @@ router.get(
         if (!machineDataMap.has(machineName)) {
           machineDataMap.set(machineName, []);
         }
-        machineDataMap.get(machineName).push({
-          slot: slot.slot,
-          product: productMap.get(slot.product.toString()).productname,
-          currentStock: slot.currentStock,
-        });
+        // console.log(slot.closingStock);
+        try {
+          if (slot.closingStock) {
+            machineDataMap.get(machineName).push({
+              slot: slot.slot,
+              product: productMap.get(slot.product.toString()).productname,
+              closingStock: slot.closingStock,
+            });
+          }
+        } catch (error) {
+          // console.log(error);
+          return rc.setResponse(res, {
+            success: false,
+            msg: `Closing stock not found for machine '${machineName}'.`,
+          });
+        }
       });
+      // console.log("machineDataMap: ", machineDataMap);
 
       const groupedData = Array.from(
         machineDataMap,
@@ -992,8 +1003,11 @@ router.get(
           stock,
         })
       );
+      // console.log("groupedData: ", groupedData);
       groupedData.forEach((item) => {
-        const machine = machinesData.find((m) => m.machineid === item.machineName);
+        const machine = machinesData.find(
+          (m) => m.machineid === item.machineName
+        );
         if (machine) {
           item.machineName = machine.machinename;
         }
@@ -1046,7 +1060,7 @@ router.get(
       const machineIds = machinesData.map((machine) => machine.machineid);
       const machineslotdata = await machineslot
         .find({ machineName: { $in: machineIds } })
-        .select("machineName slot product currentStock");
+        .select("machineName slot product closingStock");
       const productIds = [
         ...new Set(machineslotdata.map((slot) => slot.product)),
       ];
@@ -1058,7 +1072,7 @@ router.get(
         machineName: slot.machineName,
         slot: slot.slot,
         product: productMap.get(slot.product.toString()).productname,
-        stock: 0,
+        closingStock: slot.closingStock,
       }));
       let data;
       for (let i = 0; i < sendData.length; i++) {
