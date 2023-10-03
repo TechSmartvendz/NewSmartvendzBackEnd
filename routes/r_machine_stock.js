@@ -979,13 +979,13 @@ router.get(
         }
         // console.log(slot.closingStock);
         try {
-          if (slot.closingStock) {
+          // if (slot.closingStock) {
             machineDataMap.get(machineName).push({
               slot: slot.slot,
               product: productMap.get(slot.product.toString()).productname,
               closingStock: slot.closingStock,
             });
-          }
+          // }
         } catch (error) {
           // console.log(error);
           return rc.setResponse(res, {
