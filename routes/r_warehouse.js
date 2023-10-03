@@ -518,7 +518,8 @@ router.post(
           });
         };
 
-        const invoiceNumberCheck = purchaseStock.find({invoiceNumber: req.body.invoiceNumber});
+        const invoiceNumberCheck = await purchaseStock.findOne({invoiceNumber: req.body.invoiceNumber});
+        // console.log('invoiceNumberCheck: ', invoiceNumberCheck);
 
         if(invoiceNumberCheck) {
           return rc.setResponse(res, {

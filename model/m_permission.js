@@ -224,6 +224,10 @@ const TableSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  download: {
+    type: Boolean,
+    default: false,
+  },
   salesReport:{
     type: Boolean,
     default: false,
