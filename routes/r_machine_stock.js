@@ -939,21 +939,21 @@ router.delete(
 router.get(
   "/refillSheet",
   validator.query(refillSheet),
-  auth,
+  // auth,
   asyncHandler(async (req, res) => {
-    const query = {
-      role: req.user.role,
-    };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-      query
-    );
-    if (!permissions.listMachineSlot) {
-      return rc.setResponse(res, {
-        success: false,
-        msg: "No permisson to find data",
-        data: {},
-      });
-    }
+    // const query = {
+    //   role: req.user.role,
+    // };
+    // const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+    //   query
+    // );
+    // if (!permissions.listMachineSlot) {
+    //   return rc.setResponse(res, {
+    //     success: false,
+    //     msg: "No permisson to find data",
+    //     data: {},
+    //   });
+    // }
     try {
       const machinesData = await machines.find({
         refiller: req.query.refiller,
@@ -1017,21 +1017,21 @@ router.get(
 router.get(
   "/refillSheetExportCSV",
   validator.query(refillSheet),
-  auth,
+  // auth,
   asyncHandler(async (req, res) => {
-    const query = {
-      role: req.user.role,
-    };
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-      query
-    );
-    if (!permissions.listMachineSlot) {
-      return rc.setResponse(res, {
-        success: false,
-        msg: "No permisson to find data",
-        data: {},
-      });
-    }
+    // const query = {
+    //   role: req.user.role,
+    // };
+    // const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
+    //   query
+    // );
+    // if (!permissions.listMachineSlot) {
+    //   return rc.setResponse(res, {
+    //     success: false,
+    //     msg: "No permisson to find data",
+    //     data: {},
+    //   });
+    // }
     const refillfile = [];
     function pushData(x) {
       if (x) {
