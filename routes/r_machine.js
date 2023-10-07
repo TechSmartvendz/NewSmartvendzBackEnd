@@ -332,7 +332,7 @@ router.get(
     if (cdata.listcompany) {
       if (req.user.role == "Admin") {
         // console.log("admin");
-        const checkdata = await TableModel.find({ admin: req.user._id }).select(
+        const checkdata = await TableModel.find({ admin: req.user._id , delete_status: false}).select(
           "_id machineid machinename totalslots warehouse admin refiller created_at"
         );
         const warehouseIds = checkdata
@@ -345,11 +345,11 @@ router.get(
 
         const [warehouses, admins, refillers] = await Promise.all([
           warehouse
-          .find({ _id: { $in: warehouseIds } })
+          .find({ _id: { $in: warehouseIds } ,delete_status: false},)
           .select("_id wareHouseName"),
-          userDetails.find({ _id: { $in: adminIds } }).select("_id first_name"),
+          userDetails.find({ _id: { $in: adminIds },delete_status: false }).select("_id first_name"),
           userDetails
-          .find({ user_id: { $in: refillerIds } })
+          .find({ user_id: { $in: refillerIds }, delete_status: false })
           .select("_id first_name"),
         ]);
         const data = checkdata.map((item) => {
@@ -491,6 +491,7 @@ router.put(
     }
   })
 );
+// to delete machine
 router.delete(
   "/:id",
   auth,
@@ -508,7 +509,12 @@ router.delete(
         // query={role:rdata.role}
         // const count = await TableModelUser.getDataCountByQuery(query);
         // if(!count){
-        const data = await TableModel.dataDeleteByQuery(query);
+        // const data = await TableModel.dataDeleteByQuery(query);
+        const data = await TableModel.updateByQuery(query, {delete_status: true});
+        const newquery = {machineid: req.params.id, delete_status:false};
+        // console.log('newquery: ', newquery);
+        const updatequery = { $set: { delete_status: true } };
+        const slotData = await TableModelMachineSlot.updateMany(newquery, updatequery);
         if (data) {
           return rc.setResponse(res, {
             success: true,
@@ -645,7 +651,8 @@ router.delete(
       let query = {
         _id: req.params.id,
       };
-      var data = await TableModelMachineSlot.dataDeleteByQuery(query);
+      // var data = await TableModelMachineSlot.dataDeleteByQuery(query);
+      const data = await TableModelMachineSlot.updateByQuery(query,{delete_status: true});
       if (!data) {
         return rc.setResponse(res, {
           msg: "Slot not Found",
@@ -673,7 +680,7 @@ router.get(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
       const query = {
-        _id: req.params.id,
+        _id: req.params.id, delete_status:false
       };
       var cdata = await TableModel.getDataByQueryFilterDataOne(query);
       if (cdata.machineid) {

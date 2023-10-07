@@ -135,7 +135,7 @@ router.get('/DataList', auth, asyncHandler(async(req,res)=> {
     else{
         filter = {role:role}
     }
-    const data = await TableModel.find(filter).select("id user_id last_name first_name");
+    const data = await TableModel.find({...filter, delete_status:false}).select("id user_id last_name first_name");
     if (data) {
         return rc.setResponse(res, {
             success: true,
@@ -156,6 +156,7 @@ router.get('/:id', auth, asyncHandler(
         const query={
             _id:id,
             // admin:admin
+            delete_status:false
         }
         const data = await TableModel.getDataByQueryFilterDataOne(query);
         if (data) {
@@ -212,7 +213,7 @@ router.delete('/:id', auth, asyncHandler(
        }
         const count = await TableModel.getDataCount(req.params.id);
         if(!count){
-            const data = await TableModel.dataDeleteByQuery(query);
+            const data = await TableModel.updateOne({query, delete_status:true});
             if (data) {
                 return rc.setResponse(res, {
                     success: true,

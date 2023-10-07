@@ -83,13 +83,17 @@ module.exports.addRow = async (newRow) => {
 };
 module.exports.getDataByIdData = async (id) => {
   const data = await Table.findOne(
-    { _id: id },
+    { _id: id, delete_status: false },
     { delete_status: 0, last_update: 0, __v: 0 }
   );
   return data;
 };
 module.exports.getDataByQueryFilterData = async (query) => {
-  const data = await Table.find(query, {
+  const finalQuery = {
+    ...query,
+    delete_status: false,
+  };
+  const data = await Table.find(finalQuery, {
     delete_status: 0,
     created_at: 0,
     last_update: 0,
@@ -98,7 +102,11 @@ module.exports.getDataByQueryFilterData = async (query) => {
   return data;
 };
 module.exports.getDataByQueryFilterDataOne = async (query) => {
-  const data = await Table.findOne(query, {
+  const finalQuery = {
+    ...query,
+    delete_status: false,
+  };
+  const data = await Table.findOne(finalQuery, {
     delete_status: 0,
     created_at: 0,
     last_update: 0,
@@ -107,11 +115,14 @@ module.exports.getDataByQueryFilterDataOne = async (query) => {
   return data;
 };
 module.exports.getDataCountByQuery = async (query) => {
-  const data = await Table.find(query).count();
+  const data = await Table.find({ query, delete_status: false }).count();
   return data;
 };
 module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, companyid: 1 });
+  const data = await Table.find(
+    { delete_status: false },
+    { id: 1, companyid: 1 }
+  );
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
@@ -140,7 +151,12 @@ module.exports.getDataforTable = async (machineid) => {
 
   const data = Table.aggregate([
     {
-      $match: { machineid: machineid },
+      $match: {
+        $and: [
+          { delete_status: false }, // Filter documents with delete_status as false
+          { machineid: machineid },
+        ],
+      },
     },
     {
       $project: {
@@ -213,7 +229,12 @@ module.exports.getDataforRefillTable = async (machineid) => {
 
   const data = Table.aggregate([
     {
-      $match: { machineid: machineid },
+      $match: {
+        $and: [
+          { delete_status: false }, // Filter documents with delete_status as false
+          { machineid: machineid },
+        ],
+      },
     },
     {
       $project: {
@@ -288,7 +309,7 @@ module.exports.getDataforRefillTable = async (machineid) => {
         currentStock: 1,
         saleQuantity: 1,
         refillQuantity: 1,
-        "wareHouseName": "$warehouseresult.wareHouseName",
+        wareHouseName: "$warehouseresult.wareHouseName",
         "created at": {
           $dateToString: {
             format: "%Y-%m-%d %H:%M:%S",
@@ -307,7 +328,12 @@ module.exports.getDataForEditFormAssignUser = async (id) => {
   id = mongoose.Types.ObjectId(id);
   const data = Table.aggregate([
     {
-      $match: { _id: id },
+      $match: {
+        $and: [
+          { delete_status: false }, // Filter documents with delete_status as false
+          { _id: id },
+        ],
+      },
     },
     {
       $project: {
@@ -378,7 +404,12 @@ module.exports.getDataforTablePagination = async (
   console.log(end);
   const data = await Table.aggregate([
     {
-      $match: { machineName: machinedata },
+      $match: {
+        $and: [
+          { delete_status: false }, // Filter documents with delete_status as false
+          { machineName: machinedata },
+        ],
+      },
     },
     { $sort: { slot: 1 } },
     {
@@ -445,7 +476,7 @@ module.exports.getDataforTablePagination = async (
               maxquantity: 1,
               created_by: "$userinfooutput.first_name",
               product: "$output.productname",
-              "date": {
+              date: {
                 $dateToString: {
                   format: "%Y-%m-%d %H:%M:%S",
                   date: "$created_at",

@@ -10,9 +10,13 @@ const auth = require("../middleware/auth");
 const productTable = require("../model/m_product");
 const supplierTable = require("../model/m_supplier");
 const gstTable = require("../model/gst");
+const user_infos = require("../model/m_user_info");
 
 const validator = require("express-joi-validation").createValidator();
-const {purchaseStockValidate, getpurchasestockbyid} = require("../validation/purchase_stock");
+const {
+  purchaseStockValidate,
+  getpurchasestockbyid,
+} = require("../validation/purchase_stock");
 
 const CsvParser = require("json2csv").Parser;
 const csv = require("csv-parser");
@@ -74,8 +78,8 @@ router.get(
     if (cdata.listWarehouse) {
       const data = await warehouseTable
         .find({ isDeleted: false })
-        .select("_id wareHouseName city contactPerson machine ")
-        .populate("machine");
+        .select("_id wareHouseName city contactPerson admin");
+
       if (data) {
         return rc.setResponse(res, {
           success: true,
@@ -262,19 +266,28 @@ router.get(
       role: req.user.role,
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-    if (cdata.listWarehouse) {
-      const data = await warehouseStock.findOne(
-        { _id: req.params._id },
-        { isDeleted: false }
-          .select("warehouse product productQuantity sellingPrice ")
-          .populate("warehouse")
-          .populate("product")
-      );
+    if (cdata.listStock) {
+      const data = await warehouseStock
+        .find({ warehouse: req.params._id, isDeleted: false })
+        .select("warehouse product productQuantity sellingPrice ")
+        .populate("warehouse")
+        .populate("product");
+      // console.log(data);
+      let sendData = [];
       if (data) {
+        for (let i = 0; i < data.length; i++) {
+          sendData.push({
+            _id: data[i]._id,
+            product: data[i].product.productname,
+            warehouse: data[i].warehouse.wareHouseName,
+            productQuantity: data[i].productQuantity,
+            sellingPrice: data[i].sellingPrice,
+          });
+        }
         return rc.setResponse(res, {
           success: true,
           msg: "Data Fetched",
-          data: data,
+          data: sendData,
         });
       } else {
         return rc.setResponse(res, {
@@ -479,11 +492,11 @@ router.put(
 //   })
 // );
 
-
 // --------------------//
 //--------------------------- new purchase request------------------//
 router.post(
-  "/purchaseStock", validator.body(purchaseStockValidate),
+  "/purchaseStock",
+  validator.body(purchaseStockValidate),
   auth,
   asyncHandler(async (req, res) => {
     const query = {
@@ -516,17 +529,19 @@ router.post(
             success: false,
             msg: "Supplier not found with the provided name.",
           });
-        };
+        }
 
-        const invoiceNumberCheck = await purchaseStock.findOne({invoiceNumber: req.body.invoiceNumber});
+        const invoiceNumberCheck = await purchaseStock.findOne({
+          invoiceNumber: req.body.invoiceNumber,
+        });
         // console.log('invoiceNumberCheck: ', invoiceNumberCheck);
 
-        if(invoiceNumberCheck) {
+        if (invoiceNumberCheck) {
           return rc.setResponse(res, {
             success: false,
-            msg: "Request already created with this invoice Number"
+            msg: "Request already created with this invoice Number",
           });
-        };
+        }
 
         const products = [];
 
@@ -800,7 +815,8 @@ router.get(
   })
 );
 router.get(
-  "/purchaseStockListById", validator.query(getpurchasestockbyid),
+  "/purchaseStockListById",
+  validator.query(getpurchasestockbyid),
   auth,
   asyncHandler(async (req, res) => {
     const query = {
@@ -848,7 +864,7 @@ router.get(
 
     if (permissions.purchaseStockList) {
       const allpurchase = await purchaseStock
-        .find({_id:req.query.id})
+        .find({ _id: req.query.id })
         .populate("warehouse", "wareHouseName")
         .populate("supplier", "supplierName")
         .populate("products.product", "productname productQuantity")
@@ -1480,7 +1496,7 @@ router.get(
         _id: item.product._id,
         productname: item.product.productname,
         productid: item.product.productid,
-        sellingproce: item.product.sellingprice
+        sellingproce: item.product.sellingprice,
       }));
       return rc.setResponse(res, {
         success: true,

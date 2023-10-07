@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const supplier = new Schema(
   {
-    supplierName: { type: String, default: null },
+    supplierName: { type: String, default: null, trim: true },
     supplierEmail: { type: String, default: null },
     supplierPhone: { type: Number, default: 0 },
     supplierAddress: { type: String, default: null },

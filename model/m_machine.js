@@ -90,13 +90,13 @@ module.exports.addRow = async (newRow) => {
 };
 module.exports.getDataByIdData = async (id) => {
   const data = await Table.findOne(
-    { _id: id },
+    { _id: id, delete_status:false },
     { delete_status: 0, last_update: 0, __v: 0 }
   );
   return data;
 };
 module.exports.getDataByQueryFilterData = async (query) => {
-  const data = await Table.find(query, {
+  const data = await Table.find({query, delete_status:false}, {
     delete_status: 0,
     created_at: 0,
     last_update: 0,
@@ -117,7 +117,12 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
   const data = await Table.aggregate([
     // console.log("🚀 role:", machineid),
     {
-      $match: { machineid: machineid },
+      $match: {
+        $and: [
+          { delete_status: false }, // Filter documents with delete_status as false
+          {machineid: machineid },
+        ]
+      }
     },
     {
       $project: {
@@ -186,11 +191,11 @@ module.exports.getDataByQueryFilterDataOneAggregate = async (machineid) => {
   return data;
 };
 module.exports.getDataCountByQuery = async (query) => {
-  const data = await Table.find(query).count();
+  const data = await Table.find({query, delete_status:false}).count();
   return data;
 };
 module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, machineid: 1, machinename: 1 });
+  const data = await Table.find({delete_status:false}, { id: 1, machineid: 1, machinename: 1 });
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
@@ -204,6 +209,11 @@ module.exports.dataDeleteByQuery = async (query) => {
 };
 module.exports.getDataforTable = async () => {
   const data = Table.aggregate([
+    {
+      $match: {
+        delete_status: false // Filter documents with delete_status as false
+      }
+    },
     {
       $project: {
         _id: 1,
