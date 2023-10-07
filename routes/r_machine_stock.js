@@ -26,7 +26,7 @@ router.get(
   "/getallmachines",
   auth,
   asyncHandler(async (req, res) => {
-    // console.log(req.user._id)
+    // console.log(req.user)
     const query = {
       role: req.user.role,
     };
@@ -41,13 +41,17 @@ router.get(
       });
     }
     let filter = {};
-    if (req.user.role == "SuperAdmin" || req.user.role == "Admin") {
+    if (req.user.role == "SuperAdmin") {
       filter = {};
+    }
+
+    if (req.user.role == "Admin") {
+      filter = { admin: req.user._id };
     }
     if (req.user.role == "Refiller") {
       filter = { refiller: req.user.user_id };
     }
-    const allmachine = await machines.find(filter);
+    const allmachine = await machines.find({...filter,  delete_status: false });
     // .select("machineid companyid");
     // console.log(allmachine);
     return rc.setResponse(res, {
@@ -78,13 +82,13 @@ router.get(
       });
     }
     const data = await machineslot
-      .find({ machineid: req.query.machineid })
+      .find({ machineid: req.query.machineid , delete_status: false })
       .select(
         "_id slot machineid machineName machineid slot maxquantity sloteid closingStock product created_at"
       )
       .lean();
     const machine = await machines
-      .findOne({ _id: req.query.machineid })
+      .findOne({ _id: req.query.machineid ,delete_status: false })
       .select("cash totalSalesCount totalSalesValue");
     // console.log('machine: ', machine);
     // console.log("data", data);
@@ -94,7 +98,7 @@ router.get(
     let ss = [];
     for (let i = 0; i < data.length; i++) {
       productdata = await product
-        .findOne({ _id: data[i].product })
+        .findOne({ _id: data[i].product , delete_status: false })
         .select("productid productname sellingprice")
         .lean();
       // console.log('productdata: ', productdata);
@@ -956,17 +960,21 @@ router.get(
     try {
       const machinesData = await machines.find({
         refiller: req.query.refiller,
+        delete_status: false,
       });
       // console.log('machinesData: ', machinesData);
       const machineIds = machinesData.map((machine) => machine.machineid);
       const machinename = machinesData.map((machine) => machine.machinename);
       const machineslotdata = await machineslot
-        .find({ machineName: { $in: machineIds } })
+        .find({ machineName: { $in: machineIds }, delete_status: false })
         .select("machineName slot product closingStock");
       const productIds = [
         ...new Set(machineslotdata.map((slot) => slot.product)),
       ];
-      const productData = await product.find({ _id: { $in: productIds } });
+      const productData = await product.find({
+        _id: { $in: productIds },
+        delete_status: false,
+      });
       const productMap = new Map(
         productData.map((product) => [product._id.toString(), product])
       );
@@ -980,11 +988,11 @@ router.get(
         // console.log(slot.closingStock);
         try {
           // if (slot.closingStock) {
-            machineDataMap.get(machineName).push({
-              slot: slot.slot,
-              product: productMap.get(slot.product.toString()).productname,
-              closingStock: slot.closingStock,
-            });
+          machineDataMap.get(machineName).push({
+            slot: slot.slot,
+            product: productMap.get(slot.product.toString()).productname,
+            closingStock: slot.closingStock,
+          });
           // }
         } catch (error) {
           // console.log(error);

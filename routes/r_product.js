@@ -259,7 +259,8 @@ router.get(
     //getDataListByQuery
     async (req, res, next) => {
       const query = {
-        admin: req.user.id,
+        // admin: req.user.id,
+        delete_status:false
       };
       const data = await TableModel.getDataListByQuery(query);
       if (data) {
@@ -284,6 +285,7 @@ router.get(
     const dataperpage = req.params.dataperpage;
     const query = {
       role: req.user.role,
+      delete_status: false
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.productlist) {
@@ -384,6 +386,7 @@ router.get(
       const id = req.params.id;
       const query = {
         _id: id,
+        delete_status:false
       };
       const data = await TableModel.getDataByQueryFilterDataOne(query);
       if (data) {
@@ -433,48 +436,48 @@ router.put(
 );
 
 // not using as it error comes if someone delete any product
-// router.delete(
-//   "/:id",
-//   auth,
-//   asyncHandler(
-//     //FIXME:need to change country if required
-//     async (req, res, next) => {
-//       let query = {
-//         role: req.user.role,
-//       };
-//       // var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-//       // if (cdata.addnewcompany) {
-//       if (req.user.role === "SuperAdmin") {
-//         const id = req.params.id;
-//         query = { _id: id };
-//         // const rdata = await TableModel.getDataByQueryFilterDataOne(query);
-//         // query={role:rdata.role}
-//         // const count = await TableModelUser.getDataCountByQuery(query);
-//         // if(!count){
-//         const data = await TableModel.dataDeleteByQuery(query);
-//         if (data) {
-//           return rc.setResponse(res, {
-//             success: true,
-//             msg: "Deleted Successfully",
-//             data: data,
-//           });
-//         } else {
-//           return rc.setResponse(res, {
-//             msg: "Data not Found",
-//           });
-//         }
+router.delete(
+  "/:id",
+  auth,
+  asyncHandler(
+    //FIXME:need to change country if required
+    async (req, res, next) => {
+      let query = {
+        role: req.user.role,
+      };
+      // var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
+      // if (cdata.addnewcompany) {
+      if (req.user.role === "SuperAdmin") {
+        const id = req.params.id;
+        query = { _id: id };
+        // const rdata = await TableModel.getDataByQueryFilterDataOne(query);
+        // query={role:rdata.role}
+        // const count = await TableModelUser.getDataCountByQuery(query);
+        // if(!count){
+        const data = await TableModel.updateByQuery(query, {delete_status: true});
+        if (data) {
+          return rc.setResponse(res, {
+            success: true,
+            msg: "Deleted Successfully",
+            data: data,
+          });
+        } else {
+          return rc.setResponse(res, {
+            msg: "Data not Found",
+          });
+        }
 
-//         // }else{
-//         //     return rc.setResponse(res, {
-//         //         msg: "Can't Delete this Role it is using by some Users"
-//         //     })
-//         // }
-//       } else {
-//         return rc.setResponse(res, { error: { code: 403 } });
-//       }
-//     }
-//   )
-// );
+        // }else{
+        //     return rc.setResponse(res, {
+        //         msg: "Can't Delete this Role it is using by some Users"
+        //     })
+        // }
+      } else {
+        return rc.setResponse(res, { error: { code: 403 } });
+      }
+    }
+  )
+);
 
 //FIXME:Not Using right now
 // router.post('/Slot', auth, asyncHandler(

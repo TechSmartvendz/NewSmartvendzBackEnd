@@ -14,6 +14,7 @@ const TableSchema = mongoose.Schema({
     type: String,
     require: true,
     unique: true,
+    trim: true
   },
   description: {
     type: String,
@@ -100,8 +101,11 @@ module.exports.getDataCountByQuery = async (query) => {
   const data = await Table.find(query).count();
   return data;
 };
-module.exports.getDataListByQuery = async () => {
-  const data = await Table.find({}, { id: 1, productname: 1, productid: 1, sellingprice: 1 });
+module.exports.getDataListByQuery = async (query) => {
+  const data = await Table.find(
+    query,
+    { id: 1, productname: 1, productid: 1, sellingprice: 1 }
+  );
   return data;
 };
 module.exports.updateByQuery = async (query, newdata) => {
@@ -115,6 +119,11 @@ module.exports.dataDeleteByQuery = async (query) => {
 };
 module.exports.getDataforTable = async () => {
   const data = Table.aggregate([
+    {
+      $match: {
+        delete_status: false,
+      },
+    },
     {
       $project: {
         _id: 1,
@@ -274,6 +283,11 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
   const dp = parseInt(dataperpage);
   let end = skipdata + parseInt(dataperpage);
   const data = await Table.aggregate([
+    {
+      $match: {
+        delete_status: false,
+      },
+    },
     { $sort: { created_at: -1 } },
     {
       $facet: {
