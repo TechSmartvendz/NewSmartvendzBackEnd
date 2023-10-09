@@ -5,10 +5,14 @@ const rc = require("../controllers/responseController");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const auth = require("../middleware/auth");
 const supplier = require("../model/m_supplier");
-const warehouse = require("../model/m_warehouse")
+const warehouse = require("../model/m_warehouse");
+
+const validator = require("express-joi-validation").createValidator();
+const { addSupplier, suppliedById } = require("../validation/supplier");
 
 router.post(
   "/addSupplier",
+  validator.body(addSupplier),
   auth,
   asyncHandler(async (req, res) => {
     const query = {
@@ -27,10 +31,12 @@ router.post(
           msg: "Already registered",
         });
       } else {
-        const warehousedata = await warehouse.findOne({wareHouseName:req.body.warehouse});
+        const warehousedata = await warehouse.findOne({
+          wareHouseName: req.body.warehouse,
+        });
         newRow = new supplier(req.body);
         newRow.admin = req.user._id;
-        newRow.warehouse = warehousedata._id
+        newRow.warehouse = warehousedata._id;
         if (!newRow) {
           return rc.setResponse(res, {
             msg: "No Data to insert",
@@ -63,7 +69,23 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listSupplier) {
-      const data = await supplier.find({ isDeleted: false }).select("supplierName supplierEmail supplierPhone warehouse");
+      const newdata = await supplier
+        .find({ isDeleted: false })
+        .select("supplierName supplierEmail supplierPhone warehouse");
+      const data = await Promise.all(
+        newdata.map(async (index) => {
+          const warehouseData = await warehouse.findOne({
+            _id: index.warehouse,
+          });
+          return {
+            _id: index._id,
+            supplierName: index.supplierName,
+            supplierEmail: index.supplierEmail,
+            supplierPhone: index.supplierPhone,
+            warehouseData: warehouseData.wareHouseName,
+          };
+        })
+      );
       return rc.setResponse(res, {
         success: true,
         msg: "data fetched",
@@ -79,6 +101,7 @@ router.get(
 
 router.get(
   "/listSupplier/:id",
+  validator.params(suppliedById),
   auth,
   asyncHandler(async (req, res) => {
     const query = {
@@ -86,9 +109,30 @@ router.get(
     };
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.listSupplier) {
-      const data = await supplier.find(
+      const newdata = await supplier.find(
         { _id: req.params.id },
         { isDeleted: false }
+      );
+      const data = await Promise.all(
+        newdata.map(async (index) => {
+          const warehouseData = await warehouse.findOne({
+            _id: index.warehouse,
+          });
+          return {
+            _id: index._id,
+            supplierName: index.supplierName,
+            supplierEmail: index.supplierEmail,
+            supplierPhone: index.supplierPhone,
+            warehouse: warehouseData.wareHouseName,
+            supplierAddress: index.supplierAddress,
+            contactPerson: index.contactPerson,
+            area: index.area,
+            state: index.state,
+            city: index.city,
+            country: index.country,
+            pincode: index.pincode,
+          };
+        })
       );
       return rc.setResponse(res, {
         success: true,
@@ -105,6 +149,7 @@ router.get(
 
 router.put(
   "/deleteSupplier/:id",
+  validator.params(suppliedById),
   auth,
   asyncHandler(async (req, res) => {
     if (req.user.role === "SuperAdmin") {
