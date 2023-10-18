@@ -1061,7 +1061,7 @@ router.get(
         filter = { warehouse: req.query.warehouse };
       }
       if (req.query.machineid) {
-        filter = { refiller: req.query.machineid };
+        filter = { _id: req.query.machineid };
       }
       const machinesData = await machines.find({
         ...filter,
