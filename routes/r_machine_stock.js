@@ -51,7 +51,7 @@ router.get(
     if (req.user.role == "Refiller") {
       filter = { refiller: req.user.user_id };
     }
-    const allmachine = await machines.find({...filter,  delete_status: false });
+    const allmachine = await machines.find({ ...filter, delete_status: false });
     // .select("machineid companyid");
     // console.log(allmachine);
     return rc.setResponse(res, {
@@ -82,13 +82,13 @@ router.get(
       });
     }
     const data = await machineslot
-      .find({ machineid: req.query.machineid , delete_status: false })
+      .find({ machineid: req.query.machineid, delete_status: false })
       .select(
         "_id slot machineid machineName machineid slot maxquantity sloteid closingStock product created_at"
       )
       .lean();
     const machine = await machines
-      .findOne({ _id: req.query.machineid ,delete_status: false })
+      .findOne({ _id: req.query.machineid, delete_status: false })
       .select("cash totalSalesCount totalSalesValue");
     // console.log('machine: ', machine);
     // console.log("data", data);
@@ -98,7 +98,7 @@ router.get(
     let ss = [];
     for (let i = 0; i < data.length; i++) {
       productdata = await product
-        .findOne({ _id: data[i].product , delete_status: false })
+        .findOne({ _id: data[i].product, delete_status: false })
         .select("productid productname sellingprice")
         .lean();
       // console.log('productdata: ', productdata);
@@ -941,7 +941,7 @@ router.delete(
 
 router.get(
   "/refillSheet",
-  validator.query(refillSheet),
+  // validator.query(refillSheet),
   // auth,
   asyncHandler(async (req, res) => {
     // const query = {
@@ -958,8 +958,12 @@ router.get(
     //   });
     // }
     try {
+      let filter = {};
+      if (req.query.refiller) {
+        filter = { refiller: req.query.refiller };
+      }
       const machinesData = await machines.find({
-        refiller: req.query.refiller,
+        ...filter,
         delete_status: false,
       });
       // console.log('machinesData: ', machinesData);
@@ -1038,22 +1042,9 @@ router.get(
 
 router.get(
   "/refillSheetExportCSV",
-  validator.query(refillSheet),
+  // validator.query(refillSheet),
   // auth,
   asyncHandler(async (req, res) => {
-    // const query = {
-    //   role: req.user.role,
-    // };
-    // const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-    //   query
-    // );
-    // if (!permissions.listMachineSlot) {
-    //   return rc.setResponse(res, {
-    //     success: false,
-    //     msg: "No permisson to find data",
-    //     data: {},
-    //   });
-    // }
     const refillfile = [];
     function pushData(x) {
       if (x) {
@@ -1062,13 +1053,57 @@ router.get(
       return refillfile;
     }
     try {
+      let filter = {};
+      if (req.query.refiller) {
+        filter = { refiller: req.query.refiller };
+      }
+      if (req.query.warehouse) {
+        filter = { warehouse: req.query.warehouse };
+      }
+      if (req.query.machineid) {
+        filter = { refiller: req.query.machineid };
+      }
       const machinesData = await machines.find({
-        refiller: req.query.refiller,
+        ...filter,
+        delete_status: false,
       });
       const machineIds = machinesData.map((machine) => machine.machineid);
+      const machineDataMap = new Map();
+
+      const warehouseIds = machinesData.map((machine) => machine.warehouse);
+      const warehouseData = await warehouseTable.find({
+        _id: { $in: warehouseIds },
+      });
+      const warehouseMap = new Map(
+        warehouseData.map((w) => [w._id.toString(), w.wareHouseName])
+      );
+
+      const machineNames = machinesData.map((machine) => machine.machinename);
+      const machineNameData = await machines.find({
+        machinename: { $in: machineNames },
+      });
+      const machineNameMap = new Map(
+        machineNameData.map((m) => [m.machinename, m.machinename])
+      );
+
+      const refillerIds = machinesData.map((machine) => machine.refiller);
+      const refillerData = await user_infos.find({
+        user_id: { $in: refillerIds },
+      });
+      const refillerMap = new Map(
+        refillerData.map((u) => [u.user_id.toString(), u.first_name])
+      );
+
+      machinesData.forEach((machine) => {
+        machineDataMap.set(machine.machineid, {
+          warehouse: warehouseMap.get(machine.warehouse),
+          machineName: machineNameMap.get(machine.machinename),
+          refiller: refillerMap.get(machine.refiller),
+        });
+      });
       const machineslotdata = await machineslot
         .find({ machineName: { $in: machineIds } })
-        .select("machineName slot product closingStock");
+        .select("machineName slot product closingStock created_at last_update");
       const productIds = [
         ...new Set(machineslotdata.map((slot) => slot.product)),
       ];
@@ -1076,23 +1111,39 @@ router.get(
       const productMap = new Map(
         productData.map((product) => [product._id.toString(), product])
       );
-      sendData = machineslotdata.map((slot) => ({
-        machineName: slot.machineName,
-        slot: slot.slot,
-        product: productMap.get(slot.product.toString()).productname,
-        closingStock: slot.closingStock,
-      }));
+      sendData = machineslotdata.map((slot) => {
+        const machineData = machineDataMap.get(slot.machineName);
+        return {
+          machineName: machineData.machineName,
+          warehouse: machineData.warehouse,
+          refiller: machineData.refiller,
+          product: productMap.get(slot.product.toString()).productname,
+          slot: slot.slot,
+          closingStock: slot.closingStock,
+          created_at: slot.created_at,
+        };
+      });
       let data;
       for (let i = 0; i < sendData.length; i++) {
         data = {
           machineName: sendData[i].machineName,
-          slot: sendData[i].slot,
+          warehouse: sendData[i].warehouse,
+          refiller: sendData[i].refiller,
           product: sendData[i].product,
-          stock: sendData[i].stock,
+          slot: sendData[i].slot,
+          closingStock: sendData[i].closingStock,
+          created_at: sendData[i].created_at,
         };
         pushData(data);
       }
-      const csvFields = ["machineName", "slot", "product", "stock"];
+      const csvFields = [
+        "machineName",
+        "slot",
+        "product",
+        "closingStock",
+        "warehouse",
+        "refiller",
+      ];
       const csvParser = new CsvParser({ csvFields });
       const csvData = csvParser.parse(refillfile);
       res.setHeader("Content-Type", "text/csv");
