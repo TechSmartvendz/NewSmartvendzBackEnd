@@ -238,7 +238,7 @@ router.get(
             product: data[i].product.productname,
             warehouse: data[i].warehouse.wareHouseName,
             productQuantity: data[i].productQuantity,
-            sellingPrice: data[i].sellingPrice,
+            sellingPrice: data[i].product.sellingprice,
           });
         }
         return rc.setResponse(res, {

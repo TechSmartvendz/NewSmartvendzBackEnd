@@ -942,7 +942,7 @@ router.delete(
 router.get(
   "/refillSheet",
   // validator.query(refillSheet),
-  // auth,
+  auth,
   asyncHandler(async (req, res) => {
     // const query = {
     //   role: req.user.role,
@@ -1042,8 +1042,8 @@ router.get(
 
 router.get(
   "/refillSheetExportCSV",
-  // validator.query(refillSheet),
-  // auth,
+  validator.query(refillSheet),
+  auth,
   asyncHandler(async (req, res) => {
     const refillfile = [];
     function pushData(x) {
