@@ -300,12 +300,12 @@ router.put(
   auth,
   asyncHandler(async (req, res) => {
     const { id } = req.params; // Extract the ID from the URL
-    const { machineId, machineSlot, date, sales, returnItems } = req.body;
+    const { machineId, machineSlots, date, sales, returnItems } = req.body;
 
     try {
       if (req.user.role === "Admin" || req.user.role === "SuperAdmin") {
         // Find the existing refill request by ID
-        const existingRequest = await refillRequest.findById(id);
+        const existingRequest = await refillRequest.findById({_id: id});
 
         if (!existingRequest) {
           return res.status(404).json({ error: "Refill request not found." });
@@ -313,7 +313,7 @@ router.put(
 
         // Update the existing refill request fields
         existingRequest.machineId = machineId;
-        existingRequest.machineSlots = machineSlot;
+        existingRequest.machineSlots = machineSlots;
         existingRequest.date = date;
         existingRequest.sales = sales;
         existingRequest.returnItems = returnItems;

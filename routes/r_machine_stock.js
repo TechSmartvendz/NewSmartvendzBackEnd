@@ -941,22 +941,8 @@ router.delete(
 
 router.get(
   "/refillSheet",
-  // validator.query(refillSheet),
   auth,
   asyncHandler(async (req, res) => {
-    // const query = {
-    //   role: req.user.role,
-    // };
-    // const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-    //   query
-    // );
-    // if (!permissions.listMachineSlot) {
-    //   return rc.setResponse(res, {
-    //     success: false,
-    //     msg: "No permisson to find data",
-    //     data: {},
-    //   });
-    // }
     try {
       let filter = {};
       if (req.query.refiller) {
@@ -993,9 +979,9 @@ router.get(
         try {
           // if (slot.closingStock) {
           machineDataMap.get(machineName).push({
-            slot: slot.slot,
-            product: productMap.get(slot.product.toString()).productname,
-            closingStock: slot.closingStock,
+            slot: slot?.slot,
+            product: productMap?.get(slot.product.toString())?.productname,
+            closingStock: slot?.closingStock,
           });
           // }
         } catch (error) {
@@ -1042,8 +1028,6 @@ router.get(
 
 router.get(
   "/refillSheetExportCSV",
-  validator.query(refillSheet),
-  auth,
   asyncHandler(async (req, res) => {
     const refillfile = [];
     function pushData(x) {
@@ -1114,25 +1098,23 @@ router.get(
       sendData = machineslotdata.map((slot) => {
         const machineData = machineDataMap.get(slot.machineName);
         return {
-          machineName: machineData.machineName,
-          warehouse: machineData.warehouse,
-          refiller: machineData.refiller,
-          product: productMap.get(slot.product.toString()).productname,
-          slot: slot.slot,
-          closingStock: slot.closingStock,
-          created_at: slot.created_at,
+          machineName: machineData?.machineName,
+          warehouse: machineData?.warehouse,
+          refiller: machineData?.refiller,
+          product: productMap?.get(slot.product.toString())?.productname,
+          slot: slot?.slot,
+          closingStock: slot?.closingStock,
         };
       });
       let data;
       for (let i = 0; i < sendData.length; i++) {
         data = {
-          machineName: sendData[i].machineName,
-          warehouse: sendData[i].warehouse,
-          refiller: sendData[i].refiller,
-          product: sendData[i].product,
-          slot: sendData[i].slot,
-          closingStock: sendData[i].closingStock,
-          created_at: sendData[i].created_at,
+          machineName: sendData[i]?.machineName,
+          warehouse: sendData[i]?.warehouse,
+          refiller: sendData[i]?.refiller,
+          product: sendData[i]?.product,
+          slot: sendData[i]?.slot,
+          closingStock: sendData[i]?.closingStock,
         };
         pushData(data);
       }

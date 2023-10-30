@@ -19,6 +19,7 @@ const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
 const iconv = require("iconv-lite");
 const path = require("path");
+const helper = require("../helper/common");
 
 const validator = require("express-joi-validation").createValidator();
 const { salesReport } = require("../validation/sales_report");
@@ -107,6 +108,13 @@ router.post(
         const product = await productTable.findOne({
           productname: productName,
         });
+        // console.log("product: ", product);
+        if(!product){
+           return rc.setResponse(res, {
+            data: productName,
+            msg: `Product - ${productName} - not found in warehouse - ${fromwarehouse.warehouseName}.`,
+          });
+        }
         combinedData.push({
           productName: product._id,
           productQuantity: quantity,
@@ -512,7 +520,8 @@ router.get(
         fromWarehouse: index?.fromWarehouse?.wareHouseName,
         toWarehouse: index?.toWarehouse?.wareHouseName,
         status: index.status,
-        createdAt: index.createdAt.toLocaleString(),
+        createdAt: helper.convertToTimeZone(index?.createdAt),
+        // createdAt: index.createdAt.toLocaleString(),
       }));
       if (data) {
         return rc.setResponse(res, {
@@ -553,7 +562,8 @@ router.get(
           productQuantity: request.productQuantity,
         })),
         status: data.status,
-        createdAt: data.createdAt.toLocaleString(),
+        // createdAt: data.createdAt.toLocaleString(),
+        createdAt: helper.convertToTimeZone(data?.createdAt),
       };
       if (data) {
         return rc.setResponse(res, {
@@ -816,7 +826,7 @@ router.get(
       );
       return res.status(200).end(csvData);
     } else {
-      res.status(200).json({ error: "Report not found" });
+      res.status(404).json({ error: "Report not found" });
     }
     // return res.send(data);
   })
@@ -837,11 +847,18 @@ router.get(
       refillerNameFilter
     );
 
-    return rc.setResponse(res, {
-      success: true,
-      msg: `Sales report from ${startDate} to ${endDate}`,
-      data: data,
-    });
+    if (data) {
+      return rc.setResponse(res, {
+        success: true,
+        msg: `Sales report from ${startDate} to ${endDate}`,
+        data: data,
+      });
+    } else {
+      return rc.setResponse(res, {
+        success: false,
+        data: "Report not found",
+      });
+    }
   })
 );
 
