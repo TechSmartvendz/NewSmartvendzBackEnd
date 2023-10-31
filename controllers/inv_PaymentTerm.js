@@ -1,7 +1,7 @@
 const rc = require("./responseController");
 const utils = require("../helper/apiHelper");
 const { asyncHandler } = require("../middleware/asyncHandler");
-const inv_PaymentTerm = require("../model/inv_paymentTerm");
+const inv_PaymentTerm = require("../model/inv_PaymentTerm");
 
 const addPaymentTerm = asyncHandler(async (req, res) => {
   const pararms = req.body;
