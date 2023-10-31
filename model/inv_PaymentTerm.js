@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const inv_paymentTerm = new Schema(
+const inv_PaymentTerm = new Schema(
   {
     // paymentTermId: { type: String, require: true, unique: true },
     paymentTermId: { type: String},
@@ -17,7 +17,7 @@ const inv_paymentTerm = new Schema(
   }
 );
 
-inv_paymentTerm.set("toJSON");
-inv_paymentTerm.set("toObject");
+inv_PaymentTerm.set("toJSON");
+inv_PaymentTerm.set("toObject");
 
-module.exports = mongoose.model("inv_paymentTerm", inv_paymentTerm);
+module.exports = mongoose.model("inv_PaymentTerm", inv_PaymentTerm);
