@@ -141,4 +141,4 @@ const deleteInvoice = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addInvoice};
+module.exports = { addInvoice, getInvoice, getInvoiceById, updateInvoice};
