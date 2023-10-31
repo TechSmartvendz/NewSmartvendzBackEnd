@@ -7,6 +7,7 @@ const logger = require('./logger/logger');
 require("./config/dbconn");
 const port = process.env.PORT || 80;
 var app = express();
+const rc = require("./controllers/responseController")
 
 app.use(cors());
 app.use(express.json());
