@@ -76,12 +76,12 @@ inv_Invoice.pre("save", function (next) {
           return next(err);
         }
         this.invoiceId = lastDoc ? lastDoc.invoiceId + 1 : 1;
-        this.invoiceCode = invoiceId(this.invoiceCode, this.invoiceId);
+        this.invoiceCode = invoiceId(this.invoiceNumber, this.invoiceId);
         next();
       });
   }
 
-  this.invoiceCode = invoiceId(this.invoiceCode, this.invoiceId);
+  this.invoiceCode = invoiceId(this.invoiceNumber, this.invoiceId);
   next();
 });
 

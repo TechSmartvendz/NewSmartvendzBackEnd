@@ -2,6 +2,7 @@ const rc = require("./responseController");
 const utils = require("../helper/apiHelper");
 const { asyncHandler } = require("../middleware/asyncHandler");
 const invProduct = require("../model/inv_Product");
+const invTax = require("../model/inv_Tax");
 const helper = require("../helper/uploadCSV");
 
 const createProduct = asyncHandler(async (req, res) => {
@@ -85,36 +86,114 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// needs to check if this is working properly or not
 const bulkupload = asyncHandler(async (req, res) => {
+  console.log(req.userData);
   const validateRow = (data) => {
     if (
-      data.machineid === "" ||
-      data.machineid === "NA" ||
-      data.machineid === "#N/A"
+      data.productId === "" ||
+      data.productId === "NA" ||
+      data.productId === "#N/A"
     ) {
-      return "MachineId is missing";
+      return "productId is missing";
     } else if (
-      data.machinename === "" ||
-      data.machinename === "NA" ||
-      data.machinename === "#N/A"
+      data.productType === "" ||
+      data.productType === "NA" ||
+      data.productType === "#N/A"
     ) {
-      return "Machinename is missing";
-    } // Add more validation checks if needed
-
+      return "productType is missing";
+    } else if (
+      data.productName === "" ||
+      data.productName === "NA" ||
+      data.productName === "#N/A"
+    ) {
+      return "productName is missing";
+    } else if (data.unit === "" || data.unit === "NA" || data.unit === "#N/A") {
+      return "unit is missing";
+    } else if (
+      data.sellingPrice === "" ||
+      data.sellingPrice === "NA" ||
+      data.sellingPrice === "#N/A"
+    ) {
+      return "sellingPrice is missing";
+    } else if (
+      data.sellingAccount === "" ||
+      data.sellingAccount === "NA" ||
+      data.sellingAccount === "#N/A"
+    ) {
+      return "sellingAccount is missing";
+    } else if (
+      data.salesDescription === "" ||
+      data.salesDescription === "NA" ||
+      data.salesDescription === "#N/A"
+    ) {
+      return "salesDescription is missing";
+    } else if (
+      data.costPrice === "" ||
+      data.costPrice === "NA" ||
+      data.costPrice === "#N/A"
+    ) {
+      return "costPrice is missing";
+    } else if (
+      data.account === "" ||
+      data.account === "NA" ||
+      data.account === "#N/A"
+    ) {
+      return "account is missing";
+    } else if (
+      data.purchaseDescription === "" ||
+      data.purchaseDescription === "NA" ||
+      data.purchaseDescription === "#N/A"
+    ) {
+      return "purchaseDescription is missing";
+    } else if (
+      data.preferredVendor === "" ||
+      data.preferredVendor === "NA" ||
+      data.preferredVendor === "#N/A"
+    ) {
+      return "preferredVendor is missing";
+    } else if (data.tax === "" || data.tax === "NA" || data.tax === "#N/A") {
+      return "tax is missing";
+    } else if (
+      data.createdDate === "" ||
+      data.createdDate === "NA" ||
+      data.createdDate === "#N/A"
+    ) {
+      return "createdDate is missing";
+    }
     return null;
   };
 
   const processRow = async (data) => {
-    // Process the row, create or update data
-    // Your specific logic for processing each row here
-    // For example, you can insert the data into a database
-    console.log("Processing row:", data);
-    // Your specific logic here, e.g., save to the database
+    try {
+      console.log(data);
+      const filter = { hsn_Code: data.tax, isDeleted: false };
+      const projection = {};
+      const options = {};
+      const checkData = await utils.findDocuments(
+        invTax,
+        filter,
+        projection,
+        options
+      );
+      const dateParts = data.createdDate.split('-');
+      const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
+      data.tax = checkData[0]._id;
+      data.admin = req.userData._id;
+      data.createdDate = formattedDate;
+      const processdata = await utils.saveData(invProduct, data);
+      if (!processdata) {
+        throw new Error("Failed to save data");
+      }
+    } catch (error) {
+      console.log("Error Process Row: ", error);
+      throw error;
+    }
   };
+  console.log("processRow: ", processRow);
 
   try {
-    const { results, rejectData } = await performBulkUpload(
+    const { results, rejectData } = await helper.performBulkUpload(
       `public/${req.file.filename}`,
       validateRow,
       processRow
@@ -144,7 +223,7 @@ const bulkupload = asyncHandler(async (req, res) => {
   }
 });
 
-const sampletest = asyncHandler(async (req, res) => {
+const exportProduct = asyncHandler(async (req, res) => {
   const schema = {
     productId: "",
     productType: "",
@@ -170,5 +249,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   bulkupload,
-  sampletest,
+  exportProduct,
 };

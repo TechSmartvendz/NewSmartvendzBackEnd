@@ -8,7 +8,7 @@ exports.downloadSampleCSV = async (res, schema, fields) => {
   const csvData = csvParser.parse(sampleData);
 
   res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", "attachment; filename=SampleImport.csv");
+  res.setHeader("Content-Disposition", "attachment; filename=Import.csv");
   res.status(200).end(csvData);
 };
 
