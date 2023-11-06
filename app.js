@@ -50,7 +50,9 @@ const invProduct = require("./routes/invProduct");
 const invTax = require("./routes/invTax");
 const invPaymentTerm = require("./routes/invPaymentTerm");
 const invInvoice = require("./routes/invInvoice");
-const invCustomer = require("./routes/invCustomer")
+const invCustomer = require("./routes/invCustomer");
+const invUnit = require("./routes/invUnit");
+const invTDS = require("./routes/invTDS");
 
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
@@ -82,6 +84,8 @@ app.use("/api/invTax", invTax );
 app.use("/api/invPaymentTerm", invPaymentTerm );
 app.use("/api/invInvoice", invInvoice);
 app.use("/api/invCustomer", invCustomer);
+app.use("/api/invUnit", invUnit);
+app.use("/api/invTDS", invTDS)
 
 //TODO:catch 404 and forward to error handler
 app.use( (req, res, next) => {

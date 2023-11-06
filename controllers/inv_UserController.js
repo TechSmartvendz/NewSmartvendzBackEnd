@@ -11,16 +11,16 @@ const privateKey = process.env.SECRET_KEY;
 const signup = asyncHandler(async (req, res) => {
   const pararms = req.body;
   console.log(pararms);
-  //   const checkEmailAlreadyExist = await utils.getData(invUser, {
-  //     query: { email: lowerCase(pararms.userEmail), isDeleted: false },
-  //   });
+    const checkEmailAlreadyExist = await utils.getData(invUser, {
+      query: { email: lowerCase(pararms.userEmail), isDeleted: false },
+    });
   const passwordHash = await commonHelper.generateNewPassword(pararms.password);
-  //   if (size(checkEmailAlreadyExist))
-  //     return sendErorMessage(
-  //       "This Email is already registered with us.",
-  //       {},
-  //       res
-  //     );
+    if (size(checkEmailAlreadyExist))
+      return sendErorMessage(
+        "This Email is already registered with us.",
+        {},
+        res
+      );
   const obj = {
     userName: pararms.userName,
     userNumber: pararms.userNumber,

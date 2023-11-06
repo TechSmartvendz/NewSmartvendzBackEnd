@@ -4,7 +4,7 @@ const { asyncHandler } = require("../middleware/asyncHandler");
 const inv_Tax = require("../model/inv_Tax");
 
 const addTax = asyncHandler(async (req, res) => {
-  const checkData = await inv_Tax.findOne({ hsn_Code: req.body.code });
+  const checkData = await inv_Tax.findOne({ hsn_Code: req.body.code.trim() });
   if (checkData) {
     return res.send("Already created");
   }

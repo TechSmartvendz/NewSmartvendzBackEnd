@@ -1,66 +1,44 @@
 const rc = require("./responseController");
 const utils = require("../helper/apiHelper");
 const { asyncHandler } = require("../middleware/asyncHandler");
-const inv_Invoice = require("../model/inv_Invoice");
-const inv_Payment = require("../model/inv_Payment");
+const inv_PaymentTerm = require("../model/inv_PaymentsTerm");
 
-const addInvoice = asyncHandler(async (req, res) => {
-  const pararms = req.body;
-  const checkData = await inv_Invoice.findOne({
-    invoiceNumber: pararms.invoiceNumber,
+const addPaymentTerm = asyncHandler(async (req, res) => {
+  let pararms = req.body;
+  const checkData = await inv_PaymentTerm.findOne({
+    paymentTermName: pararms.paymentTermName.trim(),
   });
+  // console.log("checkData: ", checkData);
   if (checkData) {
-    return rc.setResponse(res, {
-      msg: `Already created with this invoice ${pararms.invoiceNumber} `,
-    });
+    return res.send("Already created");
   }
-  let newInvoice = new inv_Invoice(pararms);
-  // newInvoice.admin = req.userData._id;
-  newInvoice.admin = "121212";
-  if (!newInvoice) {
+  let newPaymentTerm = new inv_PaymentTerm(pararms);
+  // newPaymentTerm.admin = req.userData._id;
+  newPaymentTerm.admin = "121212";
+  if (!newPaymentTerm) {
     return rc.setResponse(res, {
       msg: "No Data to insert",
     });
   }
-  const invoiceData = await utils.saveData(inv_Invoice, newInvoice);
-
-  if (invoiceData) {
-    let newPayment = {
-      customerId: pararms.customerId,
-      invoiceId: invoiceData._id,
-      status: "Unpaid",
-      createdDate: pararms.createdDate,
-      // admin: req.userData._id,
-      admin: "12121212",
-    };
-
-    const paymentData = await utils.saveData(inv_Payment, newPayment);
-
-    if (paymentData) {
-      return rc.setResponse(res, {
-        success: true,
-        msg: "Data Inserted",
-        data: invoiceData,
-      });
-    } else {
-      return rc.setResponse(res, {
-        msg: "Failed to create payment record",
-      });
-    }
-  } else {
+  const data = await utils.saveData(inv_PaymentTerm, newPaymentTerm);
+  if (data) {
     return rc.setResponse(res, {
-      msg: "Failed to create invoice",
+      success: true,
+      msg: "Data Inserted",
+      data: data,
     });
   }
 });
 
-const getInvoice = asyncHandler(async (req, res) => {
+const getPaymentTerm = asyncHandler(async (req, res) => {
+  //   const data = await utils.findDocuments()
+
   const filter = { isDeleted: false };
   const projection = {};
   const options = {};
 
   const data = await utils.findDocuments(
-    inv_Invoice,
+    inv_PaymentTerm,
     filter,
     projection,
     options
@@ -79,13 +57,15 @@ const getInvoice = asyncHandler(async (req, res) => {
   }
 });
 
-const getInvoiceById = asyncHandler(async (req, res) => {
+const getPaymentTermById = asyncHandler(async (req, res) => {
+  //   const data = await utils.findDocuments()
+
   const filter = { _id: req.query.id, isDeleted: false };
   const projection = {};
   const options = {};
 
   const data = await utils.findDocuments(
-    inv_Invoice,
+    inv_PaymentTerm,
     filter,
     projection,
     options
@@ -104,10 +84,10 @@ const getInvoiceById = asyncHandler(async (req, res) => {
   }
 });
 
-const updateInvoice = asyncHandler(async (req, res) => {
+const updatePaymentTerm = asyncHandler(async (req, res) => {
   const pararms = req.body;
   const data = await utils.updateData(
-    inv_Invoice,
+    inv_PaymentTerm,
     { _id: req.query.id },
     pararms
   );
@@ -124,12 +104,12 @@ const updateInvoice = asyncHandler(async (req, res) => {
   }
 });
 
-const deleteInvoice = asyncHandler(async (req, res) => {
+const deletePaymentTerm = asyncHandler(async (req, res) => {
   let pararms = {
     isDeleted: true,
   };
   const data = await utils.updateData(
-    inv_Invoice,
+    inv_PaymentTerm,
     { _id: req.query.id },
     pararms
   );
@@ -141,4 +121,10 @@ const deleteInvoice = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addInvoice, getInvoice, getInvoiceById, updateInvoice};
+module.exports = {
+  addPaymentTerm,
+  getPaymentTerm,
+  getPaymentTermById,
+  updatePaymentTerm,
+  deletePaymentTerm,
+};

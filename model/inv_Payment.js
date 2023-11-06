@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const inv_Payment = new Schema(
   {
-    paymentId: { type: String, require: true, unique: true },
+    // paymentId: { type: String, require: true, unique: true },
     customerId: {
         type: Schema.Types.ObjectId,
         ref: "inv_Customer",

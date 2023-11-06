@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const validator = require('express-joi-validation').createValidator();
 // const invTaxController = require("../controllers/inv_TaxController")
-const {addPaymentTerm, getPaymentTerm, updatePaymentTerm, deletePaymentTerm, getPaymentTermById} = require("../controllers/inv_PaymentTerm")
+const {addPaymentTerm, getPaymentTerm, updatePaymentTerm, deletePaymentTerm, getPaymentTermById} = require("../controllers/inv_PaymentTermController")
 const auth = require("../middleware/authentication");
 
 router.post("/add", addPaymentTerm);
