@@ -5,7 +5,7 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const inv_Invoice = new Schema(
   {
     invoiceId: { type: Number },
-    invoiceCode: { type: String, default: invoiceId, unique: true },
+    invoice: { type: String, default: "INV-", unique: true, index: true },
     invoiceNumber: { type: String, default: null, unique: true, index: true },
     orderNumber: { type: String, default: null, unique: true, index: true },
     invoiceType: { type: String, require: true },
@@ -37,7 +37,13 @@ const inv_Invoice = new Schema(
       },
     ],
     customerNotes: { type: String, defaut: null },
-    totalAmount: { type: Number, default: null },
+    // needs to update subtotal by adding tds
+    subTotal: {
+      subTotal: { type: Number, default: 0 },
+      tds: { type: Schema.Types.ObjectId, ref: "inv_TDS", index: true },
+      adjustment: { type: Number, default: 0 },
+      total: { type: Number, default: 0 },
+    },
     termsAndConditions: { type: String, default: null },
     currency: { type: String, default: null },
     createdDate: { type: Date, default: Date.now() },
@@ -65,28 +71,5 @@ inv_Invoice.set("toJSON");
 inv_Invoice.set("toObject");
 
 inv_Invoice.plugin(autoIncrement, { inc_field: "invoiceId" });
-
-inv_Invoice.pre("save", function (next) {
-  if (!this.invoiceId) {
-    return this.constructor
-      .findOne()
-      .sort("-invoiceId")
-      .exec((err, lastDoc) => {
-        if (err) {
-          return next(err);
-        }
-        this.invoiceId = lastDoc ? lastDoc.invoiceId + 1 : 1;
-        this.invoiceCode = invoiceId(this.invoiceNumber, this.invoiceId);
-        next();
-      });
-  }
-
-  this.invoiceCode = invoiceId(this.invoiceNumber, this.invoiceId);
-  next();
-});
-
-function invoiceId(invoiceNumber, invoiceId) {
-  return String(invoiceNumber + "-" + invoiceId);
-}
 
 module.exports = mongoose.model("inv_Invoice", inv_Invoice);

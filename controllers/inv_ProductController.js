@@ -7,6 +7,10 @@ const helper = require("../helper/uploadCSV");
 
 const createProduct = asyncHandler(async (req, res) => {
   const pararms = req.body;
+  const checkData = await invProduct.findOne({ productName: req.body.productName.trim() });
+  if (checkData) {
+    return res.send("Already created");
+  }
   let obj = new invProduct(pararms);
   obj.admin = req.userData._id;
   if (!obj) {

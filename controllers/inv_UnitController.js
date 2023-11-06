@@ -1,25 +1,26 @@
 const rc = require("./responseController");
 const utils = require("../helper/apiHelper");
 const { asyncHandler } = require("../middleware/asyncHandler");
-const inv_PaymentTerm = require("../model/inv_PaymentTerm");
+const inv_Unit = require("../model/inv_Unit");
 
-const addPaymentTerm = asyncHandler(async (req, res) => {
-  const pararms = req.body;
-  const checkData = await inv_PaymentTerm.findOne({
-    paymentTermName: pararms.paymentTermName,
+const addUnit = asyncHandler(async (req, res) => {
+  let pararms = req.body;
+  const checkData = await inv_Unit.findOne({
+    unit: pararms.unit.trim(),
   });
+  // console.log("checkData: ", checkData);
   if (checkData) {
     return res.send("Already created");
   }
-  let newPaymentTerm = new inv_PaymentTerm(pararms);
-  // newPaymentTerm.admin = req.userData._id;
-  newPaymentTerm.admin = "121212";
-  if (!newPaymentTerm) {
+  let newUnit = new inv_Unit(pararms);
+  // newUnit.admin = req.userData._id;
+  newUnit.admin = "121212";
+  if (!newUnit) {
     return rc.setResponse(res, {
       msg: "No Data to insert",
     });
   }
-  const data = await utils.saveData(inv_PaymentTerm, newPaymentTerm);
+  const data = await utils.saveData(inv_Unit, newUnit);
   if (data) {
     return rc.setResponse(res, {
       success: true,
@@ -29,19 +30,12 @@ const addPaymentTerm = asyncHandler(async (req, res) => {
   }
 });
 
-const getPaymentTerm = asyncHandler(async (req, res) => {
-  //   const data = await utils.findDocuments()
-
+const getUnit = asyncHandler(async (req, res) => {
   const filter = { isDeleted: false };
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
-    inv_PaymentTerm,
-    filter,
-    projection,
-    options
-  );
+  const data = await utils.findDocuments(inv_Unit, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {
@@ -56,19 +50,12 @@ const getPaymentTerm = asyncHandler(async (req, res) => {
   }
 });
 
-const getPaymentTermById = asyncHandler(async (req, res) => {
-  //   const data = await utils.findDocuments()
-
+const getUnitById = asyncHandler(async (req, res) => {
   const filter = { _id: req.query.id, isDeleted: false };
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
-    inv_PaymentTerm,
-    filter,
-    projection,
-    options
-  );
+  const data = await utils.findDocuments(inv_Unit, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {
@@ -83,13 +70,9 @@ const getPaymentTermById = asyncHandler(async (req, res) => {
   }
 });
 
-const updatePaymentTerm = asyncHandler(async (req, res) => {
+const updateUnit = asyncHandler(async (req, res) => {
   const pararms = req.body;
-  const data = await utils.updateData(
-    inv_PaymentTerm,
-    { _id: req.query.id },
-    pararms
-  );
+  const data = await utils.updateData(inv_Unit, { _id: req.query.id }, pararms);
   if (data) {
     return rc.setResponse(res, {
       success: true,
@@ -103,15 +86,11 @@ const updatePaymentTerm = asyncHandler(async (req, res) => {
   }
 });
 
-const deletePaymentTerm = asyncHandler(async (req, res) => {
+const deleteUnit = asyncHandler(async (req, res) => {
   let pararms = {
     isDeleted: true,
   };
-  const data = await utils.updateData(
-    inv_PaymentTerm,
-    { _id: req.query.id },
-    pararms
-  );
+  const data = await utils.updateData(inv_Unit, { _id: req.query.id }, pararms);
   if (data) {
     return rc.setResponse(res, {
       success: true,
@@ -121,9 +100,9 @@ const deletePaymentTerm = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  addPaymentTerm,
-  getPaymentTerm,
-  getPaymentTermById,
-  updatePaymentTerm,
-  deletePaymentTerm,
+  addUnit,
+  getUnit,
+  getUnitById,
+  updateUnit,
+  deleteUnit,
 };
