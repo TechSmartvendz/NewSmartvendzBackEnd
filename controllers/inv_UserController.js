@@ -48,13 +48,12 @@ const signup = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const pararms = req.body;
-  console.log("pararms: ", pararms);
-
+  // console.log("pararms: ", pararms);
   const checkEmail = await invUser.find({
-    userEmail: lowerCase(pararms.userEmail),
+    userEmail: pararms.userEmail,
     isDeleted: false,
   });
-  console.log("checkEmail: ", checkEmail);
+  // console.log("checkEmail: ", checkEmail);
   if (!size(checkEmail)) {
     return rc.setResponse(res, {
       success: false,
@@ -76,6 +75,18 @@ const login = asyncHandler(async (req, res) => {
     date: moment().toDate(),
   };
   const token = Jwt.sign(tokenData, privateKey, { expiresIn: "1d" });
+  const updateResult = await utils.updateData(
+    invUser,
+    { _id: checkEmail[0]._id },
+    { token: token }
+  );
+  // console.log('updateResult: ', updateResult);
+  if (!updateResult.success) {
+    return rc.setResponse(res, {
+      success: false,
+      data: "Failed to update token in the database.",
+    });
+  }
   const data = {
     token,
     name: `${checkEmail[0].userName}`,
