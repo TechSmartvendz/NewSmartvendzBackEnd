@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const autoIncrement = require("mongoose-sequence")(mongoose);
 
 const inv_User = new Schema(
   {
-    userId: { type: String, require: true, unique: true },
+    userId: { type: Number, require: true, unique: true },
     userName: { type: String, require: true, unique: true, trim: true },
     userNumber: { type: Number, default: null },
     userNumber1: { type: Number, default: null },
@@ -29,5 +30,7 @@ const inv_User = new Schema(
 
 inv_User.set("toJSON");
 inv_User.set("toObject");
+
+inv_User.plugin(autoIncrement, { inc_field: "userId" });
 
 module.exports = mongoose.model("inv_User", inv_User);

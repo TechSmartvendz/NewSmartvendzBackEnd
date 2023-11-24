@@ -10,17 +10,18 @@ const privateKey = process.env.SECRET_KEY;
 
 const signup = asyncHandler(async (req, res) => {
   const pararms = req.body;
-  console.log(pararms);
-    const checkEmailAlreadyExist = await utils.getData(invUser, {
-      query: { email: lowerCase(pararms.userEmail), isDeleted: false },
-    });
+  // console.log(pararms);
+  const checkEmailAlreadyExist = await utils.getData(invUser, {
+    userEmail: lowerCase(pararms.userEmail),
+    isDeleted: false,
+  });
+  console.log("checkEmailAlreadyExist: ", checkEmailAlreadyExist);
   const passwordHash = await commonHelper.generateNewPassword(pararms.password);
-    if (size(checkEmailAlreadyExist))
-      return sendErorMessage(
-        "This Email is already registered with us.",
-        {},
-        res
-      );
+  if (size(checkEmailAlreadyExist))
+    return rc.setResponse(res, {
+      success: false,
+      msg: "This Email is already registered with us.",
+    });
   const obj = {
     userName: pararms.userName,
     userNumber: pararms.userNumber,
@@ -40,7 +41,7 @@ const signup = asyncHandler(async (req, res) => {
   await utils.saveData(invUser, obj);
   return rc.setResponse(res, {
     success: true,
-    data: "",
+    data: "Signed Up Successfully",
   });
 });
 
