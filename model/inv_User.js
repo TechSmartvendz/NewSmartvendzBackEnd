@@ -5,7 +5,7 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const inv_User = new Schema(
   {
     userId: { type: Number, require: true, unique: true },
-    userName: { type: String, require: true, unique: true, trim: true },
+    userName: { type: String, require: true, trim: true },
     userNumber: { type: Number, default: null },
     userNumber1: { type: Number, default: null },
     userEmail: { type: String, require: true },

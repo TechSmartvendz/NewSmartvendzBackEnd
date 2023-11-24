@@ -12,21 +12,22 @@ const signup = asyncHandler(async (req, res) => {
   const pararms = req.body;
   // console.log(pararms);
   const checkEmailAlreadyExist = await utils.getData(invUser, {
-    userEmail: lowerCase(pararms.userEmail),
+    userEmail: pararms.userEmail,
     isDeleted: false,
   });
-  console.log("checkEmailAlreadyExist: ", checkEmailAlreadyExist);
-  const passwordHash = await commonHelper.generateNewPassword(pararms.password);
+  // console.log("checkEmailAlreadyExist: ", checkEmailAlreadyExist);
+  // console.log(size(checkEmailAlreadyExist))
   if (size(checkEmailAlreadyExist))
     return rc.setResponse(res, {
       success: false,
       msg: "This Email is already registered with us.",
     });
+  const passwordHash = await commonHelper.generateNewPassword(pararms.password);
   const obj = {
     userName: pararms.userName,
     userNumber: pararms.userNumber,
     userNumber1: pararms.userNumber1,
-    userEmail: lowerCase(pararms.userEmail),
+    userEmail: pararms.userEmail,
     userAddress: pararms.userAddress,
     country: pararms.country,
     state: pararms.state,
@@ -47,11 +48,13 @@ const signup = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const pararms = req.body;
+  console.log("pararms: ", pararms);
 
   const checkEmail = await invUser.find({
-    userEmail: pararms.userEmail,
+    userEmail: lowerCase(pararms.userEmail),
     isDeleted: false,
   });
+  console.log("checkEmail: ", checkEmail);
   if (!size(checkEmail)) {
     return rc.setResponse(res, {
       success: false,
@@ -59,7 +62,7 @@ const login = asyncHandler(async (req, res) => {
     });
   }
   const checkPasswordBoolean = await commonHelper.comparePassword(
-    pararms.password,
+    lowerCase(pararms.password),
     checkEmail[0].password
   );
   if (!checkPasswordBoolean)
