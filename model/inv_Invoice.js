@@ -5,13 +5,15 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const inv_Invoice = new Schema(
   {
     invoiceId: { type: Number },
-    invoice: { type: String, default: "INV-", unique: true, index: true },
-    invoiceNumber: { type: String, default: null, unique: true, index: true },
-    orderNumber: { type: String, default: null, unique: true, index: true },
-    invoiceType: { type: String, require: true },
+    invoice: { type: String, default: "INV-", required: true, index: true },
+    invoiceNumber: { type: String, default: null, required: true, index: true },
+    orderNumber: { type: String, default: null },
+    branch: { type: String, required: true, index: true },
+    invoiceType: { type: String, required: true },
     customerId: {
       type: Schema.Types.ObjectId,
       ref: "inv_Customer",
+      required: true,
       index: true,
     },
     invoiceDate: {
@@ -36,10 +38,10 @@ const inv_Invoice = new Schema(
         amount: { type: Number },
       },
     ],
-    customerNotes: { type: String, defaut: null },
+    customerNotes: { type: String, default: null },
     // needs to update subtotal by adding tds
     subTotal: {
-      subTotal: { type: Number, default: 0 },
+      subTotalPrice: { type: Number, default: 0 },
       tds: { type: Schema.Types.ObjectId, ref: "inv_TDS", index: true },
       adjustment: { type: Number, default: 0 },
       total: { type: Number, default: 0 },

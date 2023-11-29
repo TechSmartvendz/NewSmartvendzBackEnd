@@ -73,6 +73,7 @@ const login = asyncHandler(async (req, res) => {
     email: checkEmail[0].email,
     _id: checkEmail[0]._id,
     date: moment().toDate(),
+    role: checkEmail[0].role,
   };
   const token = Jwt.sign(tokenData, privateKey, { expiresIn: "1d" });
   const updateResult = await utils.updateData(
@@ -90,6 +91,7 @@ const login = asyncHandler(async (req, res) => {
   const data = {
     token,
     name: `${checkEmail[0].userName}`,
+    role: checkEmail[0].role
   };
   return rc.setResponse(res, {
     success: true,

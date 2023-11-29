@@ -14,7 +14,7 @@ const inv_User = new Schema(
     state: { type: String, default: null },
     city: { type: String, default: null },
     area: { type: String, default: null },
-    role: { type: String, default: null },
+    role: { type: String, default: "Admin" },
     otp: { type: Number, default: 1234 },
     token: { type: String, default: null },
     password: { type: String, default: null },

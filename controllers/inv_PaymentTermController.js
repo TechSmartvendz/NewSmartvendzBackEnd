@@ -37,7 +37,7 @@ const getPaymentTerm = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     inv_PaymentTerm,
     filter,
     projection,
@@ -64,7 +64,7 @@ const getPaymentTermById = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     inv_PaymentTerm,
     filter,
     projection,

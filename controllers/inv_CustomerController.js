@@ -39,7 +39,7 @@ const getCustomer = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     inv_Customer,
     filter,
     projection,
@@ -64,7 +64,7 @@ const getCustomerById = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     inv_Customer,
     filter,
     projection,

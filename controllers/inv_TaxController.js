@@ -34,7 +34,7 @@ const getTax = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(inv_Tax, filter, projection, options);
+  const data = await utils.getData(inv_Tax, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {
@@ -56,7 +56,7 @@ const getTaxById = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(inv_Tax, filter, projection, options);
+  const data = await utils.getData(inv_Tax, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {

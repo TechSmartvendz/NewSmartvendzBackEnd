@@ -15,7 +15,10 @@ const inv_Customer = new Schema(
     customerDisplayName: { type: String, default: null },
     customerEmail: { type: String, default: null, index: true },
     customerPhone: [{ type: Number, default: null }],
+    gstTreatment: { type: String, default: null },
     panNumber: { type: String, default: null },
+    placeOfSupply: { type: String, default: null },
+    taxPreference: { type: String, required: true, default: "Taxable" },
     currency: { type: String, default: null },
     paymentTerm: {
       type: Schema.Types.ObjectId,

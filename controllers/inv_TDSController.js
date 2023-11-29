@@ -38,7 +38,7 @@ const getTDS = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(inv_TDS, filter, projection, options);
+  const data = await utils.getData(inv_TDS, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {
@@ -60,7 +60,7 @@ const getTDSById = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(inv_TDS, filter, projection, options);
+  const data = await utils.getData(inv_TDS, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {
@@ -137,7 +137,7 @@ const getTdsSection = asyncHandler(async (req, res) => {
   const filter = { isDeleted: false };
   const projection = {};
   const options = {};
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     inv_TdsSection,
     filter,
     projection,
@@ -161,7 +161,7 @@ const getTdsSectionById = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     inv_TdsSection,
     filter,
     projection,
