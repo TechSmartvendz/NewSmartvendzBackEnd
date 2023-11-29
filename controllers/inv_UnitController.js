@@ -35,7 +35,7 @@ const getUnit = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(inv_Unit, filter, projection, options);
+  const data = await utils.getData(inv_Unit, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {
@@ -55,7 +55,7 @@ const getUnitById = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(inv_Unit, filter, projection, options);
+  const data = await utils.getData(inv_Unit, filter, projection, options);
 
   if (data) {
     return rc.setResponse(res, {

@@ -36,7 +36,7 @@ const getProduct = asyncHandler(async (req, res) => {
   const projection = {};
   const options = {};
 
-  const data = await utils.findDocuments(
+  const data = await utils.getData(
     invProduct,
     filter,
     projection,
@@ -47,6 +47,26 @@ const getProduct = asyncHandler(async (req, res) => {
       success: true,
       data: data,
     });
+});
+
+const getProductById = asyncHandler(async (req, res) => {
+  const filter = { _id: req.query.id, isDeleted: false };
+  const projection = {};
+  const options = {};
+
+  const data = await utils.getData(invProduct, filter, projection, options);
+
+  if (data) {
+    return rc.setResponse(res, {
+      success: true,
+      msg: "Data Fetched",
+      data: data,
+    });
+  } else {
+    return rc.setResponse(res, {
+      msg: "Data not Found",
+    });
+  }
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
@@ -250,6 +270,7 @@ const exportProduct = asyncHandler(async (req, res) => {
 module.exports = {
   createProduct,
   getProduct,
+  getProductById,
   updateProduct,
   deleteProduct,
   bulkupload,
