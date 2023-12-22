@@ -3,12 +3,6 @@ const { Schema } = mongoose;
 
 const inv_Customer = new Schema(
   {
-    customerId: {
-      type: String,
-      autoIncrement: true,
-      require: true,
-      unique: true,
-    },
     customerType: { type: String, require: true },
     customerName: { type: String, require: true, default: null },
     companyName: { type: String, default: null },
