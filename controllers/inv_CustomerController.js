@@ -17,8 +17,8 @@ const addCustomer = asyncHandler(async (req, res) => {
     });
   }
   let newCustomer = new inv_Customer(pararms);
-  // newCustomer.admin = req.userData._id;
-  newCustomer.admin = "121212";
+  newCustomer.admin = req.userData._id;
+  // newCustomer.admin = "121212";
   if (!newCustomer) {
     return rc.setResponse(res, {
       msg: "No Data to insert",

@@ -13,8 +13,8 @@ const addPaymentTerm = asyncHandler(async (req, res) => {
     return res.send("Already created");
   }
   let newPaymentTerm = new inv_PaymentTerm(pararms);
-  // newPaymentTerm.admin = req.userData._id;
-  newPaymentTerm.admin = "121212";
+  newPaymentTerm.admin = req.userData._id;
+  // newPaymentTerm.admin = "121212";
   if (!newPaymentTerm) {
     return rc.setResponse(res, {
       msg: "No Data to insert",

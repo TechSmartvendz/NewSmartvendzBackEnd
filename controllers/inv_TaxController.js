@@ -4,14 +4,15 @@ const { asyncHandler } = require("../middleware/asyncHandler");
 const inv_Tax = require("../model/inv_Tax");
 
 const addTax = asyncHandler(async (req, res) => {
-  const checkData = await inv_Tax.findOne({ hsn_Code: req.body.code.trim() });
-  if (checkData) {
+  const { code } = req.body;
+  const existingtax = await inv_Tax.findOne({ $or: [{ hsn_Code: code }, { code }] });
+  if (existingtax ) {
     return res.send("Already created");
   }
   let newTax = new inv_Tax(req.body);
-  // newTax.admin = req.userData._id;
+  newTax.admin = req.userData._id;
   // change this after adding auth in routes
-  newTax.admin = "121212";
+  // newTax.admin = "121212";
   if (!newTax) {
     return rc.setResponse(res, {
       msg: "No Data to insert",

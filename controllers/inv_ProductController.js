@@ -31,6 +31,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
 const getProduct = asyncHandler(async (req, res) => {
   const pararms = req.body;
+ 
 
   const filter = { isDeleted: false };
   const projection = {};

@@ -5,10 +5,10 @@ const validator = require('express-joi-validation').createValidator();
 const {addTax, getTax, updateTax, deleteTax, getTaxById} = require("../controllers/inv_TaxController")
 const auth = require("../middleware/authentication");
 
-router.post("/add", addTax);
-router.get("/get", getTax);
-router.get("/getById", getTaxById);
-router.put("/update", updateTax);
-router.put("/delete", deleteTax);
+router.post("/add",auth, addTax);
+router.get("/get",auth,  getTax);
+router.get("/getById",auth,  getTaxById);
+router.put("/update",auth,  updateTax);
+router.put("/delete", auth, deleteTax);
 
 module.exports = router;

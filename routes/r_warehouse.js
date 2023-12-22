@@ -1249,9 +1249,7 @@ router.post(
     const storeddata = [];
     const query = { role: req.user.role };
 
-    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(
-      query
-    );
+    const permissions = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (!permissions.bulkproductupload) {
       return rc.setResponse(res, { error: { code: 403 } });
     }
@@ -1262,71 +1260,64 @@ router.post(
         .pipe(csv({}))
         .on("data", (data) => results.push(data))
         .on("end", async () => {
-          // console.log('results: ', results);
+          let purchaseStockData = null;
+
           for (let i = 0; i < results.length; i++) {
             const currentResult = results[i];
             let errorFound = false;
-            // console.log("results[i] :", results);
-            if (!currentResult.warehouse) {
-              currentResult.error = "warehouse is missing";
-              errorFound = true;
-            } else if (!currentResult.product) {
-              currentResult.error = "product is missing";
-              errorFound = true;
-            } else if (!currentResult.supplier) {
-              currentResult.error = "supplier is missing";
-              errorFound = true;
-            } else if (!currentResult.productQuantity) {
-              currentResult.error = "productQuantity is missing";
-              errorFound = true;
-            } else if (!currentResult.sellingPrice) {
-              currentResult.error = "sellingPrice is missing";
-              errorFound = true;
-            } else if (!currentResult.totalPrice) {
-              currentResult.error = "totalPrice is missing";
-              errorFound = true;
-            } else if (!currentResult.invoiceNumber) {
-              currentResult.error = "invoiceNumber is missing";
-              errorFound = true;
-            } else if (!currentResult.GRN_Number) {
-              currentResult.error = "GRN_Number is missing";
-              errorFound = true;
-            } else if (!currentResult.gst) {
-              currentResult.error = "gst is missing";
-              errorFound = true;
-            } else if (!currentResult.date) {
-              currentResult.error = "date is missing";
-              errorFound = true;
-            }
 
+            // Check for missing fields
+            const requiredFields = ["warehouse", "product", "supplier", "productQuantity", "sellingPrice", "totalPrice", "invoiceNumber", "date"];
+            for (const field of requiredFields) {
+              if (!currentResult[field]) {
+                currentResult.error = `${field} is missing`;
+                errorFound = true;
+                break;
+              }
+            }
             if (errorFound) {
               rejectdata.push(currentResult);
               console.log("rejectdata: ", rejectdata);
             } else {
               try {
-                const productdata = await productTable.findOne({
-                  productname: currentResult.product,
-                });
-                const supplierdata = await supplierTable.findOne({
-                  supplierName: currentResult.supplier,
-                });
-                const warehousedata = await warehouseTable.findOne({
-                  wareHouseName: currentResult.warehouse,
-                });
-                const gstID = await gstTable.findOne({
-                  hsn_Code: currentResult.gst,
-                });
+                const productdata = await productTable.findOne({ productname: currentResult.product });
+                // console.log('productdata: ', productdata);
+                const supplierdata = await supplierTable.findOne({ supplierName: currentResult.supplier });
+                const warehousedata = await warehouseTable.findOne({ wareHouseName: currentResult.warehouse });
+
+                const dateParts = currentResult.date.split("-");
+                const day = parseInt(dateParts[0]);
+                const month = parseInt(dateParts[1]) - 1;
+                const year = parseInt(dateParts[2]);
+                const purchaseDate = new Date(year, month, day);
+
+                if (!purchaseStockData) {
+                  purchaseStockData = {
+                    warehouse: warehousedata._id,
+                    supplier: supplierdata._id,
+                    products: [],
+                    invoiceNumber: currentResult.invoiceNumber,
+                    GRN_Number: currentResult.GRN_Number,
+                    admin: req.user._id,
+                    date: purchaseDate,
+                  };
+                }
+
+                const productDetails = {
+                  product: productdata._id,
+                  productQuantity: currentResult.productQuantity,
+                  sellingPrice: currentResult.sellingPrice,
+                  totalPrice: currentResult.totalPrice,
+                };
+                purchaseStockData.products.push(productDetails);
 
                 let existingStock = await warehouseStock.findOne({
                   warehouse: warehousedata._id,
                   product: productdata._id,
                 });
-                console.log("existingStock: ", existingStock);
 
                 if (existingStock) {
-                  existingStock.productQuantity += parseInt(
-                    currentResult.productQuantity
-                  );
+                  existingStock.productQuantity += parseInt(currentResult.productQuantity);
                   await existingStock.save();
                   console.log("----------existing stock updated---------");
                 } else {
@@ -1341,38 +1332,13 @@ router.post(
                   await newstock.save();
                   console.log("---------new stock created ---------------");
                 }
-                const dateParts = currentResult.date.split("-");
-                const day = parseInt(dateParts[0]);
-                const month = parseInt(dateParts[1]) - 1; // Months are 0-indexed
-                const year = parseInt(dateParts[2]);
 
-                // Create a Date object
-                const purchaseDate = new Date(year, month, day);
+               
 
-                let purchaseStockData = {
-                  warehouse: warehousedata._id,
-                  product: productdata._id,
-                  supplier: supplierdata._id,
-                  productQuantity: currentResult.productQuantity,
-                  sellingPrice: currentResult.sellingPrice,
-                  totalPrice: currentResult.totalPrice,
-                  invoiceNumber: currentResult.invoiceNumber,
-                  GRN_Number: currentResult.GRN_Number,
-                  gst: gstID._id,
-                  admin: req.user._id,
-                  date: purchaseDate,
-                };
-
-                let newRow = await purchaseStock(purchaseStockData);
-                newRow.admin = req.user._id;
-                await newRow.save();
-                console.log(
-                  "----------new purchase request created---------------"
-                );
                 storeddata.push(currentResult);
               } catch (e) {
                 console.error(e);
-                if (e.code == 11000) {
+                if (e.code === 11000) {
                   currentResult.error = "Duplicate Entry";
                 } else {
                   currentResult.error = e.message || e.toString();
@@ -1382,13 +1348,23 @@ router.post(
             }
           }
 
-          responseMsg = "Data Fetched";
-          responseData = {
+          if (purchaseStockData) {
+            try {
+              const newRow = new purchaseStock(purchaseStockData);
+              newRow.admin = req.user._id;
+              await newRow.save();
+              console.log("----------new purchase request created---------------");
+            } catch (e) {
+              console.error(e);
+              rejectdata.push({ error: e.message || e.toString() });
+            }
+          }
+
+          let responseMsg = "Data Fetched";
+          let responseData = {
             dataupload: "success",
             stored_data: storeddata.length,
           };
-          // console.log('responseMsg: ', responseMsg);
-          // console.log('responseData: ', responseData);
 
           if (rejectdata.length > 0) {
             responseMsg = "Data Fetched (Partial Upload)";
