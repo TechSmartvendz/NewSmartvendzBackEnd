@@ -1,23 +1,31 @@
 require("dotenv").config();
 var express = require("express");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 var path = require("path");
-const logger = require('./logger/logger');
+const logger = require("./logger/logger");
 require("./config/dbconn");
 const port = process.env.PORT || 80;
 var app = express();
-const rc = require("./controllers/responseController")
+const rc = require("./controllers/responseController");
 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin', 'X-Requested-With,content-type', 'Accept', 'Authorization');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,PUT, POST, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin",
+    "X-Requested-With,content-type",
+    "Accept",
+    "Authorization"
+  );
   next();
 });
 
@@ -78,19 +86,22 @@ app.use("/api", refillerRequest);
 
 // Invoice Routes
 
-app.use("/api/invUser", invUser );
-app.use("/api/invProduct", invProduct );
-app.use("/api/invTax", invTax );
-app.use("/api/invPaymentTerm", invPaymentTerm );
+app.use("/api/invUser", invUser);
+app.use("/api/invProduct", invProduct);
+app.use("/api/invTax", invTax);
+app.use("/api/invPaymentTerm", invPaymentTerm);
 app.use("/api/invInvoice", invInvoice);
 app.use("/api/invCustomer", invCustomer);
 app.use("/api/invUnit", invUnit);
-app.use("/api/invTDS", invTDS)
+app.use("/api/invTDS", invTDS);
 
 //TODO:catch 404 and forward to error handler
-app.use( (req, res, next) => {
+app.use((req, res, next) => {
   // next(createError(404));
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, proxy-revalidate"
+  );
   rc.setResponse(res, {
     msg: "API not Found:404",
   });

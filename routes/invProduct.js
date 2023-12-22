@@ -5,6 +5,7 @@ const validator = require("express-joi-validation").createValidator();
 const {
   createProduct,
   getProduct,
+  getProductById,
   updateProduct,
   deleteProduct,
   bulkupload,
@@ -15,10 +16,11 @@ const { upload } = require("../middleware/fileUpload");
 
 router.post("/create", auth, createProduct);
 router.get("/get", auth, getProduct);
+router.get("/getById", auth, getProductById);
 router.put("/update", auth, updateProduct);
 router.delete("/delete", auth, deleteProduct);
 
 router.post("/bulkImport", auth, upload.single("filename"), bulkupload);
-router.get("/exportCSV", exportProduct);
+router.get("/exportCSV",auth, exportProduct);
 
 module.exports = router;

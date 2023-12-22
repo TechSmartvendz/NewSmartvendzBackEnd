@@ -4,10 +4,10 @@ const validator = require('express-joi-validation').createValidator();
 const {addUnit, getUnit, getUnitById, deleteUnit, updateUnit} = require("../controllers/inv_UnitController")
 const auth = require("../middleware/authentication");
 
-router.post("/add", addUnit);
-router.get("/get", getUnit);
-router.get("/getById", getUnitById);
-router.put("/update", updateUnit);
-router.put("/delete", deleteUnit);
+router.post("/add", auth, addUnit);
+router.get("/get",auth, getUnit);
+router.get("/getById",auth, getUnitById);
+router.put("/update",auth, updateUnit);
+router.put("/delete",auth, deleteUnit);
 
 module.exports = router;

@@ -5,10 +5,10 @@ const validator = require('express-joi-validation').createValidator();
 const {addPaymentTerm, getPaymentTerm, updatePaymentTerm, deletePaymentTerm, getPaymentTermById} = require("../controllers/inv_PaymentTermController")
 const auth = require("../middleware/authentication");
 
-router.post("/add", addPaymentTerm);
-router.get("/get", getPaymentTerm);
-router.get("/getById", getPaymentTermById);
-router.put("/update", updatePaymentTerm);
-router.put("/delete", deletePaymentTerm);
+router.post("/add",auth,  addPaymentTerm);
+router.get("/get",auth,  getPaymentTerm);
+router.get("/getById",auth,  getPaymentTermById);
+router.put("/update",auth,  updatePaymentTerm);
+router.put("/delete",auth,  deletePaymentTerm);
 
 module.exports = router;
