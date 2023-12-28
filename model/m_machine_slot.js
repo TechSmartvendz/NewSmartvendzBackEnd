@@ -399,9 +399,9 @@ module.exports.getDataforTablePagination = async (
   const skipdata = page * dataperpage - dataperpage;
   const dp = parseInt(dataperpage);
   let end = skipdata + parseInt(dataperpage);
-  console.log(skipdata);
-  console.log(dp);
-  console.log(end);
+  // console.log(skipdata);
+  // console.log(dp);
+  // console.log(end);
   const data = await Table.aggregate([
     {
       $match: {

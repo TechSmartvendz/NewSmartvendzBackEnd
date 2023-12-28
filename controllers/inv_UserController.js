@@ -49,7 +49,7 @@ const signup = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const pararms = req.body;
-  console.log("pararms: ", pararms);
+  // console.log("pararms: ", pararms);
   const checkEmail = await invUser.find({
     userEmail: pararms.userEmail,
     isDeleted: false,
@@ -76,7 +76,7 @@ const login = asyncHandler(async (req, res) => {
     date: moment().toDate(),
     role: checkEmail[0].role,
   };
-  const token = Jwt.sign(tokenData, privateKey, { expiresIn: "1d" });
+  const token = Jwt.sign(tokenData, privateKey, { expiresIn: "1h" });
   const updateResult = await utils.updateData(
     invUser,
     { _id: checkEmail[0]._id },

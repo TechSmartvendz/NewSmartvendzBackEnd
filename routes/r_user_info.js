@@ -186,7 +186,7 @@ router.put('/:id', auth, asyncHandler(
                 newData.admin=req.user.id
                 const data = await TableModel.updateById(id,newData);
                 if (data) {
-                    console.log("🚀 ~ file: r_user_info.js:156 ~ data", data)
+                    // console.log("🚀 ~ file: r_user_info.js:156 ~ data", data)
                     //FIXME:make email send on user created/
                     // email.registerNotification(registered, req.body.password);
                     return rc.setResponse(res, {

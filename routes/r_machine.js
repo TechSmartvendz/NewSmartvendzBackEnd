@@ -152,15 +152,15 @@ router.post(
         .on("data", async (data) => results.push(data))
 
         .on("end", async () => {
-          console.log("result", results);
+          // console.log("result", results);
           for (i = 0; i < results.length; i++) {
             if (
               results[i].machineid == "" ||
               results[i].machineid == "NA" ||
               results[i].machineid == "#N/A"
             ) {
-              console.log(`MachineId is not available`);
-              console.log(results[i]);
+              // console.log(`MachineId is not available`);
+              // console.log(results[i]);
               results[i].error = "MachineId is missing";
               const r = reject(results[i]);
             } else if (
@@ -168,8 +168,8 @@ router.post(
               results[i].machinename == "NA" ||
               results[i].machinename == "#N/A"
             ) {
-              console.log(`machinename is not available`);
-              console.log(results[i]);
+              // console.log(`machinename is not available`);
+              // console.log(results[i]);
               results[i].error = "machinename is missing";
               const r = reject(results[i]);
             } else if (
@@ -177,8 +177,8 @@ router.post(
               results[i].companyid == "NA" ||
               results[i].companyid == "#N/A"
             ) {
-              console.log(`Max_Quantity is not available`);
-              console.log(results[i]);
+              // console.log(`Max_Quantity is not available`);
+              // console.log(results[i]);
               results[i].error = "Max_Quantity is missing";
               const r = reject(results[i]);
             } else if (
@@ -186,8 +186,8 @@ router.post(
               results[i].warehouse == "NA" ||
               results[i].warehouse == "#N/A"
             ) {
-              console.log(`warehouse is not available`);
-              console.log(results[i]);
+              // console.log(`warehouse is not available`);
+              // console.log(results[i]);
               results[i].error = "warehouse is missing";
               const r = reject(results[i]);
             } else if (
@@ -195,8 +195,8 @@ router.post(
               results[i].refiller == "NA" ||
               results[i].refiller == "#N/A"
             ) {
-              console.log(`refiller is not available`);
-              console.log(results[i]);
+              // console.log(`refiller is not available`);
+              // console.log(results[i]);
               results[i].error = "refiller is missing";
               const r = reject(results[i]);
             }
@@ -215,8 +215,8 @@ router.post(
               results[i].location == "NA" ||
               results[i].location == "#N/A"
             ) {
-              console.log(`location is not available`);
-              console.log(results[i]);
+              // console.log(`location is not available`);
+              // console.log(results[i]);
               results[i].error = "location is missing";
               const r = reject(results[i]);
             }
@@ -235,8 +235,8 @@ router.post(
               results[i].totalslots == "NA" ||
               results[i].totalslots == "#N/A"
             ) {
-              console.log(`totalslots is not available`);
-              console.log(results[i]);
+              // console.log(`totalslots is not available`);
+              // console.log(results[i]);
               results[i].error = "totalslots is missing";
               const r = reject(results[i]);
             } else {
@@ -291,11 +291,11 @@ router.post(
             }
           }
           // const r= reject();
-          console.log("storeddata.length", storeddata.length);
-          console.log("rejectdata", rejectdata);
-          console.log("rejectdata.length", rejectdata.length);
-          console.log("rejectmachines", rejectmachines);
-          console.log("rejectmachines", rejectmachines.length);
+          // console.log("storeddata.length", storeddata.length);
+          // console.log("rejectdata", rejectdata);
+          // console.log("rejectdata.length", rejectdata.length);
+          // console.log("rejectmachines", rejectmachines);
+          // console.log("rejectmachines", rejectmachines.length);
 
           if (rejectdata.length > 0) {
             return rc.setResponse(res, {
@@ -552,7 +552,7 @@ router.post(
         machineid: req.body.machineid,
       };
       var cdata = await TableModel.getDataByQueryFilterDataOne(query);
-      console.log(cdata);
+      // console.log(cdata);
       // console.log("🚀 ~ file: r_company.js:195 ~ cdata", cdata)
       if (!cdata) {
         return rc.setResponse(res, {
@@ -569,7 +569,7 @@ router.post(
         newRow.machineName = cdata.machineid;
         newRow.product = productdata._id;
         newRow = new TableModelMachineSlot(newRow);
-        console.log(newRow);
+        // console.log(newRow);
 
         if (!newRow) {
           return rc.setResponse(res, {
@@ -603,7 +603,7 @@ router.put(
         machineid: req.body.machineid,
       };
       var cdata = await TableModel.getDataByQueryFilterDataOne(query);
-      console.log("🚀 ~ file: r_machine.js:242 ~ cdata:", cdata);
+      // console.log("🚀 ~ file: r_machine.js:242 ~ cdata:", cdata);
       if (!cdata) {
         return rc.setResponse(res, {
           msg: "Machine not Found",
@@ -616,7 +616,7 @@ router.put(
         newRow.created_by = req.user.id;
         newRow.machineid = cdata.id;
         newRow.product = productdata._id;
-        console.log(newRow);
+        // console.log(newRow);
         query = {
           _id: req.params.id,
         };
@@ -718,7 +718,7 @@ router.get(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
       let _id = req.params.slotid;
-      console.log("🚀 ~ file: r_company.js:276 ~ slote _id", _id);
+      // console.log("🚀 ~ file: r_company.js:276 ~ slote _id", _id);
       const data = await TableModelMachineSlot.getDataForEditFormAssignUser(
         _id
       );

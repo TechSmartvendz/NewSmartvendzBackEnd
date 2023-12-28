@@ -171,10 +171,10 @@ module.exports.getDataforTable = async (companyid) => {
 };
 
 module.exports.getDataForEditFormAssignUser = async (id) => {
-  console.log(
-    "🚀 ~ file: m_company_admin.js:164 ~ module.exports.getDataForEditFormAssignUser= ~ id",
-    id
-  );
+  // console.log(
+  //   "🚀 ~ file: m_company_admin.js:164 ~ module.exports.getDataForEditFormAssignUser= ~ id",
+  //   id
+  // );
   id = mongoose.Types.ObjectId(id);
   const data = Table.aggregate([
     {

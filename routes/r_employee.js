@@ -73,7 +73,7 @@ router.post('/ExportCSV', auth, asyncHandler(//TODO: WOrking
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
         if (cdata.bulkproductupload) {
             const query = req.body
-            console.log("🚀 ~ file: r_employee.js:76 ~ query:", query)
+            // console.log("🚀 ~ file: r_employee.js:76 ~ query:", query)
             
             let data = await TableModel.getDataforCSVWithQuery(query);
             if (!(data.lenght == 0)) {
@@ -90,9 +90,9 @@ router.post('/ExportCSV', auth, asyncHandler(//TODO: WOrking
                         "department": data[i].department,
 
                     }
-                     console.log(j);
+                    //  console.log(j);
                     transaction(j);
-                    console.log(trans);
+                    // console.log(trans);
                 }
                 const csvFields = ["logicid", "cardnumber", "employeeid", "employeename", "email","manageremail", "costcenter","costcentermanagername","department"];
                 const csvParser = new CsvParser({ csvFields });
@@ -135,23 +135,23 @@ router.post('/ImportCSV', auth, upload.single("file"), asyncHandler( //TODO: WOr
                 .pipe(csv({}))
                 .on('data', (data) => results.push(data))
                 .on('end', async () => {
-                    console.log(results[0]);
+                    // console.log(results[0]);
                     for (i = 0; i < results.length; i++) {
                         if (results[i].logicid == "" || results[i].logicid == "NA" || results[i].logicid == "#N/A") {
-                            console.log(`logicid is not available`);
-                            console.log(results[i]);
+                            // console.log(`logicid is not available`);
+                            // console.log(results[i]);
                             results[i].error="logicid is missing"
                             const r = reject(results[i]);
                         }
                         else if (results[i].cardnumber == "" || results[i].cardnumber == "NA" || results[i].cardnumber == "#N/A") {
-                            console.log(`cardnumber is not available`);
-                            console.log(results[i]);
+                            // console.log(`cardnumber is not available`);
+                            // console.log(results[i]);
                             results[i].error="cardnumber is missing"
                             const r = reject(results[i]);
                         }
                         else if (results[i].employeename == "" || results[i].employeename == "NA" || results[i].employeename == "#N/A") {
-                            console.log(`employeename is not available`);
-                            console.log(results[i]);
+                            // console.log(`employeename is not available`);
+                            // console.log(results[i]);
                             results[i].error="employeename is missing"
                             const r = reject(results[i]);
                         }
@@ -179,9 +179,9 @@ router.post('/ImportCSV', auth, upload.single("file"), asyncHandler( //TODO: WOr
 
                     }
                    // const r= reject();
-                    console.log(storeddata.length);
-                    console.log(rejectdata);
-                    console.log(rejectdata.length);
+                    // console.log(storeddata.length);
+                    // console.log(rejectdata);
+                    // console.log(rejectdata.length);
                     
                     if (rejectdata.length > 0)
                      {  return rc.setResponse(res, {
@@ -264,7 +264,7 @@ router.post('/Search/:page/:dataperpage', auth, asyncHandler( //TODO: WOrking
             const dataperpage = req.params.dataperpage
             const query = req.body
             const data = await TableModel.getDataforTablePaginationWithQuery(page, dataperpage, query);
-            console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
+            // console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
             if (data) {
                 return rc.setResponse(res, {
                     success: true,

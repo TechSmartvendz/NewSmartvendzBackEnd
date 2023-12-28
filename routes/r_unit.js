@@ -143,7 +143,7 @@ router.delete('/:id', auth, asyncHandler(
             }
 
         }else{
-            console.log("🚀 ~ file: r_country.js:129 ~ count", count)
+            // console.log("🚀 ~ file: r_country.js:129 ~ count", count)
             return rc.setResponse(res, {
                 msg: "Can't Delete this Country It has State Data"
             })

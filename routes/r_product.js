@@ -86,7 +86,7 @@ router.post(
     if (cdata.bulkproductupload) {
       const query = req.body;
       let data = await TableModel.getDataforCSVWithQuery(query);
-      console.log("🚀 ~ file: r_product.js:30 ~ data:", data);
+      // console.log("🚀 ~ file: r_product.js:30 ~ data:", data);
       if (!(data.lenght == 0)) {
         for (i = 0; i < data.length; i++) {
           const j = {
@@ -99,9 +99,9 @@ router.post(
             unit: data[i].unit,
             // HSN_code: data[i].HSN_code,
           };
-          console.log(j);
+          // console.log(j);
           transaction(j);
-          console.log(trans);
+          // console.log(trans);
         }
         const csvFields = [
           "productid",
@@ -155,7 +155,7 @@ router.post(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.bulkproductupload) {
       var path = `public/${req.file.filename}`;
-      console.log("🚀 ~ file: r_product.js:109 ~ path:", path);
+      // console.log("🚀 ~ file: r_product.js:109 ~ path:", path);
       fs.createReadStream(path)
         .pipe(csv({}))
         .on("data", (data) => results.push(data))
@@ -167,8 +167,8 @@ router.post(
               results[i].productid == "NA" ||
               results[i].productid == "#N/A"
             ) {
-              console.log(`productid is not available`);
-              console.log(results[i]);
+              // console.log(`productid is not available`);
+              // console.log(results[i]);
               results[i].error = "productid is missing";
               const r = reject(results[i]);
             } else if (
@@ -176,8 +176,8 @@ router.post(
               results[i].productname == "NA" ||
               results[i].productname == "#N/A"
             ) {
-              console.log(`productname is not available`);
-              console.log(results[i]);
+              // console.log(`productname is not available`);
+              // console.log(results[i]);
               results[i].error = "productname is missing";
               const r = reject(results[i]);
             } else if (
@@ -185,8 +185,8 @@ router.post(
               results[i].materialtype == "NA" ||
               results[i].materialtype == "#N/A"
             ) {
-              console.log(`materialtype is not available`);
-              console.log(results[i]);
+              // console.log(`materialtype is not available`);
+              // console.log(results[i]);
               results[i].error = "materialtype is missing";
               const r = reject(results[i]);
             }
@@ -327,7 +327,7 @@ router.post(
         dataperpage,
         query
       );
-      console.log("🚀 ~ file: r_product.js:30 ~ data:", data);
+      // console.log("🚀 ~ file: r_product.js:30 ~ data:", data);
       if (data) {
         return rc.setResponse(res, {
           success: true,

@@ -152,7 +152,7 @@ router.get(
   "/warehouseStock/SampleCSV",
   auth,
   asyncHandler(async (req, res) => {
-    console.log("----------------xdxdxgxg--------");
+    // console.log("----------------xdxdxgxg--------");
     const query = {
       role: req.user.role,
     };
@@ -223,12 +223,12 @@ router.post(
       readStream
         .pipe(csv({}))
         .on("data", async (data) => {
-          console.log("Raw data entry:", data);
+          // console.log("Raw data entry:", data);
           results.push(data);
         })
         .on("end", async () => {
-          console.log("results", results);
-          console.log("results", results.length);
+          // console.log("results", results);
+          // console.log("results", results.length);
           const transferRequests = [];
 
           for (let i = 0; i < results.length; i++) {
@@ -237,8 +237,8 @@ router.post(
               results[i].fromWarehouse == "NA" ||
               results[i].fromWarehouse == "#N/A"
             ) {
-              console.log(`fromWarehouse is not available`);
-              console.log(results[i]);
+              // console.log(`fromWarehouse is not available`);
+              // console.log(results[i]);
               results[i].error = "fromWarehouse is missing";
               const r = reject(results[i]);
             } else if (
@@ -246,8 +246,8 @@ router.post(
               results[i].toWarehouse == "NA" ||
               results[i].toWarehouse == "#N/A"
             ) {
-              console.log(`toWarehouse is not available`);
-              console.log(results[i]);
+              // console.log(`toWarehouse is not available`);
+              // console.log(results[i]);
               results[i].error = "toWarehouse is missing";
               const r = reject(results[i]);
             } else if (
@@ -255,8 +255,8 @@ router.post(
               results[i].productName == "NA" ||
               results[i].productName == "#N/A"
             ) {
-              console.log(`productName is not available`);
-              console.log(results[i]);
+              // console.log(`productName is not available`);
+              // console.log(results[i]);
               results[i].error = "productName is missing";
               const r = reject(results[i]);
             } else if (
@@ -264,8 +264,8 @@ router.post(
               results[i].quantity == "NA" ||
               results[i].quantity == "#N/A"
             ) {
-              console.log(`quantity is not available`);
-              console.log(results[i]);
+              // console.log(`quantity is not available`);
+              // console.log(results[i]);
               results[i].error = "quantity is missing";
               const r = reject(results[i]);
             }
@@ -277,7 +277,7 @@ router.post(
                 quantity: replaceSpecialChars(results[i].quantity),
               };
 
-              console.log("Sanitized data entry:", sanitizedData);
+              // console.log("Sanitized data entry:", sanitizedData);
 
               const fromwarehouse = await warehouseTable.findOne({
                 wareHouseName: sanitizedData.fromWarehouse,
@@ -310,7 +310,7 @@ router.post(
                 succ(sanitizedData);
               }
             } catch (e) {
-              console.log("Error processing data:", e);
+              // console.log("Error processing data:", e);
               if (e.code === 11000) {
                 reject({ ...sanitizedData, error: "Duplicate Entry" });
               } else {
@@ -326,8 +326,8 @@ router.post(
 
           await newTransferRequest.save();
 
-          console.log("Stored data:", storeddata);
-          console.log("Rejected data:", rejectdata);
+          // console.log("Stored data:", storeddata);
+          // console.log("Rejected data:", rejectdata);
 
           const response = {
             success: true,
@@ -845,7 +845,7 @@ router.get(
       endDate,
       machineNameFilter,
       refillerNameFilter
-    );
+      );
 
     if (data) {
       return rc.setResponse(res, {

@@ -342,7 +342,7 @@ router.get('/CompanyUsers/:id/:assignid', auth, asyncHandler(
 
         
                let assignid=req.params.assignid
-               console.log("🚀 ~ file: r_company.js:276 ~ assignid", assignid)
+            //    console.log("🚀 ~ file: r_company.js:276 ~ assignid", assignid)
         const data = await TableModelCompanyAdmin.getDataForEditFormAssignUser(assignid);
         if (data) {
             return rc.setResponse(res, {
