@@ -266,7 +266,7 @@ router.post('/Search/:page/:dataperpage', auth, asyncHandler( //TODO: WOrking
                     companyid: req.body.companyid
                 }
                 cdata = await TableModelCompany.getDataByQueryFilterDataOne(cquery);
-                console.log("🚀 ~ file: r_logic.js:270 ~ cdata:", cdata)
+                // console.log("🚀 ~ file: r_logic.js:270 ~ cdata:", cdata)
                 cdata ? req.body.companyid = cdata.id : delete req.body["companyid"];
                
             }
@@ -282,7 +282,7 @@ router.post('/Search/:page/:dataperpage', auth, asyncHandler( //TODO: WOrking
                 const dataperpage = req.params.dataperpage
                 const query = req.body
                 const data = await TableModel.getDataforTablePaginationWithQuery(page, dataperpage, query);
-                console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
+                // console.log("🚀 ~ file: r_product.js:30 ~ data:", data)
                 if (data) {
                     return rc.setResponse(res, {
                         success: true,

@@ -1277,7 +1277,7 @@ router.post(
             }
             if (errorFound) {
               rejectdata.push(currentResult);
-              console.log("rejectdata: ", rejectdata);
+              // console.log("rejectdata: ", rejectdata);
             } else {
               try {
                 const productdata = await productTable.findOne({ productname: currentResult.product });

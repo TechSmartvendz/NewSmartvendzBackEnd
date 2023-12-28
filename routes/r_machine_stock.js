@@ -650,7 +650,7 @@ router.get(
   "/MachineSlot/SampleCSV",
   auth,
   asyncHandler(async (req, res) => {
-    console.log("----------------xdxdxgxg--------");
+    // console.log("----------------xdxdxgxg--------");
     const query = {
       role: req.user.role,
     };
@@ -713,15 +713,15 @@ router.post(
         .on("data", async (data) => results.push(data))
 
         .on("end", async () => {
-          console.log("result", results);
+          // console.log("result", results);
           for (i = 0; i < results.length; i++) {
             if (
               results[i].machineid == "" ||
               results[i].machineid == "NA" ||
               results[i].machineid == "#N/A"
             ) {
-              console.log(`MachineId is not available`);
-              console.log(results[i]);
+              // console.log(`MachineId is not available`);
+              // console.log(results[i]);
               results[i].error = "MachineId is missing";
               const r = reject(results[i]);
             } else if (
@@ -729,8 +729,8 @@ router.post(
               results[i].slot == "NA" ||
               results[i].slot == "#N/A"
             ) {
-              console.log(`Slot is not available`);
-              console.log(results[i]);
+              // console.log(`Slot is not available`);
+              // console.log(results[i]);
               results[i].error = "Slot is missing";
               const r = reject(results[i]);
             } else if (
@@ -738,8 +738,8 @@ router.post(
               results[i].maxquantity == "NA" ||
               results[i].maxquantity == "#N/A"
             ) {
-              console.log(`Max_Quantity is not available`);
-              console.log(results[i]);
+              // console.log(`Max_Quantity is not available`);
+              // console.log(results[i]);
               results[i].error = "Max_Quantity is missing";
               const r = reject(results[i]);
             } else if (
@@ -747,8 +747,8 @@ router.post(
               results[i].product == "NA" ||
               results[i].product == "#N/A"
             ) {
-              console.log(`Product is not available`);
-              console.log(results[i]);
+              // console.log(`Product is not available`);
+              // console.log(results[i]);
               results[i].error = "Product is missing";
               const r = reject(results[i]);
             } else {
@@ -782,7 +782,7 @@ router.post(
                   const r = succ(results[i]);
                 }
               } catch (e) {
-                console.log(e);
+                // console.log(e);
                 if (e.code == 11000) {
                   results[i].error = "Duplicate Entry";
                   const r = reject(results[i]);
@@ -794,9 +794,9 @@ router.post(
             }
           }
           // const r= reject();
-          console.log("storeddata.length", storeddata.length);
-          console.log("rejectdata", rejectdata);
-          console.log("rejectdata.length", rejectdata.length);
+          // console.log("storeddata.length", storeddata.length);
+          // console.log("rejectdata", rejectdata);
+          // console.log("rejectdata.length", rejectdata.length);
 
           if (rejectdata.length > 0) {
             return rc.setResponse(res, {

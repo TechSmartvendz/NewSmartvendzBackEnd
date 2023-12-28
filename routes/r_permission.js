@@ -12,7 +12,7 @@ router.post(
   "/",
   auth,
   asyncHandler(async (req, res) => {
-    console.log("user",req.user)
+    // console.log("user",req.user)
     if (req.user.role === "SuperAdmin") {
 
       //    const query={

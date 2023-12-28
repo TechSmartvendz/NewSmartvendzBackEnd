@@ -143,7 +143,7 @@ router.delete(
     if (req.user.role === "SuperAdmin") {
       const count = await TableModelState.getDataCountByQuery(query);
       if (!count) {
-        console.log("🚀 ~ file: r_country.js:129 ~ count", count);
+        // console.log("🚀 ~ file: r_country.js:129 ~ count", count);
         query = { _id: req.params.id };
         const data = await TableModel.dataDeleteByQuery(query);
         if (data) {
@@ -158,7 +158,7 @@ router.delete(
           });
         }
       } else {
-        console.log("🚀 ~ file: r_country.js:129 ~ count", count);
+        // console.log("🚀 ~ file: r_country.js:129 ~ count", count);
         return rc.setResponse(res, {
           msg: "Can't Delete this Country It has State Data",
         });

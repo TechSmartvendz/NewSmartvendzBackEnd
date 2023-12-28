@@ -72,7 +72,7 @@ const getProductById = asyncHandler(async (req, res) => {
 
 const updateProduct = asyncHandler(async (req, res) => {
   const pararms = req.body;
-  console.log("pararms: ", pararms);
+  // console.log("pararms: ", pararms);
   let obj = {
     productId: pararms.productId,
     productType: pararms.productType,
@@ -89,7 +89,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     updatedBy: req.userData._id,
   };
   const data = await utils.updateData(invProduct, { _id: req.query.id }, obj);
-  console.log("data: ", data);
+  // console.log("data: ", data);
   if (data) {
     return rc.setResponse(res, {
       success: true,
@@ -112,7 +112,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const bulkupload = asyncHandler(async (req, res) => {
-  console.log(req.userData);
+  // console.log(req.userData);
   const validateRow = (data) => {
     if (
       data.productId === "" ||
@@ -190,7 +190,7 @@ const bulkupload = asyncHandler(async (req, res) => {
 
   const processRow = async (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       const filter = { hsn_Code: data.tax, isDeleted: false };
       const projection = {};
       const options = {};
@@ -215,7 +215,7 @@ const bulkupload = asyncHandler(async (req, res) => {
       throw error;
     }
   };
-  console.log("processRow: ", processRow);
+  // console.log("processRow: ", processRow);
 
   try {
     const { results, rejectData } = await helper.performBulkUpload(

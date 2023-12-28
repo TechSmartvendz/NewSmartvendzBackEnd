@@ -1,6 +1,13 @@
 Inventory is running fine.
 
+Bugs in inventory - 
+ - In sales Report check date filter in date, the problem is when i send end date as 5th of december it takes it as 4th of december, also from frontend there is problem that when we send machineName or refillerName it is not working then so need to fix that.
 
+ - find more bugs and resolve that.
+
+- bug fix from frontend - machineName and refillerName filter is fixed
+
+--------------------------Invoice Backend-----------------------------------
 Invoice :-
 
 Users - SignUp, Login, forgotPassword - post APis

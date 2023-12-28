@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
         cb(null, `${file.fieldname}-${Date.now()}.csv`)
     },
     onFileUploadStart: function (file) {
-        console.log("Inside uploads");
+        // console.log("Inside uploads");
         if (file.mimetype == 'text/csv') {
             return true;
         }

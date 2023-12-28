@@ -32,7 +32,7 @@ const auth = asyncHandler(async (req, res, next) => {
   } else if (req.cookies) {
     const token = req.cookies.cookie;
     const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(verifyUser);
+    // console.log(verifyUser);
     const user = await User.findOne({ _id: verifyUser._id });
     req.user = user;
     req.tokenid = verifyUser;

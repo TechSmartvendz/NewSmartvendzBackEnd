@@ -10,7 +10,7 @@ var transport = nodemailer.createTransport( {
 
 module.exports = {
 	sendMail: async (data,cb)=> {
-		console.log("=========data===",data.to)
+		// console.log("=========data===",data.to)
 		var message = {
 			from: 'Snaxsmart',
 			to: data.to,

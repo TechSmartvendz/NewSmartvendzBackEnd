@@ -187,7 +187,7 @@ module.exports.getDataforTable = async () => {
   return data;
 };
 module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,query) => {
-  console.log("🚀 ~ file: m_product.js:172 ~ module.exports.getDataforTablePaginationWithQuery= ~ query:", query)
+  // console.log("🚀 ~ file: m_product.js:172 ~ module.exports.getDataforTablePaginationWithQuery= ~ query:", query)
   const skipdata = page * dataperpage - dataperpage;
   const dp = parseInt(dataperpage);
   let end = skipdata + parseInt(dataperpage);
@@ -274,7 +274,7 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
  
 };
 module.exports.getDataforCSVWithQuery = async (query) => {
-  console.log("🚀 ~ file: m_employee.js:277 ~ module.exports.getDataforCSVWithQuery= ~ query:", query)
+  // console.log("🚀 ~ file: m_employee.js:277 ~ module.exports.getDataforCSVWithQuery= ~ query:", query)
   const data = await Table.find(query, { _id: 0,admin:0,delete_status:0,last_update:0,created_at:0,created_by:0,__v:0});
   return data;
  
