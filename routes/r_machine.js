@@ -362,7 +362,7 @@ router.get(
             );
           return {
             _id: item._id,
-            machineid: item.machineid,
+            machine_id: item.machineid,
             machineName: item.machinename,
             totalslots: item.totalslots,
             warehouse: warehouse ? warehouse.wareHouseName : "",
