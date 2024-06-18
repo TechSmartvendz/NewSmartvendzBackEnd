@@ -25,6 +25,68 @@ const { upload } = require("../middleware/fileUpload");
 //managemachine
 //addnewmachine
 
+router.get("/getallmachines", async (req, res) => {
+  try {
+    let data = await TableModel.find();
+    // console.log('data: ', data);
+    const DataArray = data.map((machine) => {
+      const {
+        machineid,
+        machinename,
+        companyid,
+        warehouse,
+        refiller,
+        building,
+        location,
+        producttype,
+        totalslots,
+        cash,
+        totalSalesCount,
+        totalSalesValue
+      } = machine;
+      return {
+        machineid,
+        machinename,
+        companyid,
+        warehouse,
+        refiller,
+        building,
+        location,
+        producttype,
+        totalslots,
+        cash,
+        totalSalesCount,
+        totalSalesValue
+      };
+    });
+    const csvFields = [
+      "machineid",
+      "machinename",
+      "companyid",
+      "warehouse",
+      "refiller",
+      "building",
+      "location",
+      "producttype",
+      "totalslots",
+      "cash",
+      "totalSalesCount",
+      "totalSalesValue",
+    ]
+    const csvParser = new CsvParser({ csvFields });
+    const csvData = csvParser.parse(DataArray);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=InventoryMachines.csv"
+    );
+    // return res.send(data)
+    res.status(200).end(csvData);
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 router.post(
   "/",
   auth,
@@ -332,7 +394,7 @@ router.get(
     if (cdata.listcompany) {
       if (req.user.role == "Admin") {
         // console.log("admin");
-        const checkdata = await TableModel.find({ admin: req.user._id , delete_status: false}).select(
+        const checkdata = await TableModel.find({ admin: req.user._id, delete_status: false }).select(
           "_id machineid machinename totalslots warehouse admin refiller created_at"
         );
         const warehouseIds = checkdata
@@ -345,12 +407,12 @@ router.get(
 
         const [warehouses, admins, refillers] = await Promise.all([
           warehouse
-          .find({ _id: { $in: warehouseIds } ,delete_status: false},)
-          .select("_id wareHouseName"),
-          userDetails.find({ _id: { $in: adminIds },delete_status: false }).select("_id first_name"),
+            .find({ _id: { $in: warehouseIds }, delete_status: false },)
+            .select("_id wareHouseName"),
+          userDetails.find({ _id: { $in: adminIds }, delete_status: false }).select("_id first_name"),
           userDetails
-          .find({ user_id: { $in: refillerIds }, delete_status: false })
-          .select("_id first_name"),
+            .find({ user_id: { $in: refillerIds }, delete_status: false })
+            .select("_id first_name"),
         ]);
         const data = checkdata.map((item) => {
           const warehouse = warehouses.find(
@@ -359,7 +421,7 @@ router.get(
           const admin = admins.find((ad) => ad._id.toString() === item.admin);
           const refiller = refillers.find(
             (ref) => ref.first_name.toString() === item.refiller
-            );
+          );
           return {
             _id: item._id,
             machine_id: item.machineid,
@@ -378,7 +440,7 @@ router.get(
           data: data,
         });
       }
-      else{
+      else {
         const admin = req.user.id;
         // console.log('admin: ', admin);
         const data = await TableModel.getDataforTable(admin);
@@ -510,8 +572,8 @@ router.delete(
         // const count = await TableModelUser.getDataCountByQuery(query);
         // if(!count){
         // const data = await TableModel.dataDeleteByQuery(query);
-        const data = await TableModel.updateByQuery(query, {delete_status: true});
-        const newquery = {machineid: req.params.id, delete_status:false};
+        const data = await TableModel.updateByQuery(query, { delete_status: true });
+        const newquery = { machineid: req.params.id, delete_status: false };
         // console.log('newquery: ', newquery);
         const updatequery = { $set: { delete_status: true } };
         const slotData = await TableModelMachineSlot.updateMany(newquery, updatequery);
@@ -652,7 +714,7 @@ router.delete(
         _id: req.params.id,
       };
       // var data = await TableModelMachineSlot.dataDeleteByQuery(query);
-      const data = await TableModelMachineSlot.updateByQuery(query,{delete_status: true});
+      const data = await TableModelMachineSlot.updateByQuery(query, { delete_status: true });
       if (!data) {
         return rc.setResponse(res, {
           msg: "Slot not Found",
@@ -680,7 +742,7 @@ router.get(
     var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
     if (cdata.addnewmachine) {
       const query = {
-        _id: req.params.id, delete_status:false
+        _id: req.params.id, delete_status: false
       };
       var cdata = await TableModel.getDataByQueryFilterDataOne(query);
       if (cdata.machineid) {

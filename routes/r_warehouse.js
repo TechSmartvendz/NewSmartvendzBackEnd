@@ -23,6 +23,62 @@ const csv = require("csv-parser");
 const fs = require("fs");
 const { upload } = require("../middleware/fileUpload");
 
+router.get("/getallwarehouses", async (req, res) => {
+  try {
+    let data = await warehouseTable.find();
+    const DataArray = data.map((card) => {
+      const { wareHouseName,
+        email,
+        address,
+        state,
+        city,
+        country,
+        area,
+        phoneNumber,
+        contactPerson,
+        admin, } = card;
+      return {
+        wareHouseName,
+        email,
+        address,
+        state,
+        city,
+        country,
+        area,
+        phoneNumber,
+        contactPerson,
+        admin,
+      };
+    });
+
+    const csvFields = [
+      "wareHouseName",
+      "email",
+      "address",
+      "state",
+      "city",
+      "country",
+      "area",
+      "phoneNumber",
+      "contactPerson",
+      "pincode",
+      "isDeleted",
+      "admin",
+    ]
+    const csvParser = new CsvParser({ csvFields });
+    const csvData = csvParser.parse(DataArray);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=InventoryProducts.csv"
+    );
+    // return res.send(data)
+    res.status(200).end(csvData);
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 // add warehouse
 router.post(
   "/addWareHouse",
