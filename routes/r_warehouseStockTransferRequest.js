@@ -722,6 +722,7 @@ const generateSalesReports = async (
           // console.log('refiller: ', refiller);
 
           const saleEntry = {
+            slot : slot.slot,
             productCode: product.productid ? product.productid : "NOPRODUCT",
             productName: product.productname
               ? product.productname
@@ -745,6 +746,7 @@ const generateSalesReports = async (
           // console.log('refiller: ', refiller);
 
           const saleEntry = {
+            slot : slot.slot,
             productCode: product.productid ? product.productid : "NOPRODUCT",
             productName: product.productname
               ? product.productname
@@ -796,6 +798,7 @@ router.get(
     if (data) {
       for (let i = 0; i < data.length; i++) {
         const report = {
+          slot: data[i].slot,
           productName: data[i].productName ? data[i].productName : "No Product",
           productCode: data[i].productCode ? data[i].productCode : "No Product",
           MRP: data[i].MRP,
@@ -808,6 +811,7 @@ router.get(
         pushData(report);
       }
       const csvFields = [
+        "slot",
         "productName",
         "productCode",
         "MRP",

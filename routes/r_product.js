@@ -23,6 +23,74 @@ const gstTable = require("../model/gst");
 //bulkproductupload
 //productlist
 //products
+router.get("/getallproducts", async (req, res) => {
+  console.log('Ok');
+  try {
+    let data = await TableModel.find();
+    const DataArray = data.map((card) => {
+      const { productid,
+        productname,
+        description,
+        materialtype,
+        sellingprice,
+        mass,
+        unit,
+        delete_status,
+        created_at,
+        admin, } = card;
+      return {
+        productid,
+        productname,
+        description,
+        materialtype,
+        sellingprice,
+        mass,
+        unit,
+        delete_status,
+        created_at,
+        admin,
+      };
+    });
+    let obj = {
+      "_id": "64d22331cf7e60c6b44597a4",
+      "productid": "CHO1134",
+      "productname": "5 Star 3D Chocolate",
+      "description": "Chocolate",
+      "materialtype": "Food",
+      "sellingprice": 35,
+      "mass": "0",
+      "unit": "0",
+      "delete_status": false,
+      "created_at": "2023-08-08T11:12:49.338Z",
+      "admin": "64d1e201feda801ff15f966c",
+      "__v": 0,
+      "last_update": "2023-11-03T03:53:10.863Z"
+    }
+    const csvFields = [
+      "productid",
+      "productname",
+      "description",
+      "materialtype",
+      "sellingprice",
+      "mass",
+      "unit",
+      "delete_status",
+      "created_at",
+      "admin",
+    ]
+    const csvParser = new CsvParser({ csvFields });
+    const csvData = csvParser.parse(DataArray);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=InventoryProducts.csv"
+    );
+    // return res.send(data)
+    res.status(200).end(csvData);
+  } catch (error) {
+    res.send(error)
+  }
+})
 
 router.get(
   "/SampleCSV",
@@ -260,7 +328,7 @@ router.get(
     async (req, res, next) => {
       const query = {
         // admin: req.user.id,
-        delete_status:false
+        delete_status: false
       };
       const data = await TableModel.getDataListByQuery(query);
       if (data) {
@@ -386,7 +454,7 @@ router.get(
       const id = req.params.id;
       const query = {
         _id: id,
-        delete_status:false
+        delete_status: false
       };
       const data = await TableModel.getDataByQueryFilterDataOne(query);
       if (data) {
@@ -454,7 +522,7 @@ router.delete(
         // query={role:rdata.role}
         // const count = await TableModelUser.getDataCountByQuery(query);
         // if(!count){
-        const data = await TableModel.updateByQuery(query, {delete_status: true});
+        const data = await TableModel.updateByQuery(query, { delete_status: true });
         if (data) {
           return rc.setResponse(res, {
             success: true,

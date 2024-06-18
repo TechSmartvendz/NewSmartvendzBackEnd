@@ -5,12 +5,80 @@ const TableModel = require('../model/m_user_info');
 const TableModelCountry = require('../model/m_country');
 const TableModelState = require('../model/m_state');
 const TableModelCity = require('../model/m_city');
-const TableModelArea= require('../model/m_area');
+const TableModelArea = require('../model/m_area');
 const rc = require('./../controllers/responseController');
 const { asyncHandler } = require('../middleware/asyncHandler');
 const auth = require('../middleware/auth');
+const CsvParser = require("json2csv").Parser;
 
+router.get("/getallusers", async (req, res) => {
+    try {
+        let data = await TableModel.find();
+        const DataArray = data.map((user) => {
+            const { user_id,
+                first_name,
+                middle_name,
+                last_name,
+                display_name,
+                mobile,
+                alter_mobile,
+                per_address,
+                current_address,
+                country,
+                state,
+                city,
+                role,
+                password,
+                email } = user;
+            return {
+                user_id,
+                first_name,
+                middle_name,
+                last_name,
+                display_name,
+                mobile,
+                alter_mobile,
+                per_address,
+                current_address,
+                country,
+                state,
+                city,
+                role,
+                password,
+                email
+            };
+        });
 
+        const csvFields = [
+            "user_id",
+            "first_name",
+            "middle_name",
+            "last_name",
+            "display_name",
+            "mobile",
+            "alter_mobile",
+            "per_address",
+            "current_address",
+            "country",
+            "state",
+            "city",
+            "role",
+            "password",
+            "email"
+        ]
+        const csvParser = new CsvParser({ csvFields });
+        const csvData = csvParser.parse(DataArray);
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=InventoryUsers.csv"
+        );
+        //   return res.send(data)
+        res.status(200).end(csvData);
+    } catch (error) {
+        res.send(error)
+    }
+})
 
 router.post('/SuperAdminRegistration', asyncHandler(
     async (req, res) => {
@@ -53,7 +121,7 @@ router.post('/', auth, asyncHandler(
                 const hashpassword = await bcrypt.hash(req.body.password, 10);
                 let newRow = new TableModel(req.body);
                 newRow.password = hashpassword
-                newRow.admin=req.user.id
+                newRow.admin = req.user.id
                 const token = await newRow.generateAuthToken();
                 const data = await TableModel.addRow(newRow);
                 if (data) {
@@ -65,7 +133,7 @@ router.post('/', auth, asyncHandler(
                         data: newRow.token
                     });
                 }
-            
+
             } else {
                 return rc.setResponse(res, {
                     error: "Password and Confirm Password Not Matched"
@@ -77,11 +145,11 @@ router.post('/', auth, asyncHandler(
     }
 )
 );
-router.get('/',auth, asyncHandler(
+router.get('/', auth, asyncHandler(
     async (req, res, next) => {
         // console.log(req.user)
-       const admin=req.user._id
-       
+        const admin = req.user._id
+
         const data = await TableModel.getAllDataForTable(admin);
         // console.log("🚀 ~ file: r_user_info.js:129 ~ user", user)
         if (data) {
@@ -116,26 +184,26 @@ router.get('/',auth, asyncHandler(
 //     }
 // ));
 
-router.get('/DataList', auth, asyncHandler(async(req,res)=> {
+router.get('/DataList', auth, asyncHandler(async (req, res) => {
     let role = req.query.role;
     // console.log(req.query)
-    if(role == "Refiller" ){
+    if (role == "Refiller") {
         role = "Refiller";
     }
-    if(role == "SuperAdmin"){
+    if (role == "SuperAdmin") {
         role = "SuperAdmin";
     }
-    if(role == "Admin"){
+    if (role == "Admin") {
         role = "Admin";
     }
     let filter = {};
-    if(!req.query.role){
+    if (!req.query.role) {
         filter = {};
     }
-    else{
-        filter = {role:role}
+    else {
+        filter = { role: role }
     }
-    const data = await TableModel.find({...filter, delete_status:false}).select("id user_id last_name first_name");
+    const data = await TableModel.find({ ...filter, delete_status: false }).select("id user_id last_name first_name");
     if (data) {
         return rc.setResponse(res, {
             success: true,
@@ -148,43 +216,43 @@ router.get('/DataList', auth, asyncHandler(async(req,res)=> {
         })
     }
 }));
-router.get('/:id', auth, asyncHandler( 
+router.get('/:id', auth, asyncHandler(
     async (req, res, next) => {
-        const admin=req.user._id
+        const admin = req.user._id
         const id = req.params.id;
         if (req.user.role === "SuperAdmin") {
-        const query={
-            _id:id,
-            // admin:admin
-            delete_status:false
-        }
-        const data = await TableModel.getDataByQueryFilterDataOne(query);
-        if (data) {
-            return rc.setResponse(res, {
-                success: true,
-                msg: 'Data Fetched',
-                data: data
-            });
+            const query = {
+                _id: id,
+                // admin:admin
+                delete_status: false
+            }
+            const data = await TableModel.getDataByQueryFilterDataOne(query);
+            if (data) {
+                return rc.setResponse(res, {
+                    success: true,
+                    msg: 'Data Fetched',
+                    data: data
+                });
+            } else {
+                return rc.setResponse(res, {
+                    msg: "Data not Found"
+                })
+            }
         } else {
-            return rc.setResponse(res, {
-                msg: "Data not Found"
-            })
+            return rc.setResponse(res, { error: { code: 403 } });
         }
-    } else {
-        return rc.setResponse(res, { error: { code: 403 } });
-    }
     }
 ));
-router.put('/:id', auth, asyncHandler( 
+router.put('/:id', auth, asyncHandler(
     async (req, res) => {
         if (req.user.role === "SuperAdmin") {
-            newData=req.body
-            id=req.params.id
+            newData = req.body
+            id = req.params.id
             if (req.body.password === req.body.cpassword) {
                 const hashpassword = await bcrypt.hash(req.body.password, 10);
                 newData.password = hashpassword
-                newData.admin=req.user.id
-                const data = await TableModel.updateById(id,newData);
+                newData.admin = req.user.id
+                const data = await TableModel.updateById(id, newData);
                 if (data) {
                     // console.log("🚀 ~ file: r_user_info.js:156 ~ data", data)
                     //FIXME:make email send on user created/
@@ -192,7 +260,7 @@ router.put('/:id', auth, asyncHandler(
                     return rc.setResponse(res, {
                         success: true,
                         msg: 'Data Inserted',
-                        data:data.user_id
+                        data: data.user_id
                     });
                 }
             } else {
@@ -205,35 +273,35 @@ router.put('/:id', auth, asyncHandler(
         }
     }
 ));
-router.delete('/:id', auth, asyncHandler( 
+router.delete('/:id', auth, asyncHandler(
     async (req, res, next) => {
         if (req.user.role === "SuperAdmin") {
-       const query={
-        _id:req.params.id,
-       }
-        const count = await TableModel.getDataCount(req.params.id);
-        if(!count){
-            const data = await TableModel.updateOne({query, delete_status:true});
-            if (data) {
-                return rc.setResponse(res, {
-                    success: true,
-                    msg: 'Data Fetched',
-                    data: data
-                });
+            const query = {
+                _id: req.params.id,
+            }
+            const count = await TableModel.getDataCount(req.params.id);
+            if (!count) {
+                const data = await TableModel.updateOne({ query, delete_status: true });
+                if (data) {
+                    return rc.setResponse(res, {
+                        success: true,
+                        msg: 'Data Fetched',
+                        data: data
+                    });
+                } else {
+                    return rc.setResponse(res, {
+                        msg: "Data not Found"
+                    })
+                }
             } else {
                 return rc.setResponse(res, {
-                    msg: "Data not Found"
+                    msg: "Can't Delete this User: Delete all the Responsiable Resources First"
                 })
             }
-        }else{
-            return rc.setResponse(res, {
-                msg: "Can't Delete this User: Delete all the Responsiable Resources First"
-            })
+        } else {
+            return rc.setResponse(res, { error: { code: 403 } });
         }
-    } else {
-        return rc.setResponse(res, { error: { code: 403 } });
-    }
-       
+
     }
 ));
 
