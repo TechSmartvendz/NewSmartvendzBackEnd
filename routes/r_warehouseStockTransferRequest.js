@@ -837,6 +837,78 @@ router.get(
 );
 
 router.get(
+  "/salesreport/groupby/exportCSV",
+  validator.query(salesReport),
+  // auth,
+  asyncHandler(async (req, res) => {
+    // const startDate = new Date("2023-08-01");
+    // const endDate = new Date("2023-08-25");
+    const startDate = req.query.start;
+    const endDate = req.query.end;
+    const machineNameFilter = req.query.machineNameFilter;
+    const refillerNameFilter = req.query.refillerNameFilter;
+    const salesReport = [];
+    function pushData(x) {
+      if (x) {
+        salesReport.push(x);
+      }
+      return salesReport;
+    }
+    const data = await generateSalesReports(
+      startDate,
+      endDate,
+      machineNameFilter,
+      refillerNameFilter
+    );
+    // console.log("data",data)
+    if (data) {
+      const groupedData = Object.values(data.reduce((acc, item) => {
+        const { productCode, productName, MRP, machineName,refillerName, warehouseName,saleQuantity } = item;
+        if (!acc[productCode]) {
+          acc[productCode] = { productCode, productName, MRP, machineName,refillerName, warehouseName,saleQuantity: 0 };
+        }
+        acc[productCode].saleQuantity += saleQuantity;
+        return acc;
+      }, {}));
+
+      for (let i = 0; i < groupedData.length; i++) {
+        const report = {
+          productName: groupedData[i].productName ? data[i].productName : "No Product",
+          productCode: groupedData[i].productCode ? data[i].productCode : "No Product",
+          MRP: groupedData[i].MRP,
+          machineName: groupedData[i].machineName,
+          warehouseName: groupedData[i].warehouseName,
+          refillerName: groupedData[i].refillerName,
+          saleQuantity: groupedData[i].saleQuantity,
+        };
+        pushData(report);
+      }
+      const csvFields = [
+        "productName",
+        "productCode",
+        "MRP",
+        "machineName",
+        "warehouseName",
+        "refillerName",
+        "totalsaleQuantity",
+      ];
+      const csvParser = new CsvParser({ csvFields });
+      const csvData = csvParser.parse(salesReport);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=public/salesReportSummary.csv"
+      );
+      return res.status(200).end(csvData);
+    } else {
+      res.status(404).json({ error: "Report not found" });
+    }
+    // return res.send(data);
+  })
+);
+
+
+router.get(
   "/salesreport",
   validator.query(salesReport),
   asyncHandler(async (req, res) => {
@@ -865,5 +937,48 @@ router.get(
     }
   })
 );
+
+
+// done
+router.get(
+  "/salesreport/groupby",
+  validator.query(salesReport),
+  asyncHandler(async (req, res) => {
+    const startDate = req.query.start;
+    const endDate = req.query.end;
+    const machineNameFilter = req.query.machineNameFilter;
+    const refillerNameFilter = req.query.refillerNameFilter;
+    const data = await generateSalesReports(
+      startDate,
+      endDate,
+      machineNameFilter,
+      refillerNameFilter
+      );
+
+    if (data) {
+      const groupedData = Object.values(data.reduce((acc, item) => {
+        const { productCode, productName, MRP, machineName,refillerName, warehouseName,saleQuantity } = item;
+        if (!acc[productCode]) {
+          acc[productCode] = { productCode, productName, MRP, machineName,refillerName, warehouseName,saleQuantity: 0 };
+        }
+        acc[productCode].saleQuantity += saleQuantity;
+        return acc;
+      }, {}));
+
+      return rc.setResponse(res, {
+        success: true,
+        msg: `Sales report from ${startDate} to ${endDate}`,
+        data: groupedData,
+      });
+    } else {
+      return rc.setResponse(res, {
+        success: false,
+        data: "Report not found",
+      });
+    }
+  })
+);
+
+
 
 module.exports = router;
