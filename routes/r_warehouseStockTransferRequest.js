@@ -964,7 +964,15 @@ router.get(
         acc[productCode].saleQuantity += saleQuantity;
         return acc;
       }, {}));
-
+      groupedData.sort((a, b) => {
+        if (a.productName < b.productName) {
+          return -1;
+        }
+        if (a.productName > b.productName) {
+          return 1;
+        }
+        return 0;
+      });
       return rc.setResponse(res, {
         success: true,
         msg: `Sales report from ${startDate} to ${endDate}`,
