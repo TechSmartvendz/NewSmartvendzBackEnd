@@ -62,6 +62,7 @@ const invCustomer = require("./routes/invCustomer");
 const invUnit = require("./routes/invUnit");
 const invTDS = require("./routes/invTDS");
 const devicesMachinesRoutes = require("./routes/devicesMachinesRoutes");
+const snaxSmartRoute = require("./routes/snaxSmartAPI") 
 
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
@@ -96,6 +97,7 @@ app.use("/api/invCustomer", invCustomer);
 app.use("/api/invUnit", invUnit);
 app.use("/api/invTDS", invTDS);
 app.use('/api/mappings', devicesMachinesRoutes);
+app.use('/api/snaxsmart', snaxSmartRoute);
 
 //TODO:catch 404 and forward to error handler
 app.use((req, res, next) => {
