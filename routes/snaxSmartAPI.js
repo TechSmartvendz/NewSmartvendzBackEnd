@@ -1,19 +1,20 @@
+require("dotenv").config();
 const express = require('express');
 const router = express.Router();
 const axios = require('axios'); // For making requests to the external module
 const auth = require("../middleware/authentication")
 
-// Base URL of the external module
-const EXTERNAL_API_BASE_URL = 'https://ssmart-api-rup2dfg24a-el.a.run.app';
+const SNAX_SMART_BASIC_AUTH = process.env.SNAX_SMART_BASIC_AUTH;
+const EXTERNAL_API_BASE_URL = process.env.EXTERNAL_API_BASE_URL;  //'https://ssmart-api-rup2dfg24a-el.a.run.app
+
 const headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Basic YXBpdXNlcjo5UiNodVllc1RsdHJ1OStsUyRrTA==' // Replace with your actual Base64 encoded credentials
+    'Authorization': 'Basic '+SNAX_SMART_BASIC_AUTH.trim() // Replace with your actual Base64 encoded credentials
 };
 
 // 1. `/api/devices` - No additional parameters required
 router.get('/devices', auth, async (req, res) => {
     try {
-        console.log(EXTERNAL_API_BASE_URL)
         const response = await axios.get(`${EXTERNAL_API_BASE_URL}/api/devices`,{ headers });
         res.status(response.status).json(response.data);
     } catch (err) {
