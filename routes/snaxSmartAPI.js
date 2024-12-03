@@ -42,18 +42,7 @@ router.get('/txns', auth, async (req, res) => {
     }
 });
 
-// 4. `/api/txns/today` - No additional parameters required
-// router.get('/txns/today', auth, async (req, res) => {
-//     try {
-//         console.log('/api/txns/today')
-//         const response = await axios.get(`${EXTERNAL_API_BASE_URL}/api/txns/today`, {headers});
-//         res.status(response.status).json(response.data);
-//     } catch (err) {
-//         res.status(err.response?.status || 500).json({ error: err.message });
-//     }
-// });
-
-// 3. `/api/txns/<deviceName>` - Requires `fromdate` and `todate`
+// 3. `/api/txns/<deviceName>` & '/api/txns/today'- Optional `fromdate` and `todate`
 router.get('/txns/:deviceName', auth, async (req, res) => {
     console.log('/api/txns/:deviceName')
     const { fromdate, todate } = req.query;
