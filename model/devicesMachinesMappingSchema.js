@@ -4,12 +4,12 @@ const devicesMachinesMappingSchema = new mongoose.Schema(
     {
         // Machine
         machine_id: { type: String, required: true },
-        machine_name: { type: String, required: true },
+        machine_name: { type: String },
 
         // Device
         device_id: { type: String, required: true },
-        device_name: { type: String, required: true },
-        comments: { type: String, default: '' },
+        device_name: { type: String },
+        comments: { type: String },
         createdBy: {type: Schema.Types.ObjectId, required: true },
         updatedBy: {type: Schema.Types.ObjectId }
     },
