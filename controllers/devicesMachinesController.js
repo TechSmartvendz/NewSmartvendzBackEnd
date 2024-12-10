@@ -1,25 +1,52 @@
 const Mapping = require('../model/devicesMachinesMappingSchema');
 
 // Create a new mapping
+// exports.createMapping = async (req, res) => {
+//     try {
+//         const { machine_id, machine_name, device_id, device_name, comments } = req.body;
+
+//         const newMapping = new Mapping({ machine_id, machine_name, device_id, device_name, comments });
+//         newMapping.createdBy = req.userData._id;
+//         await newMapping.save();
+
+//         res.status(201).json(newMapping);
+//     } catch (err) {
+//         if (err.code === 11000) {
+//             // Duplicate key error
+//             return res.status(400).json({
+//                 error: 'Mapping between the specified Machine and Device already exists.',
+//             });
+//         }
+//         res.status(500).json({ error: err.message });
+//     }
+// };
+
+
 exports.createMapping = async (req, res) => {
     try {
-        const { machine_id, machine_name, device_id, device_name, comments } = req.body;
+        const mappings = Array.isArray(req.body) ? req.body : [req.body];
 
-        const newMapping = new Mapping({ machine_id, machine_name, device_id, device_name, comments });
-        newMapping.createdBy = req.userData._id;
-        await newMapping.save();
+        const newMappings = mappings.map(mapping => {
+            const { machine_id, machine_name, device_id, device_name, comments } = mapping;
+            const newMapping = new Mapping({ machine_id, machine_name, device_id, device_name, comments });
+            newMapping.createdBy = req.userData._id;
+            return newMapping;
+        });
 
-        res.status(201).json(newMapping);
+        const savedMappings = await Mapping.insertMany(newMappings, { ordered: false });
+        res.status(201).json(savedMappings);
     } catch (err) {
         if (err.code === 11000) {
-            // Duplicate key error
+            // Handle duplicate key error for multiple records
             return res.status(400).json({
-                error: 'Mapping between the specified Machine and Device already exists.',
+                error: 'Some mappings could not be created due to duplicate keys.',
+                details: err.writeErrors || err.message,
             });
         }
         res.status(500).json({ error: err.message });
     }
 };
+
 
 // Get all mappings
 exports.getMappings = async (req, res) => {
