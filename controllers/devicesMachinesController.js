@@ -24,7 +24,9 @@ exports.createMapping = async (req, res) => {
 // Get all mappings
 exports.getMappings = async (req, res) => {
     try {
-        const mappings = await Mapping.find();
+        const { fields } = req.query; // e.g., fields=machine_id,vendor_id
+        const projection = fields ? fields.split(',').join(' ') : '';
+        const mappings = await Mapping.find({}, projection);
         res.status(200).json(mappings);
     } catch (err) {
         res.status(500).json({ error: err.message });
