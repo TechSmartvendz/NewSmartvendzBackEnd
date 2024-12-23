@@ -90,6 +90,42 @@ exports.updateMapping = async (req, res) => {
     }
 };
 
+
+// Update multiple mappings
+exports.updateMappings = async (req, res) => {
+    try {
+        const updates = req.body; // Expecting an array of updates [{ id, ...fields }]
+        
+        if (!Array.isArray(updates) || updates.length === 0) {
+            return res.status(400).json({ error: 'No updates provided or invalid format' });
+        }
+
+        const updatedMappings = await Promise.all(
+            updates.map(async (update) => {
+                const { id, ...fields } = update; // Destructure `id` and other fields to update
+                return await Mapping.findByIdAndUpdate(
+                    id,
+                    { ...fields, updatedBy: req.userData._id },
+                    { new: true }
+                );
+            })
+        );
+
+        // Filter out failed updates (if any document wasn't found)
+        const notFound = updatedMappings.filter((mapping) => !mapping);
+        if (notFound.length > 0) {
+            return res.status(404).json({ 
+                error: 'Some mappings were not found',
+                notFound: notFound.map((_, index) => updates[index].id)
+            });
+        }
+
+        res.status(200).json(updatedMappings);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 // Delete a mapping
 exports.deleteMapping = async (req, res) => {
     try {
