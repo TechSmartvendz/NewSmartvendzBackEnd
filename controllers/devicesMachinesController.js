@@ -137,3 +137,62 @@ exports.deleteMapping = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+
+
+exports.manageMappings = async (req, res) => {
+    try {
+        const { inserted, updated, deleted } = req.body;
+
+        const results = {
+            inserted: [],
+            updated: [],
+            deleted: [],
+        };
+
+        // Insert new mappings
+        if (inserted && Array.isArray(inserted)) {
+            const newMappings = inserted.map((item) => {
+                const { machine_id, machine_name, device_id, device_name, comments } = item;
+                const newMapping = new Mapping({ machine_id, machine_name, device_id, device_name, comments });
+                newMapping.createdBy = req.userData._id;
+                return newMapping;
+            });
+
+            results.inserted = await Mapping.insertMany(newMappings, { ordered: false });
+        }
+
+        // Update existing mappings
+        if (updated && Array.isArray(updated)) {
+            results.updated = await Promise.all(
+                updated.map(async (update) => {
+                    const { id, ...fields } = update;
+                    return await Mapping.findByIdAndUpdate(
+                        id,
+                        { ...fields, updatedBy: req.userData._id },
+                        { new: true }
+                    );
+                })
+            );
+        }
+
+        // Delete mappings
+        if (deleted && Array.isArray(deleted)) {
+            results.deleted = await Promise.all(
+                deleted.map(async (item) => {
+                    const { id } = item;
+                    return await Mapping.findByIdAndDelete(id);
+                })
+            );
+        }
+
+        // Return the results
+        res.status(200).json({
+            message: 'Mappings processed successfully',
+            results,
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+

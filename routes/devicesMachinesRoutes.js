@@ -6,13 +6,15 @@ const {
     updateMapping,
     updateMappings,
     deleteMapping,
+    manageMappings
 } = require('../controllers/devicesMachinesController');
 
 const auth = require("../middleware/authentication");
 const router = express.Router();
 
 // Routes for CRUD operations
-router.post('/', auth, createMapping);            // Create a new mapping
+router.post('/', auth, createMapping);
+router.post('/manage', auth, manageMappings);            // Create a new mapping
 router.get('/', auth, getMappings);               // Get all mappings
 router.get('/:id', auth, getMappingById);         // Get a specific mapping
 router.put('/:id', auth, updateMapping); 
