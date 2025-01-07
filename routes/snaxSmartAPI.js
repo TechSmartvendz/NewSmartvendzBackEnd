@@ -4,7 +4,7 @@ const router = express.Router();
 const axios = require('axios'); // For making requests to the external module
 const auth = require("../middleware/authentication");
 const moment = require('moment');
-
+const Mapping = require('../model/devicesMachinesMappingSchema');
 
 const SNAX_SMART_BASIC_AUTH = process.env.SNAX_SMART_BASIC_AUTH;
 const EXTERNAL_API_BASE_URL = process.env.EXTERNAL_API_BASE_URL;  //'https://ssmart-api-rup2dfg24a-el.a.run.app
@@ -28,7 +28,7 @@ router.get('/devices', auth, async (req, res) => {
 router.get('/txns', auth, async (req, res) => {
     let { fromdate, todate } = req.query;
     if (!fromdate || !todate) {
-        return res.status(400).json({ error: 'fromdate and todate are required' });
+        return res.status(400).json({ error: 'FromDate and ToDate are required' });
     }
 
     try {
@@ -43,11 +43,11 @@ router.get('/txns', auth, async (req, res) => {
     }
 });
 
-// 3. `/api/txns/<deviceName>` & '/api/txns/today'- Optional `fromdate` and `todate`
-router.get('/txns/:deviceName', auth, async (req, res) => {
+// 3. `/api/txns/<machinId>` & '/api/txns/today'- Optional `fromdate` and `todate`
+router.get('/txns/:machineId', auth, async (req, res) => {
     let { fromdate, todate } = req.query;
-    const { deviceName } = req.params;
-    if(deviceName.toUpperCase() === "TODAY"){
+    const { machineId } = req.params;
+    if(machineId.toUpperCase() === "TODAY"){
         try {
             const response = await axios.get(`${EXTERNAL_API_BASE_URL}/api/txns/today`, {headers});
             res.status(response.status).json(response.data);
@@ -61,8 +61,11 @@ router.get('/txns/:deviceName', auth, async (req, res) => {
         }
     
         try {
+            let deviceName  = await Mapping.findOne({ "machine_id" : machineId },{device_name:1, _id:0});
+            if (!deviceName) return res.status(404).json({ error: 'Mapping not found' });
             fromdate=moment(fromdate).format('YYYYMMDD');
             todate=moment(todate).format('YYYYMMDD');
+            deviceName =deviceName.device_name;
             const response = await axios.get(`${EXTERNAL_API_BASE_URL}/api/txns/${deviceName}`, {
                 headers,
                 params: { fromdate, todate },
