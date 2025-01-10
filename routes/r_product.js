@@ -23,6 +23,17 @@ const gstTable = require("../model/gst");
 //bulkproductupload
 //productlist
 //products
+
+router.get("/", async (req, res) => {
+  try {
+    let data = await TableModel.find().sort({ productname: 1 });
+    console.log(data);
+    return res.status(200).json(data);
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 router.get("/getallproducts", async (req, res) => {
   console.log('Ok');
   try {
