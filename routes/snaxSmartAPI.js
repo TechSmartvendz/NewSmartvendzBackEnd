@@ -62,7 +62,7 @@ router.get('/txns/:machineId', auth, async (req, res) => {
     
         try {
             let deviceName  = await Mapping.findOne({ "machine_id" : machineId },{device_name:1, _id:0});
-            if (!deviceName) return res.status(404).json({ error: 'Mapping not found' });
+            if (!deviceName) return res.status(404).json({ error: 'Mapping not found for selected Machine.' });
             fromdate=moment(fromdate).format('YYYYMMDD');
             todate=moment(todate).format('YYYYMMDD');
             deviceName =deviceName.device_name;
