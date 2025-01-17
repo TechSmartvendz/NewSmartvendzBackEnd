@@ -764,7 +764,7 @@ const generateSalesReports = async (
         }
       }
     }
-    console.log('productIdFilter > ', productIdFilter);
+    //console.log('productIdFilter > ', productIdFilter);
     if(productIdFilter)
       return salesReport.filter(item => item.productCode === productIdFilter);
     return salesReport;
@@ -803,7 +803,7 @@ router.get(
       refillerNameFilter,
       productIdFilter
     );
-    console.log("data",data)
+    //console.log("data",data)
     if (data) {
       for (let i = 0; i < data.length; i++) {
         const report = {
