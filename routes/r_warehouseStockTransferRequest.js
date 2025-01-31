@@ -815,7 +815,7 @@ router.get(
           warehouseName: data[i].warehouseName,
           refillerName: data[i].refillerName,
           saleQuantity: data[i].saleQuantity,
-          date: data[i].date.toLocaleString({ timezone: "Asia/Kolkata" }),
+          date: data[i].date.toLocaleDateString(),
         };
         pushData(report);
       }
