@@ -5,7 +5,9 @@ const axios = require('axios'); // For making requests to the external module
 const auth = require("../middleware/authentication");
 const moment = require('moment');
 const Mapping = require('../model/devicesMachinesMappingSchema');
-
+const machineslot = require("../model/m_machine_slot");
+const machines = require("../model/m_machine");
+const product = require("../model/m_product");
 const SNAX_SMART_BASIC_AUTH = process.env.SNAX_SMART_BASIC_AUTH;
 const EXTERNAL_API_BASE_URL = process.env.EXTERNAL_API_BASE_URL;  //'https://ssmart-api-rup2dfg24a-el.a.run.app
 
@@ -47,6 +49,7 @@ router.get('/txns', auth, async (req, res) => {
 router.get('/txns/:machineId', auth, async (req, res) => {
     let { fromdate, todate } = req.query;
     const { machineId } = req.params;
+   
     if(machineId.toUpperCase() === "TODAY"){
         try {
             const response = await axios.get(`${EXTERNAL_API_BASE_URL}/api/txns/today`, {headers});
@@ -66,10 +69,33 @@ router.get('/txns/:machineId', auth, async (req, res) => {
             fromdate=moment(fromdate).format('YYYYMMDD');
             todate=moment(todate).format('YYYYMMDD');
             deviceName =deviceName.device_name;
+           
             const response = await axios.get(`${EXTERNAL_API_BASE_URL}/api/txns/${deviceName}`, {
                 headers,
                 params: { fromdate, todate },
             });
+            await Promise.all(response.data.map(async (item) => {
+                if (item.pgTxns) {
+                    for (const txn of item.pgTxns) {
+                        const productIds = await machineslot.find({ 
+                            machineName: machineId, 
+                            slot: txn[3].toString(), 
+                            delete_status: false 
+                        }).select("product").lean();
+                        if (productIds && productIds.length >0)
+                        {
+                            const productData = await product.find({ 
+                                _id: { $in: productIds.map(p => p.product) } 
+                            });
+                            txn[5] = productData[0].productname?productData[0].productname:""
+                        }
+                        else {
+                            txn[5]=""
+                        }
+                         console.log(`${txn[3]} ${txn[5]}`);
+                    }
+                }
+            }));
             res.status(response.status).json(response.data);
         } catch (err) {
             res.status(err.response?.status || 500).json({ error: err.message });
@@ -79,7 +105,6 @@ router.get('/txns/:machineId', auth, async (req, res) => {
 
    
 });
-
 
 
 module.exports = router;
