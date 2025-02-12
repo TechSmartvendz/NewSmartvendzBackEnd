@@ -290,6 +290,9 @@ module.exports.getDataforTable = async () => {
         },
       },
     },
+    {
+      $sort: { machine_name: 1 } // 1 for ascending order (A-Z)
+    }
   ]);
 
   return data;
