@@ -27,7 +27,7 @@ const { upload } = require("../middleware/fileUpload");
 
 router.get("/getallmachines", async (req, res) => {
   try {
-    let data = await TableModel.find();
+    let data = await TableModel.find().sort({ machinename: 1 });
     // console.log('data: ', data);
     const DataArray = data.map((machine) => {
       const {

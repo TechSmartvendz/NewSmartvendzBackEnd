@@ -51,7 +51,7 @@ router.get(
     if (req.user.role == "Refiller") {
       filter = { refiller: req.user.user_id };
     }
-    const allmachine = await machines.find({ ...filter, delete_status: false });
+    const allmachine = await machines.find({ ...filter, delete_status: false }).sort( {machinename: 1 });
     // .select("machineid companyid");
     // console.log(allmachine);
     return rc.setResponse(res, {

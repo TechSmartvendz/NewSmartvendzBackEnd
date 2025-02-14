@@ -670,7 +670,8 @@ const generateSalesReports = async (
   startDate,
   endDate,
   machineNameFilter,
-  refillerNameFilter
+  refillerNameFilter,
+  productIdFilter
 ) => {
   try {
     const salesReport = [];
@@ -679,6 +680,7 @@ const generateSalesReports = async (
       createdAt: { $gte: startDate, $lte: endDate },
       status: "Approved",
     };
+
 
     if (machineNameFilter) {
       const machine = await machinedata
@@ -744,25 +746,27 @@ const generateSalesReports = async (
           const warehouse = request.warehouse;
           const refiller = request.refillerId;
           // console.log('refiller: ', refiller);
-
+          
           const saleEntry = {
-            slot : slot.slot,
-            productCode: product.productid ? product.productid : "NOPRODUCT",
-            productName: product.productname
-              ? product.productname
-              : "NOPRODUCT",
-            MRP: product.sellingprice,
-            machineName: machine.machinename,
-            warehouseName: warehouse.wareHouseName,
-            refillerName: refiller.first_name,
-            saleQuantity: slot.saleQuantity,
-            date: request.createdAt,
-          };
+              slot : slot.slot,
+              productCode: product.productid ? product.productid : "NOPRODUCT",
+              productName: product.productname
+                ? product.productname
+                : "NOPRODUCT",
+              MRP: product.sellingprice,
+              machineName: machine.machinename,
+              warehouseName: warehouse.wareHouseName,
+              refillerName: refiller.first_name,
+              saleQuantity: slot.saleQuantity,
+              date: request.createdAt,
+            };
           salesReport.push(saleEntry);
         }
       }
     }
-
+    //console.log('productIdFilter > ', productIdFilter);
+    if(productIdFilter)
+      return salesReport.filter(item => item.productCode === productIdFilter);
     return salesReport;
   } catch (error) {
     console.error("Error generating sales report:", error);
@@ -781,6 +785,10 @@ router.get(
     const endDate = req.query.end;
     const machineNameFilter = req.query.machineNameFilter;
     const refillerNameFilter = req.query.refillerNameFilter;
+    const productIdFilter = req.query.productIdFilter;
+
+
+
     const salesReport = [];
     function pushData(x) {
       if (x) {
@@ -792,9 +800,10 @@ router.get(
       startDate,
       endDate,
       machineNameFilter,
-      refillerNameFilter
+      refillerNameFilter,
+      productIdFilter
     );
-    // console.log("data",data)
+    //console.log("data",data)
     if (data) {
       for (let i = 0; i < data.length; i++) {
         const report = {
@@ -806,7 +815,7 @@ router.get(
           warehouseName: data[i].warehouseName,
           refillerName: data[i].refillerName,
           saleQuantity: data[i].saleQuantity,
-          date: data[i].date.toLocaleString({ timezone: "Asia/Kolkata" }),
+          date: data[i].date.toLocaleDateString(),
         };
         pushData(report);
       }
@@ -916,11 +925,13 @@ router.get(
     const endDate = req.query.end;
     const machineNameFilter = req.query.machineNameFilter;
     const refillerNameFilter = req.query.refillerNameFilter;
+    const productIdFilter = req.query.productIdFilter;
     const data = await generateSalesReports(
       startDate,
       endDate,
       machineNameFilter,
-      refillerNameFilter
+      refillerNameFilter,
+      productIdFilter
       );
 
     if (data) {
