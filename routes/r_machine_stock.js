@@ -41,13 +41,13 @@ router.get(
       });
     }
     let filter = {};
-    if (req.user.role == "SuperAdmin") {
+    if (req.user.role == "SuperAdmin" && req.user.role == "Admin") {
       filter = {};
     }
 
-    if (req.user.role == "Admin") {
-      filter = { admin: req.user._id };
-    }
+    // if (req.user.role == "Admin") {
+    //   filter = { admin: req.user._id };
+    // }
     if (req.user.role == "Refiller") {
       filter = { refiller: req.user.user_id };
     }
