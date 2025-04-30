@@ -41,16 +41,16 @@ router.get(
       });
     }
     let filter = {};
-    if (req.user.role == "SuperAdmin" && req.user.role == "Admin") {
-      filter = {};
-    }
+    // if (req.user.role == "SuperAdmin" && req.user.role == "Admin") {
+    //   filter = {};
+    // }
 
     // if (req.user.role == "Admin") {
     //   filter = { admin: req.user._id };
     // }
-    if (req.user.role == "Refiller") {
-      filter = { refiller: req.user.user_id };
-    }
+    // if (req.user.role == "Refiller") {
+    //   filter = { refiller: req.user.user_id };
+    // }
     const allmachine = await machines.find({ ...filter, delete_status: false }).sort( {machinename: 1 });
     // .select("machineid companyid");
     // console.log(allmachine);
