@@ -252,6 +252,22 @@ const TableSchema = mongoose.Schema({
     require: true,
     default: false,
   },
+
+  apitransactions:{
+    type: Boolean,
+    require: true,
+    default: false,
+  },
+  devicemapping:{
+    type: Boolean,
+    require: true,
+    default: false,
+  },
+  listtransactions:{
+    type: Boolean,
+    require: true,
+    default: false,
+  }
 });
 
 const Table = (module.exports = mongoose.model(TableName, TableSchema));

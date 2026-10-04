@@ -1,0 +1,868 @@
+"Invoice_Number","Warehouse","Supplier","Date","GRN_Number","Created_At","Product","Quantity","Selling_Price","Total_Price"
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Tasty Nuts 50 gm",480,8.545604167,4101.89
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Salted Peanuts 50 gm",300,8.5456,2563.68
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Khatta Meetha 60 gm",240,8.545583333,2050.94
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Masala Peanuts 50 gm",300,8.5456,2563.68
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Lays Chips 28 gm",660,8.7584,5780.54
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Kurkure Masala 45 gm",750,8.7584,6568.8
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Frooti 160 ml",120,8.758416667,1051.01
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Appy 160 ml",120,8.758416667,1051.01
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Sev Murumura 65 gm",216,8.545601852,1845.85
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Soyasticks 50 gm",144,8.545625,1230.57
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Moong Dal 40 gm",384,8.545598958,3281.51
+"SRM/205","Central Kudlugate","Sri Rashmi Marketing","2025-06-01",36503774898257,"2025-06-12 10:08:50","Haldirams Bhujia Sev 40 gm",264,8.545606061,2256.04
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Cavins Milshake Butterscotch 200 ml",150,30.0048,4500.72
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Cavins Milshake Vanilla 200 ml",150,30.0048,4500.72
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Cavins Milshake Strawberry 200 ml",150,30.0048,4500.72
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Cavins Milshake Chocolate 200 ml",60,30.0048,1800.29
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Cavins Masala Chaas 20 Rs",300,15.0045,4501.35
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Maa Guava Juice 140ml",199,8.96,1783.04
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Maa Litchi Juice 140ml",199,8.96,1783.04
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Maa mango 140ml",199,8.96,1783.04
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","Farm Fresh Alphonso Mango 250ml",240,35,8400
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","SKC Indian Masala Tapioca Chips 30gm",150,21.6048,3240.72
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","SKC Madras Mixture 30gm",300,21.6048,6481.44
+"MV25-26/281","Central Kudlugate","MAGN Venture","2025-06-01",37100958245421,"2025-06-21 13:58:37","SKC Garlic Murukku Sticks 30gm",330,21.6048,7129.58
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Too Yum Chips Clasic Salted 30 gm",90,8.008,720.72
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Too Yum Chips ASCO 30 gm",120,8.008,960.96
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Too Yum Chilli Karare 40 gm",240,8.008,1921.92
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Choco Chips 37.5 gm",192,8.0004,1536.08
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Choco Nut Cookies 37.5gm",192,8.0004,1536.08
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Oatsmeal Digestive cookies 52.5 gm",96,8.0004,768.04
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Orange Cookies 37.5gm",192,8.0004,1536.08
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Butter Cookies 37.5 gm",192,8.0004,1536.08
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Danish Coconut Cookies 37.5gm",192,8.0004,1536.08
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Coke 250 Ml",84,17.15,1440.6
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Thums Up 250 ML",56,17.15,960.4
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Fruit & Nut Cookies 37.5 gm",192,8.0004,1536.08
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Almond & Oats Bar 30 gm",72,29.9956,2159.68
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Multygrain Choco Bar 30 gm",72,29.9956,2159.68
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Unibic Fruit &Nut Choco Bar 30 gm",72,29.9956,2159.68
+"621","Pune","Aaradhya Enterprises","2025-06-02",11368012374603,"2025-06-03 08:02:46","Bauli Moonfills Cake 47 gm",120,16.0008,1920.1
+"2125","Central Kudlugate","TSS ENTERPRISES","2025-06-02",16613741521961,"2025-06-03 11:36:54","100 Whole Wheat 400gm",4,55,220
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Moong Dal 40 gm",2016,8.254394297,16640.86
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Soyasticks 50 gm",1157,8.5395,9880.2
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Khatta Meetha 60 gm",1440,8.2544,11886.34
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Aloo Bhujia 55 gm",1512,8.254392593,12480.64
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Bhujia Sev 40 gm",1584,8.2544,13074.97
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Roasted Crunchy Peanuts 40 Gm",1500,8.2544,12381.6
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Instant Bhel 55 gm",1224,8.2544,10103.39
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Masala Peanuts 50 gm",1800,8.2544,14857.92
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Sev Murumura 65 gm",864,8.254387037,7131.79
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Palhari chivda 55 gm",240,8.2544,1981.06
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Punjabi Tadka 50 gm",612,8.254381699,5051.68
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Salted Peanuts 50 gm",2700,8.254,22285.8
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams All in One",720,8.2544,5943.17
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Pancharathna Mixture 200gm",5,74.24256,371.21
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Dry Fruit Mix 150 gm",5,94.8752,474.38
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams All in one 1Kg",6,231,1386
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Boondhi",25,45.371255,1134.28
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Tasty Nuts 50 gm",1445,8.38285,12113.22
+"25SHO-101","Central Kudlugate","R N MARKETING","2025-06-02",84278731836442,"2025-06-13 13:09:27","Haldirams Mini Bhakarwadi 35gm",250,10.06925,2517.31
+"SS-0777-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-02",71533827643946,"2025-06-17 12:41:26","Britannia Good Day Butter Cookies Rs. 10",192,24.89984375,4780.77
+"SS-0777-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-02",71533827643946,"2025-06-17 12:41:26","Britainnia 50-50 Masaka Chaska 105gm",144,24.90004861,3585.61
+"SS-0777-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-02",71533827643946,"2025-06-17 12:41:26","Britania Goodday Rich Cashew 200 gm",40,41.499715,1659.99
+"SS-0777-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-02",71533827643946,"2025-06-17 12:41:26","Britannia Maska Chaska 300gm",28,82.99993571,2324
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Moong Dal 40 gm",2016,8.254394297,16640.86
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Soyasticks 50 gm",1152,8.2544,9509.07
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Khatta Meetha 60 gm",1440,8.2544,11886.34
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Aloo Bhujia 55 gm",1512,8.254392593,12480.64
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Bhujia Sev 40 gm",1584,8.2544,13074.97
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Roasted Crunchy Peanuts 40 Gm",1500,8.2544,12381.6
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Tasty Nuts 50 gm",1440,8.2544,11886.34
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Instant Bhel 55 gm",1224,8.2544,10103.39
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Masala Peanuts 50 gm",1800,8.2544,14857.92
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Mini Bhakarwadi 35gm",240,8.2544,1981.06
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Salted Peanuts 50 gm",2700,8.2544,22286.88
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Sev Murumura 65 gm",864,8.254387037,7131.79
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Palhari chivda 55 gm",240,8.2544,1981.06
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Punjabi Tadka 50 gm",612,8.254381699,5051.68
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams All in One",720,8.2544,5943.17
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Mini Bhakarwadi 200gm",10,53.6256,536.26
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Soyasticks 400gm",5,74.24256,371.21
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Tasty Nuts 200 Gm",5,45.3712,226.86
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Pancharathna Mixture 200gm",5,74.24256,371.21
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Dry Fruit Mix 150 gm",5,94.8752,474.38
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams All in one 1Kg",6,231,1386
+"25SHO-101.","Central Kudlugate","R N MARKETING","2025-06-02",17983581448444,"2025-06-24 09:49:46","Haldirams Boondi Masala 200gm",25,45.3712,1134.28
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Mixture 1kg",1,260,260
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Banana Chips Salt 1 kg",1,410,410
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Potato Chips 1 kg",1,410,410
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Chakli 1 kg",1,310,310
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Kodubale 1kg",1,260,260
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Bhakarwadi 1kg",1,290,290
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Bombatt Tomato Murukku 1 Kg",1,310,310
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Bombatt Ragi Mixture 1 kg",1,310,310
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Nippattu 1kg",1,130,130
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Bombatt Boondi Mixture 500gm",1,130,130
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Brown Channa 1kg",1,290,290
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Bombatt Garlic Mixture 1kg",1,260,260
+"FY25-26/11","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-02",13505307231576,"2025-06-24 09:59:02","Peanut Masala 1kg",1,310.5,310.5
+"P2526600300","Pune","Harshit Traders","2025-06-03",39069484052346,"2025-06-06 07:53:15","Parle Fab Jam in",240,8.2,1968
+"P2526600300","Pune","Harshit Traders","2025-06-03",39069484052346,"2025-06-06 07:53:15","Parle Hide & Seek Milano 30gm",90,8.2,738
+"P2526600300","Pune","Harshit Traders","2025-06-03",39069484052346,"2025-06-06 07:53:15","Parle Monaco 60 gm",240,8.2,1968
+"P2526600300","Pune","Harshit Traders","2025-06-03",39069484052346,"2025-06-06 07:53:15","Parle Krackjack 68 gm",240,8.2,1968
+"P2526600300","Pune","Harshit Traders","2025-06-03",39069484052346,"2025-06-06 07:53:15","Parle - G 80 gm",144,8.909,1282.9
+"IN-14125-2118","Pune","Vedant Trading","2025-06-03",3150308437586,"2025-06-06 08:01:06","Haldirams Chatapata Dal 50 gm",312,8.37612,2613.35
+"IN-14125-2118","Pune","Vedant Trading","2025-06-03",3150308437586,"2025-06-06 08:01:06","Haldirams Palhari chivda 55 gm",480,8.37612,4020.54
+"IN-14125-2118","Pune","Vedant Trading","2025-06-03",3150308437586,"2025-06-06 08:01:06","Haldirams Roasted Crunchy Peanuts 40 Gm",300,8.37612,2512.84
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Salted Peanuts 50 gm",300,8.4,2520
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Mini Bhakarwadi 35gm",240,8.4,2016
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Chatapata Dal 50 gm",384,8.4,3225.6
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Tasty Nuts 50 gm",240,8.4,2016
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Chana Cracker",240,8.4,2016
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Khatta Meetha 60 gm",240,8.4,2016
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Lite Chiwda 60 gm",180,8.4,1512
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Palhari chivda 55 gm",480,8.4,4032
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Bhujia Sev 40 gm",264,8.4,2217.6
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Soyasticks 50 gm",144,8.4,1209.6
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Instant Bhel 55 gm",204,8.4,1713.6
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Moong Dal 40 gm",336,8.4,2822.4
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Sev Murumura 65 gm",96,8.4,806.4
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Parle Choco Fills 18gm",40,8.4,336
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Appy fizz 250 ml",90,17.5,1575
+"25-26-06-01","Wipro","Yuvraj Agency","2025-06-03",83349812102125,"2025-06-09 09:22:03","Haldirams Roasted Crunchy Peanuts 40 Gm",300,8.4,2520
+"SI-9694","Central Kudlugate","Sri Nimishamba Traders","2025-06-03",46574289295522,"2025-06-12 08:13:26","Epigamia Milky Misht",68,32.00375,2176.25
+"ATH/GST/013","Central Kudlugate","Aujasya trading & Hospitality private limited","2025-06-03",98977286113924,"2025-06-17 10:21:57","Herbi Magic Snack Bar 20gm",600,22.501,13500.6
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Pomegrante 1 ltr",24,104.0032,2496.08
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Orange Juice 1 ltr",24,104.0032,2496.08
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Mango Juice 1 ltr",24,91.9968,2207.92
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Grape Juice 1 ltr",24,104.0032,2496.08
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Cranberry Juice 1 ltr",36,112,4032
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Apple Juice 1 ltr",36,91.9968,3311.88
+"ADPL25-26/5310","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-03",76213224762698,"2025-06-17 10:34:32","Real Juice Mixed Fruit 1 ltr",24,104.0032,2496.08
+"25LS124","Central Kudlugate","Sri Shakthi Enterprises","2025-06-03",12764019873515,"2025-06-17 11:09:13","Lays Chips 28 gm",2160,8.1983,17708.33
+"25LS124","Central Kudlugate","Sri Shakthi Enterprises","2025-06-03",12764019873515,"2025-06-17 11:09:13","Kurkure Masala 45 gm",1050,8.1984,8608.32
+"SG/25-26/2426","Central Kudlugate","Sri Gosala Enterprises","2025-06-03",72925959366282,"2025-06-17 11:13:51","Epigamia Yogurt 90 gm",144,46.8,6739.2
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia Bourbon Biscuits",1120,8.299993571,9295.99
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia 50-50 Maska Chaska 70gm",960,8.299911042,7967.91
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia Good Day Butter Cookies Rs. 10",720,8.300087222,5976.06
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia Goodday Cashew",720,8.300087222,5976.06
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia Little Hearts",672,8.299983036,5577.59
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia Barcake",1080,12.449,13444.92
+"SS-0792-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-03",76052902366705,"2025-06-17 11:38:15","Britannia Treat Croissant 45gm",400,14.99987,5999.95
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Coca Cola Diet 300 ml",144,32.00055556,4608.08
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Sprite 300 ml",72,32.00041667,2304.03
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Thums Up 300 Ml",72,32.00041667,2304.03
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Coke 2.25 Ltr",18,85,1530
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Fanta 250 ML",168,17.14297619,2880.02
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Limca 250 ml",168,17.14297619,2880.02
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Coke 250 Ml",168,17.14297619,2880.02
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Sprite 250 ML",168,17.14297619,2880.02
+"25RY-488","Central Kudlugate","RAJ AGENCY","2025-06-03",84890781046454,"2025-06-17 12:18:35","Thums Up 250 ML",168,17.14297619,2880.02
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Aamras 150 ml",270,14,3780
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Apple 150 ml",270,17.5,4725
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Alphonso 150 ml",270,17.5,4725
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Lychee 150 ml",270,17.5,4725
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Orange 150 ml",270,17.5,4725
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Jaljeera 150 ml",270,14,3780
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Mixed Fruit 150 ml",270,17.5,4725
+"AS/25-26/104","Central Kudlugate","A S Enterprises","2025-06-03",9350962369053,"2025-06-17 12:26:06","Paper Boat Aampanna 150 ml",270,14,3780
+"ST-2526-00136","Pune","SAGAR TRADERS","2025-06-04",43456600219875,"2025-06-06 08:03:38","Someshwar Penut Chikki",200,7.5,1500
+"252600001861","Wipro","Mayureshwar Agencies","2025-06-04",94378132502952,"2025-06-07 09:30:50","Balaji Salted Waffers 35gm",240,8.5,2040
+"252600001861","Wipro","Mayureshwar Agencies","2025-06-04",94378132502952,"2025-06-07 09:30:50","Balaji Chataka Pataka Masala 50 gm",240,8.5,2040
+"SVF/43/25-26","Central Kudlugate","Sri Vatsaa Foods Private Limited","2025-06-04",29668417357882,"2025-06-12 08:05:50","Seenis Banana Chips 42gm",1600,11.9952,19192.32
+"SVF/43/25-26","Central Kudlugate","Sri Vatsaa Foods Private Limited","2025-06-04",29668417357882,"2025-06-12 08:05:50","Seenis Potato Chips 30gm",960,9.0048,8644.61
+"SVF/43/25-26","Central Kudlugate","Sri Vatsaa Foods Private Limited","2025-06-04",29668417357882,"2025-06-12 08:05:50","Sennis Masala Peanuts 33G",1176,11.9952,14106.36
+"SVF/43/25-26","Central Kudlugate","Sri Vatsaa Foods Private Limited","2025-06-04",29668417357882,"2025-06-12 08:05:50","Sennis Madras Mixture 55G",1176,11.9952,14106.36
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Peanut Masala 1kg",3,310.49,931.47
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bhakarwadi 1kg",3,290.503,871.51
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Kodubale 1kg",4,260.505,1042.02
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Benne Murukku 500gm",4,310.495,1241.98
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Nippattu 1kg",4,260.505,1042.02
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Mixture 1kg",4,260.505,1042.02
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Shanker Pela 1kg",4,290.502,1162.01
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Banana Chips Salt 1 kg",4,410.497,1641.99
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Chakli 1 kg",4,260.505,1042.02
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Palak Chakli 1Kg",4,260.505,1042.02
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Tomato Murukku 1 Kg",4,310.49,1241.96
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Potato Chips 1 kg",4,410.497,1641.99
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Congress Peanut 1 Kg",3,310.4967,931.49
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Avalakki Mixture 1 kg",3,260.5067,781.52
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Ragi Mixture 1 kg",3,310.497,931.49
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Fried Mixed Dal 1 Kg",3,300,900
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Banana Chips Khara 1 Kg",3,410,1230
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Kabuli Channa Masala 1kg",3,350,1050
+"FY25-26/12","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-04",44155693408685,"2025-06-14 11:49:42","Bombatt Peanut Chikki 400gm",20,175,3500
+"G0820/25-26","Central Kudlugate","GLOBAL ENTERPRISES","2025-06-04",52425865695307,"2025-06-17 10:39:00","Sofit Soya Milk Chocolate 1 ltr",36,124.0066667,4464.24
+"G0820/25-26","Central Kudlugate","GLOBAL ENTERPRISES","2025-06-04",52425865695307,"2025-06-17 10:39:00","Sofit Soya Milk Vanilla 1 ltr",48,124.00625,5952.3
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Haldirams Masala Peanuts 50 gm",300,8.5456,2563.68
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Haldirams Khatta Meetha 60 gm",480,8.545604167,4101.89
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Haldirams Instant Bhel 55 gm",204,8.545588235,1743.3
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Haldirams Salted Peanuts 50 gm",600,8.5456,5127.36
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Haldirams Bhujia Sev 40 gm",264,8.545606061,2256.04
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Haldirams Sev Murumura 65 gm",324,8.54558642,2768.77
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Kurkure Masala 45 gm",1000,8.7584,8758.4
+"SRM/219","Central Kudlugate","Sri Rashmi Marketing","2025-06-04",75348703899773,"2025-06-21 11:52:33","Lays Chips 28 gm",720,8.758388889,6306.04
+"KDL-25-20188","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-04",83443954235250,"2025-06-21 12:53:10","Kellogs Chocos 1.2kg",16,499.999925,8000
+"KDL-25-20188","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-04",83443954235250,"2025-06-21 12:53:10","Kellogs Cornflakes Honey & Almond 1kg",16,527.2719375,8436.35
+"KDL-25-20188","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-04",83443954235250,"2025-06-21 12:53:10","Kelloggs Chocos 26 gm",256,8.214321094,2102.87
+"KDL-25-20188","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-04",83443954235250,"2025-06-21 12:53:10","Kellogs Corn Flakes",192,8.660708333,1662.86
+"KDL-25-20188","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-04",83443954235250,"2025-06-21 12:53:10","Kellogs Cornflakes 900 gm",6,362.7261,2176.36
+"MV25-26/289","Central Kudlugate","MAGN Venture","2025-06-04",33311090122843,"2025-06-21 13:46:06","Cadbury Dairy milk Chocolate 25.3",1440,16.402,23618.88
+"MV25-26/289","Central Kudlugate","MAGN Venture","2025-06-04",33311090122843,"2025-06-21 13:46:06","Cadbury Fuse",384,16.402,6298.37
+"MV25-26/289","Central Kudlugate","MAGN Venture","2025-06-04",33311090122843,"2025-06-21 13:46:06","Cadbury Dairymilk Silk Fruit nut 55gm",180,81.9982,14759.68
+"MV25-26/289","Central Kudlugate","MAGN Venture","2025-06-04",33311090122843,"2025-06-21 13:46:06","Cadbury 5 star 40 gm",560,16.402,9185.12
+"MV25-26/289","Central Kudlugate","MAGN Venture","2025-06-04",33311090122843,"2025-06-21 13:46:06","Cadbury Oreo Biscuit 50 gm",720,8.8028,6338.02
+"MV25-26/289","Central Kudlugate","MAGN Venture","2025-06-04",33311090122843,"2025-06-21 13:46:06","Cadbury Oreo Chocolate 120 gms",60,24.603,1476.18
+"ME00566","Central Kudlugate","MANJUSHREE ENTERPRISES","2025-06-04",91940441565846,"2025-06-23 09:43:18","MR Makhana Chees Balls 25gm",288,37.52,10805.76
+"CAD-139","Pune","A R MARKETING","2025-06-05",53088338318165,"2025-06-06 07:58:22","Cadbury 5 star 40 gm",280,16.6,4648
+"CAD-139","Pune","A R MARKETING","2025-06-05",53088338318165,"2025-06-06 07:58:22","Cadbury Choco Bakes cake 20gm",150,8.6,1290
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Aloo Bhujia 55 gm",252,8.0266,2022.7
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Instant Bhel 55 gm",204,8.376127,1708.73
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Lite Chiwda 60 gm",180,8.376127,1507.7
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Mixture 40 gm",240,8.02683,1926.44
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Chana Cracker",240,8.37604,2010.25
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Soyasticks 50 gm",144,8.0268,1155.86
+"IN-141252190","Pune","Vedant Trading","2025-06-05",48460107525000,"2025-06-09 12:09:48","Haldirams Tasty Nuts 50 gm",240,8.0268,1926.43
+"RB-36","Central Kudlugate","SKumar Traders","2025-06-05",27410776829554,"2025-06-18 10:17:09","Red Bull 250 ml",360,94.999,34199.64
+"INV25/00896","Central Kudlugate","S.V.TELECOM","2025-06-05",38669765486469,"2025-06-18 12:24:05","Amul Butter 500 gm",15,285.04,4275.6
+"INV25/00896","Central Kudlugate","S.V.TELECOM","2025-06-05",38669765486469,"2025-06-18 12:24:05","Amul Butter Milk 1ltr",144,64.05,9223.2
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Nestle Barone Chocolate 12gm",150,4.484266667,672.64
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Nestle Milky Bar Chocolate 10gm",140,4.349785714,608.97
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Maggi Noodles 70 gm",480,13.2798125,6374.31
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Nestle Munch Nuts Chocolate 32 gm",864,15.6,13478.4
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Nestle Kitkat Chocolate 27.5 gm",720,15.6,11232
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Nestle Kitkat Chocolate 38.5 gm",1134,27.3,30958.2
+"MLI04612","Central Kudlugate","Mahalaxmi Targets","2025-06-05",79092082267162,"2025-06-21 11:35:01","Nestle munch 8.9gm",250,4.30492,1076.23
+"SDF32/2025","Central Kudlugate","Sunday Foodworks","2025-06-05",70303810525790,"2025-06-21 11:38:07","Lil Miss Cookie Double Choco Chip 40gm",300,22.5,6750
+"SDF32/2025","Central Kudlugate","Sunday Foodworks","2025-06-05",70303810525790,"2025-06-21 11:38:07","Lil Miss Cookie Ragi Jaggery 40gm",300,22.5,6750
+"SDF32/2025","Central Kudlugate","Sunday Foodworks","2025-06-05",70303810525790,"2025-06-21 11:38:07","Lil Miss Cookie Classic Oatmeal 40gm",300,22.5,6750
+"SDF32/2025","Central Kudlugate","Sunday Foodworks","2025-06-05",70303810525790,"2025-06-21 11:38:07","Lil Miss Cookie Oatmeal Fruit And Nut 40gm",300,22.5,6750
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britania Goodday Rich Cashew 200 gm",60,41.49961667,2489.98
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia  Goodday Rich Butter 100 gms",144,24.89980278,3585.57
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia  Jim Jam 92gm",90,33.19969333,2987.97
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Milk Bikis 500 gm",36,70.54990556,2539.8
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Maska Chaska 300gm",70,83.00002,5810
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Primium Rusk 400gm",36,70.54979167,2539.79
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britainnia 50-50 Masaka Chaska 105gm",40,24.900065,996
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Goodday Cashew",2250,8.300088533,18675.2
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Milk Bikis Rs. 10",1440,8.299906944,11951.87
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia 50-50 Maska Chaska 70gm",1920,8.299904896,15935.82
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Bourbon Biscuits",700,8.300002,5810
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Good Day Butter Cookies Rs. 10",450,8.300093778,3735.04
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Little Hearts",560,8.2999725,4647.98
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Treat Croissant 45gm",300,14.999,4499.7
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Treat Jim Jam",600,8.299923333,4979.95
+"SS-0837-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-05",51753088010260,"2025-06-23 08:50:52","Britannia Barcake",720,12.449,8963.28
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Nestle Milkybar Chocolate 24.5 gm",180,16.00077778,2880.14
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Nestle Munch Nuts Chocolate 32 gm",288,16.00083333,4608.24
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Snickers Small 25 gm",384,16.00078125,6144.3
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia 50-50 Maska Chaska 70gm",20,89.641,1792.82
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Bourbon Biscuits",280,8.300142857,2324.04
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Barcake",216,12.45018519,2689.24
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Good Day Butter Cookies Rs. 10",180,8.300111111,1494.02
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Goodday Cashew",180,8.300111111,1494.02
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Treat Jim Jam",240,8.300083333,1992.02
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Little Hearts",112,8.300089286,929.61
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia 50-50 Golmaal 57gm",384,8.30015625,3187.26
+"A25000551","Central Kudlugate","Ramu Agencies","2025-06-05",57915655593776,"2025-06-23 10:23:23","Britannia Milk Bikis Rs. 10",384,8.30015625,3187.26
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Paper Boat Swing Coconut Water 250ml",180,14.9968,2699.42
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Paper Boat Chilli Guava 200 ml",150,14.9968,2249.52
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Paper Boat Pomegranate 150ml",120,14.9968,1799.62
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Frooti 160 ml",320,8.4,2688
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Storia Badam Shake 180 ml",30,29.993,899.79
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Storia Coffee Shake 180 ml",60,29.993,1799.58
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Too Yum Chips ASCO 30 gm",120,7.504,900.48
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Too Yum Chilli Karare 45 gm",120,7.504,900.48
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Too Yum Chips Kasmiri Chilli 30 gm",120,7.504,900.48
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Mcvities Digestive 24G",144,7.5048,1080.69
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Mcvities Orange Cookies 61.2gm",216,7.5048,1621.04
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Lays American cream and onion 52 gm",56,14.9968,839.82
+"A000474","Wipro","Om Enterprises, Pune","2025-06-06",77080900906573,"2025-06-09 09:48:42","Bindu Jeera 300 ml",96,16.555,1589.28
+"25IRP11050","Pune","Intelligent Retail Private Limited","2025-06-06",71450431750965,"2025-06-10 08:21:58","Nestle Kitkat Chocolate 27.5 gm",180,17.545,3158.1
+"25IRP11050","Pune","Intelligent Retail Private Limited","2025-06-06",71450431750965,"2025-06-10 08:21:58","Nestle Munch Nuts Chocolate 32 gm",288,17.04037,4907.63
+"TH/IN/2526/34213","Central Kudlugate","THRIVE","2025-06-06",79334168127731,"2025-06-18 10:54:17","Horlicks 1 kg",12,422.0978,5065.17
+"TH/IN/2526/34213","Central Kudlugate","THRIVE","2025-06-06",79334168127731,"2025-06-18 10:54:17","Boost 1KG",12,494.0896,5929.08
+"TH/IN/2526/34213","Central Kudlugate","THRIVE","2025-06-06",79334168127731,"2025-06-18 10:54:17","Horlicks (Combined) Rs 10",720,4.4958,3236.98
+"TH/IN/2526/34213","Central Kudlugate","THRIVE","2025-06-06",79334168127731,"2025-06-18 10:54:17","Boost (Combined) Rs 10",720,4.4958,3236.98
+"TH/IN/2526/34213","Central Kudlugate","THRIVE","2025-06-06",79334168127731,"2025-06-18 10:54:17","GOODLIFE MILK 1LTR",24,67.998,1631.95
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Coca Cola Diet 300 ml",144,32.00055556,4608.08
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Coca Cola 300 Ml",72,32.00041667,2304.03
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Sprite 300 ml",72,32.00041667,2304.03
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Thums Up 300 Ml",72,32.00041667,2304.03
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Limca 250 ml",168,17.14297619,2880.02
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Coke 250 Ml",196,17.14295918,3360.02
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Sprite 250 ML",168,17.14297619,2880.02
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Thums Up 250 ML",168,17.14297619,2880.02
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Frooti 160 ml",400,8.4997,3399.88
+"25RY-516","Central Kudlugate","RAJ AGENCY","2025-06-06",69652909678867,"2025-06-18 12:18:31","Appy 160 ml",400,8.4997,3399.88
+"KDA25-26-189","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-06",34705217640226,"2025-06-18 12:41:35","Snickers Strawberry 22gm",288,26.25003472,7560.01
+"KDA25-26-189","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-06",34705217640226,"2025-06-18 12:41:35","Snickers Almond 28gm",288,26.25003472,7560.01
+"KDA25-26-189","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-06",34705217640226,"2025-06-18 12:41:35","Snickers Butterscotch 22gm",288,26.25003472,7560.01
+"KDA25-26-189","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-06",34705217640226,"2025-06-18 12:41:35","Snickers Small 25 gm",1536,14.99992839,23039.89
+"KDA25-26-189","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-06",34705217640226,"2025-06-18 12:41:35","Orbit Mouth Freshner 8.8 gm",400,7.5,3000
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Soyasticks 50 gm",576,8.249986111,4751.99
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Khatta Meetha 60 gm",960,8.254388333,7924.21
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Aloo Bhujia 55 gm",1008,8.2544,8320.44
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Bhujia Sev 40 gm",1056,8.2544,8716.65
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Tasty Nuts 50 gm",960,8.254388333,7924.21
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Instant Bhel 55 gm",815,8.2544,6727.34
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Masala Peanuts 50 gm",580,8.253028966,4786.76
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Mini Bhakarwadi 35gm",120,8.2544,990.53
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Salted Peanuts 50 gm",720,8.250604444,5940.44
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Sev Murumura 65 gm",648,8.254382716,5348.84
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Punjabi Tadka 50 gm",816,8.254386275,6735.58
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Navaratna Mix 37g",960,8.254388333,7924.21
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams All in One",720,8.2544,5943.17
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Khatta Meeta 1 kg",8,189.749,1517.99
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams All in one 1Kg",5,231,1155
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Bhujia Sev 1 Kg",5,231,1155
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Mixture 200gm",29,37.12761379,1076.7
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Ratlami Sev 200gm",1,41.2496,41.25
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Palhari Chiwda 200gm",15,78.37685333,1175.65
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Soyasticks 200 gms",20,74.2448,1484.9
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams Dal Bhujia 150gm",20,41.24904,824.98
+"25SHO-111","Central Kudlugate","R N MARKETING","2025-06-06",36486479217384,"2025-06-21 12:31:47","Haldirams masala Moongdal 38gm",672,8.2544,5546.96
+"33","Central Kudlugate","Adhen Foods","2025-06-06",95906158201379,"2025-06-21 13:39:50","Smackoz Makhana Munch Masala 11gm",720,18.75,13500
+"33","Central Kudlugate","Adhen Foods","2025-06-06",95906158201379,"2025-06-21 13:39:50","Smackoz Makhana Magic Masala 11gm",720,18.75,13500
+"33","Central Kudlugate","Adhen Foods","2025-06-06",95906158201379,"2025-06-21 13:39:50","Smackoz Makhana Cheese & Herbs 11gm",720,18.75,13500
+"33","Central Kudlugate","Adhen Foods","2025-06-06",95906158201379,"2025-06-21 13:39:50","Smackoz Makhana Mint & Lime 11gm",720,18.75,13500
+"MFSS01","Central Kudlugate","SS ENTERPRISES","2025-06-06",69068403529091,"2025-06-23 10:04:26","Bindu Jeera 300 ml",120,12.9884,1558.61
+"MFSS01","Central Kudlugate","SS ENTERPRISES","2025-06-06",69068403529091,"2025-06-23 10:04:26","Bindu Ginger 300ml",120,12.9884,1558.61
+"MFSS01","Central Kudlugate","SS ENTERPRISES","2025-06-06",69068403529091,"2025-06-23 10:04:26","Bindu Limlite 300ml",120,12.9884,1558.61
+"MFSS01","Central Kudlugate","SS ENTERPRISES","2025-06-06",69068403529091,"2025-06-23 10:04:26","Bindu Sipon Lyche Drink 250ml",150,13.57132,2035.7
+"MFSS01","Central Kudlugate","SS ENTERPRISES","2025-06-06",69068403529091,"2025-06-23 10:04:26","Bindu Sipon Mango Drink 250ml",150,13.57132,2035.7
+"MFSS01","Central Kudlugate","SS ENTERPRISES","2025-06-06",69068403529091,"2025-06-23 10:04:26","Bindu Sipon Pink Guava Drink 250ml",150,16.689,2503.35
+"2142","Central Kudlugate","TSS ENTERPRISES","2025-06-07",76631223833187,"2025-06-09 09:13:48","100 Whole Wheat 400gm",7,55,385
+"2142","Central Kudlugate","TSS ENTERPRISES","2025-06-07",76631223833187,"2025-06-09 09:13:48","Bread Brown 450gm",1,50,50
+"INV-0000015","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-07",94524043731077,"2025-06-18 12:31:22","NBO California Almond 40gm",200,38.5,7700
+"INV-0000015","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-07",94524043731077,"2025-06-18 12:31:22","NBO Cashews 40gm",200,42,8400
+"INV-0000015","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-07",94524043731077,"2025-06-18 12:31:22","NBO Roasted Pista Salted 40gm",200,42,8400
+"INV-0000015","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-07",94524043731077,"2025-06-18 12:31:22","NBO Dry Fruits Mix 45gm",200,35,7000
+"INV-0000015","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-07",94524043731077,"2025-06-18 12:31:22","NBO Raisins 40gm",100,24.5,2450
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Krack jack 400 gms",40,69.282638,2771.31
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Krackjack 68 gm",540,8.664622,4678.9
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Bourbon 60 gm",600,8.664622,5198.77
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Hide & Seek Chocolate 33 gm",800,8.664622,6931.7
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Hide Seek 200 gms",120,52.19376,6263.25
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Milano Big 75 gm",60,34.647042,2078.82
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Monaco 400 gm",40,69.282638,2771.31
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Monaco 60 gm",648,8.663986111,5614.26
+"P252600835","Central Kudlugate","OM MARKETING","2025-06-07",95579708171679,"2025-06-21 13:31:43","Parle Krack Jack 200 gm",120,34.64322667,4157.19
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Lays Classic Salted 52 gm",270,17.0016,4590.43
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Kurkure Masala 45 gm",300,8.5008,2550.24
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Too Yumm Bikaneri Bhujia 36gm",100,8.008,800.8
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Too Yum Chips Kasmiri Chilli 30 gm",120,8.008,960.96
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Too Yum Indian Masala 30 gm",120,8.008,960.96
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Too Yum Chips ASCO 30 gm",120,8.008,960.96
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Paper Boat Swing Coconut Water 250ml",60,15.008,900.48
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Tropicana Litchi Juice 200 ml",30,15.008,450.24
+"685","Pune","Aaradhya Enterprises","2025-06-09",23128512593825,"2025-06-10 08:01:54","Tropicana Pomogranate Juice 200 ml",60,15.008,900.48
+"MV25-26/310","Central Kudlugate","MAGN Venture","2025-06-09",47133923060807,"2025-06-18 13:02:08","Unibic Snapper 300 gm",24,112.0056,2688.13
+"MV25-26/310","Central Kudlugate","MAGN Venture","2025-06-09",47133923060807,"2025-06-18 13:02:08","Unibic Fruit & Nut cookies Combo",18,139.9952,2519.91
+"SG/25","Central Kudlugate","Sri Gosala Enterprises","2025-06-09",770207989742,"2025-06-21 12:43:43","Epigamia Yogurt 90 gm",48,46.8,2246.4
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Kesar Shake 180 ml",150,28.10401067,4215.6
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Badam Shake 180 ml",150,28.10401067,4215.6
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Mango Shake 180 ml",150,28.10401067,4215.6
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Coffee Shake 180 ml",90,28.10403556,2529.36
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Pomogrante 180 ml",150,28.10401067,4215.6
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Chocolate Shake 180 ml",150,28.10401067,4215.6
+"INV 1140","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-09",29700505974643,"2025-06-21 13:24:25","Storia Milkshake mango 180 ml",150,28.10401,4215.6
+"25LS138","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",8378355605149,"2025-06-21 13:40:31","Kurkure Masala 45 gm",1050,8.199,8608.95
+"25LS138","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",8378355605149,"2025-06-21 13:40:31","Lays Chips 28 gm",2700,8.199,22137.3
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Tropicana Litchi Juice 200 ml",120,14,1680
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Tropicana Guava Juice 200 ml",120,14,1680
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Tropicana Apple Juice 200 ml",120,14,1680
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Tropicana Pomogranate Juice 200 ml",120,14,1680
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Tropicana Mixedfruit Juice 200 ml",120,14,1680
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Tropicana Orange Juice 200 ml",150,14,2100
+"25TP238","Central Kudlugate","Sri Shakthi Enterprises","2025-06-09",59302595463825,"2025-06-21 13:47:31","Mountain Dew 2.25 ltr",18,84.99944444,1529.99
+"AS/25-26/115","Central Kudlugate","A S Enterprises","2025-06-10",13782891813293,"2025-06-23 08:59:01","Paper Boat Aamras 150 ml",225,14,3150
+"AS/25-26/115","Central Kudlugate","A S Enterprises","2025-06-10",13782891813293,"2025-06-23 08:59:01","Paper Boat Apple 150 ml",225,17.5,3937.5
+"AS/25-26/115","Central Kudlugate","A S Enterprises","2025-06-10",13782891813293,"2025-06-23 08:59:01","Paper Boat Alphonso 150 ml",225,17.5,3937.5
+"AS/25-26/115","Central Kudlugate","A S Enterprises","2025-06-10",13782891813293,"2025-06-23 08:59:01","Paper Boat Lychee 150 ml",225,17.5,3937.5
+"AS/25-26/115","Central Kudlugate","A S Enterprises","2025-06-10",13782891813293,"2025-06-23 08:59:01","Paper Boat Orange 150 ml",225,17.5,3937.5
+"AS/25-26/115","Central Kudlugate","A S Enterprises","2025-06-10",13782891813293,"2025-06-23 08:59:01","Paper Boat Mixed Fruit 150 ml",225,17.5,3937.5
+"INV-861","Central Kudlugate","NANDEESHWARA ENTERPRISESES","2025-06-10",96801740456863,"2025-06-24 10:32:32","Town Bus Kodubale  35 gm",1200,7.499986667,8999.98
+"INV-861","Central Kudlugate","NANDEESHWARA ENTERPRISESES","2025-06-10",96801740456863,"2025-06-24 10:32:32","Town Bus Butter Muruku 35 gm",1200,7.499986667,8999.98
+"INV-861","Central Kudlugate","NANDEESHWARA ENTERPRISESES","2025-06-10",96801740456863,"2025-06-24 10:32:32","Town Bus Cornflakes 35 gm",1200,7.49999,8999.99
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfest Dark Fantasy small 20 gm",100,8.68,868
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfest Dark Fantasy Vanilla Cream 60gm",240,8.707,2089.68
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfeast Dark Fantasy Choco Cream 20gm",120,8.707,1044.84
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfeast Bourbon Bliss",240,8.589166,2061.4
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfeast Marielight 81 gm",144,8.583,1235.95
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfeast Moms Magic 60 gm",84,8.78095,737.6
+"I-25-26-002757","Wipro","Shriram Distributors","2025-06-11",67104614294655,"2025-06-14 18:04:50","Sunfeast Bounce Orange 82 gm",192,8.792,1688.06
+"2158","Central Kudlugate","TSS ENTERPRISES","2025-06-11",49931508092147,"2025-06-17 08:03:16","100 Whole Wheat 400gm",4,55,220
+"252600002193","Wipro","Mayureshwar Agencies","2025-06-11",45703718202130,"2025-06-17 08:13:23","Balaji Salted Waffers 35gm",240,8.5,2040
+"252600002193","Wipro","Mayureshwar Agencies","2025-06-11",45703718202130,"2025-06-17 08:13:23","Balaji Cream & onion Wafers 35 gm",120,8.5,1020
+"252600002193","Wipro","Mayureshwar Agencies","2025-06-11",45703718202130,"2025-06-17 08:13:23","Haldirams Punjabi Tadka 50 gm",144,8.5,1224
+"SS-0905-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-11",7162049909468,"2025-06-24 09:25:32","Britannia Goodday 35 gm",1800,4.150046889,7470.08
+"SS-0905-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-11",7162049909468,"2025-06-24 09:25:32","Britannia Milk Bikis 44gm",1848,4.14997316,7669.15
+"SS-0905-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-11",7162049909468,"2025-06-24 09:25:32","Britannia 50-50 Sweet & Salt 28.4 gm",1008,4.150006151,4183.21
+"SS-0905-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-11",7162049909468,"2025-06-24 09:25:32","Britannia Little Hearts",672,8.299983036,5577.59
+"GO999/25-26","Central Kudlugate","GLOBAL ENTERPRISES","2025-06-11",99180225914889,"2025-06-24 10:20:54","Sofit Soya Milk Vanilla 1 ltr",24,124,2976
+"SRM/242","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",12957120438207,"2025-06-24 10:50:01","Haldirams Moong Dal 40 gm",672,8.545595238,5742.64
+"SRM/242","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",12957120438207,"2025-06-24 10:50:01","Haldirams Tasty Nuts 50 gm",480,8.545604167,4101.89
+"SRM/242","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",12957120438207,"2025-06-24 10:50:01","Haldirams Instant Bhel 55 gm",204,8.545588235,1743.3
+"SRM/242","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",12957120438207,"2025-06-24 10:50:01","Haldirams Bhujia Sev 40 gm",264,8.545606061,2256.04
+"SRM/242","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",12957120438207,"2025-06-24 10:50:01","Haldirams Masala Peanuts 50 gm",300,8.5456,2563.68
+"SRM/242","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",12957120438207,"2025-06-24 10:50:01","Haldirams Soyasticks 50 gm",432,8.545601852,3691.7
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Haldirams Khatta Meetha 60 gm",480,8.545604167,4101.89
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Haldirams Instant Bhel 55 gm",204,8.545588235,1743.3
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Haldirams Masala Peanuts 50 gm",300,8.5456,2563.68
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Haldirams Bhujia Sev 40 gm",264,8.545606061,2256.04
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Haldirams Sev Murumura 65 gm",216,8.545601852,1845.85
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Kurkure Puff Corn",200,8.7584,1751.68
+"SRM/241","Central Kudlugate","Sri Rashmi Marketing","2025-06-11",97415505889447,"2025-06-24 11:05:14","Haldirams Moong Dal 40 gm",672,8.545595238,5742.64
+"25RY-550","Central Kudlugate","RAJ AGENCY","2025-06-11",23187836302380,"2025-06-24 11:09:14","Nissin Cup Noodles 55 gm",432,31.99995556,13823.98
+"25RY-550","Central Kudlugate","RAJ AGENCY","2025-06-11",23187836302380,"2025-06-24 11:09:14","Bingo Yumitos Salted Potato Chips",240,8.600013333,2064
+"25RY-550","Central Kudlugate","RAJ AGENCY","2025-06-11",23187836302380,"2025-06-24 11:09:14","Bingo Mad Angles Pizza 36.5gm",240,8.600013333,2064
+"25RY-550","Central Kudlugate","RAJ AGENCY","2025-06-11",23187836302380,"2025-06-24 11:09:14","Bingo Yumitos Chilli",600,8.600013333,5160.01
+"INV25/00985","Central Kudlugate","S.V.TELECOM","2025-06-11",42119394863706,"2025-06-24 11:20:14","Amul Buttermilk 180 ml",450,13.62888889,6133
+"ST/2526/00158","Pune","SAGAR TRADERS","2025-06-12",57664068982821,"2025-06-16 20:01:53","Someshwar Penut Chikki",400,7.50015,3000.06
+"ST/2526/00158","Pune","SAGAR TRADERS","2025-06-12",57664068982821,"2025-06-16 20:01:53","Agvil Masala Khakhra 50gm",120,16.4955,1979.46
+"MFSS02","Central Kudlugate","SS ENTERPRISES","2025-06-12",97904810551992,"2025-06-24 11:32:05","Bindu Jeera Masala 2 ltr",30,74.99946667,2249.98
+"FY25-26/13","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-12",57560139918682,"2025-06-24 11:32:20","Banana Chips Salt 500gm",2,205,410
+"FY25-26/13","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-12",57560139918682,"2025-06-24 11:32:20","Nippattu 500gm",2,130,260
+"FY25-26/13","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-12",57560139918682,"2025-06-24 11:32:20","Shanker Pela 500gm",2,145,290
+"FY25-26/13","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-12",57560139918682,"2025-06-24 11:32:20","Bombatt Congress Peanut 500gm",2,155,310
+"GL55","Central Kudlugate","Galaxy Marketing","2025-06-13",93199532196169,"2025-06-24 10:32:26","Rite Bite Peanut Butter 40gm",432,32.863,14196.82
+"GL55","Central Kudlugate","Galaxy Marketing","2025-06-13",93199532196169,"2025-06-24 10:32:26","Ritebite Choco Delight 40 gm",576,32.863,18929.09
+"GL55","Central Kudlugate","Galaxy Marketing","2025-06-13",93199532196169,"2025-06-24 10:32:26","Rite Bite Fruits And Seeds 35gm",576,32.863,18929.09
+"GL55","Central Kudlugate","Galaxy Marketing","2025-06-13",93199532196169,"2025-06-24 10:32:26","Rite Bite Nuts And Seeds 35gm",288,32.863,9464.54
+"GL55","Central Kudlugate","Galaxy Marketing","2025-06-13",93199532196169,"2025-06-24 10:32:26","Ritebite Sports Bar 40 gm",432,32.863,14196.82
+"GL55","Central Kudlugate","Galaxy Marketing","2025-06-13",93199532196169,"2025-06-24 10:32:26","Ritebite Yogurt Berry 35gm",288,33.748,9719.42
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Aloo Bhujia 1 Kg",6,189.74816,1138.49
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Bhujia Sev 1 Kg",2,231,462
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Ratlami Sev 400gm",15,78.37685333,1175.65
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Dal Bhujia 150gm",10,41.2496,412.5
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Cornflakes Mixture 150 gm",25,66.0016,1650.04
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams All in one 1Kg",1,231,231
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Mini Bhakarwadi 200gm",14,53.62,750.68
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Soyasticks 400gm",3,74.24106667,222.72
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Tasty Nuts 200 Gm",3,45.36746667,136.1
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Dry Fruit Mix 150 gm",5,94.8752,474.38
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Punjabi Tadka 200gm",5,45.3712,226.86
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Corflax Mixture 350gm",2,111.3728,222.75
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Aloo Bhujia 55 gm",756,8.2544,6240.33
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams All in One",720,8.2544,5943.17
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Bhujia Sev 40 gm",792,8.254385859,6537.47
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Chatapata Dal 50 gm",1152,8.2544,9509.07
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Chana Jor Garam 40gm",360,8.254368889,2971.57
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Palhari chivda 55 gm",720,8.2544,5943.17
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Gathiya 42gm",732,8.24818388,6037.67
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Lemon Bhel",648,8.254382716,5348.84
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Masala Peanuts 50 gm",900,8.249994667,7425
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Mixture 40 gm",720,8.2544,5943.17
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Moong Dal 40 gm",1008,8.2544,8320.44
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Boondhi",576,8.254380556,4754.52
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Khatta Meetha 60 gm",720,8.2544,5943.17
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Salted Peanuts 50 gm",900,8.2544,7428.96
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Soyasticks 50 gm",432,8.254374074,3565.89
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Ratlami Sev 60 gm",684,8.2544,5646.01
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Punjabi Tadka 50 gm",612,8.254381699,5051.68
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Panchratan Mix 25 gm",300,8.249994667,2475
+"25SHO-120","Central Kudlugate","R N MARKETING","2025-06-13",55870578415358,"2025-06-24 13:16:53","Haldirams Pancharathna Mixture 200gm",5,74.2426,371.21
+"GAL57","Central Kudlugate","Galaxy Marketing","2025-06-13",84669707830623,"2025-06-25 07:58:18","Nestle Munch Nuts Chocolate 32 gm",840,15.5996,13103.66
+"GAL57","Central Kudlugate","Galaxy Marketing","2025-06-13",84669707830623,"2025-06-25 07:58:18","Nestle Kitkat Chocolate 38.5 gm",756,27.317,20651.65
+"GAL57","Central Kudlugate","Galaxy Marketing","2025-06-13",84669707830623,"2025-06-25 07:58:18","Nestle Classic Chocolate Big",672,15.5996,10482.93
+"GAL57","Central Kudlugate","Galaxy Marketing","2025-06-13",84669707830623,"2025-06-25 07:58:18","Nestle Milkybar Chocolate 24.5 gm",240,15.5996,3743.9
+"GAL56","Central Kudlugate","Galaxy Marketing","2025-06-13",56008172837949,"2025-06-26 08:23:11","Ritebite Max Protein Choco Chip Cookies 55gm",144,37.5004,5400.06
+"GAL56","Central Kudlugate","Galaxy Marketing","2025-06-13",56008172837949,"2025-06-26 08:23:11","Ritebite Max Protein Snack Cheese & Jalapeno 30 Gm",160,14.2352,2277.63
+"GAL56","Central Kudlugate","Galaxy Marketing","2025-06-13",56008172837949,"2025-06-26 08:23:11","Ritebite Max Protein Snack Peri Peri 30 Gm",80,14.2352,1138.82
+"GAL56","Central Kudlugate","Galaxy Marketing","2025-06-13",56008172837949,"2025-06-26 08:23:11","Ritebite Max Protien Daily Choco Almond 50 Gm",288,58.41,16822.08
+"GAL56","Central Kudlugate","Galaxy Marketing","2025-06-13",56008172837949,"2025-06-26 08:23:11","Ritebite Max Protein Snack Cream & Onion 30 Gm",400,16.1392,6455.68
+"2170.","Central Kudlugate","TSS ENTERPRISES","2025-06-14",7815927137467,"2025-06-17 08:01:17","100 Whole Wheat 400gm",4,55,220
+"2170.","Central Kudlugate","TSS ENTERPRISES","2025-06-14",7815927137467,"2025-06-17 08:01:17","Bread Brown 450gm",2,50,100
+"525","Pune","Shree Best Foods","2025-06-14",81336203301481,"2025-06-17 08:15:57","Storia Coffee Shake 180 ml",90,28,2520
+"525","Pune","Shree Best Foods","2025-06-14",81336203301481,"2025-06-17 08:15:57","Storia Badam Shake 180 ml",30,28,840
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Nestle Kitkat Chocolate 27.5 gm",180,18,3240
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Nestle Munch Nuts Chocolate 32 gm",144,17.7578,2557.12
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Cadbury Dairy milk Chocolate 25.3",120,17.6785,2121.42
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Cadbury 5 star 40 gm",112,17.999,2015.89
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Amul Buttermilk 180 ml",400,11.5,4600
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Someshwar Penut Chikki",960,7.5,7200
+"1328","Wipro","Shri Krushna Enterprises","2025-06-14",97367678985663,"2025-06-17 09:09:11","Nestle Kitkat Chocolate 38.5 gm",80,31.5,2520
+"0004433","Pune","Ayurhub Incorporation","2025-06-14",64315577339160,"2025-06-17 13:56:04","Yoga Bars 38 gm",120,34.9988,4199.86
+"0004433","Pune","Ayurhub Incorporation","2025-06-14",64315577339160,"2025-06-17 13:56:04","Yogabar Big",120,45.5998,5471.98
+"0004433","Pune","Ayurhub Incorporation","2025-06-14",64315577339160,"2025-06-17 13:56:04","MB 10g Protein Bar Choco Almond 35gm",72,52.4982,3779.87
+"KDA25-26-1108","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-14",2371274919293,"2025-06-24 13:28:26","Snickers Strawberry 22gm",288,26.25003472,7560.01
+"KDA25-26-1108","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-14",2371274919293,"2025-06-24 13:28:26","Snickers Almond 28gm",576,26.25005208,15120.03
+"KDA25-26-1108","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-14",2371274919293,"2025-06-24 13:28:26","Snickers Butterscotch 22gm",576,26.25005208,15120.03
+"KDA25-26-1108","Central Kudlugate","Amazon Distributors Pvt Ltd","2025-06-14",2371274919293,"2025-06-24 13:28:26","Orbit Mouth Freshner 8.8 gm",400,7.5,3000
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Milkshake Belgian Choclate 170Ml",150,30.0048,4500.72
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Milshake Butterscotch 200 ml",150,30.0048,4500.72
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Milshake Vanilla 200 ml",150,30.0048,4500.72
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Milshake Chocolate 200 ml",150,30.0048,4500.72
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Milshake Strawberry 200 ml",150,30.0048,4500.72
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Milkshake cold coffee 180 ml",150,30.0048,4500.72
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cavins Masala Chaas 20 Rs",300,15.0045,4501.35
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Bazana Almond Bark 16gm",128,28.0014,3584.18
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cadbury Dairy milk Chocolate 25.3",1440,16.402,23618.88
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cadbury Fuse",768,16.402,12596.74
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cadbury 5 star 40 gm",560,16.402,9185.12
+"MV25-26/335","Central Kudlugate","MAGN Venture","2025-06-14",91923583894138,"2025-06-25 08:16:14","Cadbury Oreo Biscuit 50 gm",600,8.8028,5281.68
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Bourbon Biscuits",980,8.299999592,8134
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Good Day Butter Cookies Rs. 10",720,8.300087222,5976.06
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Little Hearts",224,8.299983036,1859.2
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Treat Jim Jam",960,8.299923333,7967.93
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Treat Croissant 45gm",240,14.999865,3599.97
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Barcake",720,12.44998333,8963.99
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Good Day Pista Badam 200gm",144,45.64985694,6573.58
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia 50-50 Sweet & Salty 188gm",108,33.19973704,3585.57
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Jim Jam 150 gms",90,33.19969333,2987.97
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Maska Chaska 300gm",42,83.00007619,3486
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Nice Time 150 gms",120,20.75010333,2490.01
+"SS-0953-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-14",52105474017050,"2025-06-25 08:37:44","Britannia Good Day Chunkies 100gm",72,37.34995,2689.2
+"MLI05205","Central Kudlugate","Mahalaxmi Targets","2025-06-14",11853517018281,"2025-06-26 11:01:19","Maggi Noodles 70 gm",480,13.28304167,6375.86
+"MLI05205","Central Kudlugate","Mahalaxmi Targets","2025-06-14",11853517018281,"2025-06-26 11:01:19","Nestle Munch Nuts Chocolate 32 gm",576,15.59894097,8984.99
+"MLI05205","Central Kudlugate","Mahalaxmi Targets","2025-06-14",11853517018281,"2025-06-26 11:01:19","Nestle Kitkat Chocolate 38.5 gm",1134,27.29537919,30952.96
+"MLI05205","Central Kudlugate","Mahalaxmi Targets","2025-06-14",11853517018281,"2025-06-26 11:01:19","Nestle Milkybar Chocolate 24.5 gm",768,15.59894531,11979.99
+"MLI05205","Central Kudlugate","Mahalaxmi Targets","2025-06-14",11853517018281,"2025-06-26 11:01:19","Nestle Kitkat Chocolate 27.5 gm",1441,15.5909,22466.49
+"SI-9863","Central Kudlugate","Sri Nimishamba Traders","2025-06-15",68330700400358,"2025-06-24 13:36:59","Epigamia Milky Misht",108,32.00388889,3456.42
+"CC-556","Pune","Harshit Traders","2025-06-16",52642462778739,"2025-06-16 20:16:04","Nestle Munch Nuts Chocolate 32 gm",288,15.999,4607.71
+"CC-556","Pune","Harshit Traders","2025-06-16",52642462778739,"2025-06-16 20:16:04","Nestle Kitkat Chocolate 27.5 gm",240,16,3840
+"CC-556","Pune","Harshit Traders","2025-06-16",52642462778739,"2025-06-16 20:16:04","Cavins Lassi 200 ml",60,18.7425,1124.55
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Aloo Bhujia 55 gm",252,8.4896,2139.38
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Bhujia Sev 40 gm",264,8.4896,2241.25
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Palhari chivda 55 gm",240,8.4896,2037.5
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Instant Bhel 55 gm",204,8.4896,1731.88
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Khatta Meetha 60 gm",240,8.4896,2037.5
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Lemon Bhel",216,8.4896,1833.75
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Lite Chiwda 60 gm",180,8.4896,1528.13
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Roasted Crunchy Peanuts 40 Gm",300,8.4896,2546.88
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Salted Peanuts 50 gm",300,8.4896,2546.88
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Sev Murumura 65 gm",108,8.4896,916.88
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Haldirams Soyasticks 50 gm",144,8.4896,1222.5
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Too Yum Chips Clasic Salted 30 gm",240,7.5,1800
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Too Yum Indian Masala 30 gm",240,7.5,1800
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Too Yum Chilli Karare 40 gm",120,7.5,900
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Unibic Danish Coconut Cookies 52.5gm",288,13.99,4029.12
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Unibic Butter Cookies 75 gms",144,13.99,2014.56
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Unibic Cashew Cookies 60gm",144,13.99,2014.56
+"A000542","Wipro","Om Enterprises, Pune","2025-06-16",19508051093906,"2025-06-17 22:20:10","Unibic Oatsmeal Digestive cookies 52.5 gm",240,6.9974,1679.38
+"2179","Central Kudlugate","TSS ENTERPRISES","2025-06-16",52127593489585,"2025-06-21 08:01:06","Bread Brown 450gm",1,60,60
+"2179","Central Kudlugate","TSS ENTERPRISES","2025-06-16",52127593489585,"2025-06-21 08:01:06","100 Whole Wheat 400gm",1,60,60
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Bhujia Sev 40 gm",264,8.4896,2241.25
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Palhari chivda 55 gm",240,8.4896,2037.5
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Khatta Meetha 60 gm",240,8.4896,2037.5
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Lemon Bhel",216,8.4896,1833.75
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Lite Chiwda 60 gm",180,8.4896,1528.13
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Salted Peanuts 50 gm",300,8.4896,2546.88
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Haldirams Soyasticks 50 gm",144,8.4896,1222.5
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Too Yum Chips Clasic Salted 30 gm",120,7.5,900
+"A000548","Pune","Om Enterprises, Pune","2025-06-17",21879158730878,"2025-06-17 22:02:58","Paper Boat Swing Coconut Water 250ml",60,14.99,899.4
+"25RY-634","Central Kudlugate","RAJ AGENCY","2025-06-17",17378218759289,"2025-06-24 10:05:56","Coca Cola Diet 300 ml",120,32.0005,3840.06
+"25RY-634","Central Kudlugate","RAJ AGENCY","2025-06-17",17378218759289,"2025-06-24 10:05:56","Coca Cola 300 Ml",96,32.0005,3072.05
+"25RY-634","Central Kudlugate","RAJ AGENCY","2025-06-17",17378218759289,"2025-06-24 10:05:56","Sprite 300 ml",72,32.0005,2304.04
+"25RY-634","Central Kudlugate","RAJ AGENCY","2025-06-17",17378218759289,"2025-06-24 10:05:56","Thums Up 300 Ml",72,32.0005,2304.04
+"25RY-634","Central Kudlugate","RAJ AGENCY","2025-06-17",17378218759289,"2025-06-24 10:05:56","Coke 2.25 Ltr",27,85.00022222,2295.01
+"25RY-634","Central Kudlugate","RAJ AGENCY","2025-06-17",17378218759289,"2025-06-24 10:05:56","Fanta 2.25 ltr",18,85.00022222,1530
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Nestle Milkybar Chocolate 24.5 gm",360,16.00077778,5760.28
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Bourbon Biscuits",280,8.300142857,2324.04
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Winkies Muffils",384,8.30015625,3187.26
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Barcake",360,12.45016667,4482.06
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Good Day Butter Cookies Rs. 10",360,6.225111111,2241.04
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Goodday Cashew",360,8.300111111,2988.04
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Treat Jim Jam",600,8.300133333,4980.08
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Little Hearts",224,8.300178571,1859.24
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia 50-50 Maska Chaska 70gm",480,8.300125,3984.06
+"A25000652","Central Kudlugate","Ramu Agencies","2025-06-17",12697111325564,"2025-06-25 09:04:33","Britannia Milk Bikis Rs. 10",552,8.3,4581.6
+"VS/254/25-26","Central Kudlugate","VANDY""S SNACKS PRIVATE LIMITED","2025-06-17",93163849752047,"2025-06-26 09:48:47","Vandys Millet Puffs Mac N Cheese 20gm",600,18.753,11251.8
+"VS/254/25-26","Central Kudlugate","VANDY""S SNACKS PRIVATE LIMITED","2025-06-17",93163849752047,"2025-06-26 09:48:47","Vandys Millet Puffs Peri Peri 20gm",600,18.753,11251.8
+"VS/254/25-26","Central Kudlugate","VANDY""S SNACKS PRIVATE LIMITED","2025-06-17",93163849752047,"2025-06-26 09:48:47","Vandys Roasted Makhana Tangy Chilli 13gm",600,18.76,11256
+"25HSO-130","Central Kudlugate","R N MARKETING","2025-06-17",85988657595531,"2025-06-26 10:44:22","Haldirams Ratlami Sev 400gm",33,78.37726061,2586.45
+"PIBLR2526-01968","Central Kudlugate","SRESTA NATURAL BIOPRODUCTS PRIVATE LIMITED","2025-06-17",26385985483910,"2025-06-27 09:04:07","24 Mantra Organic Jaggery Powder 500gm",54,60.00011111,3240.01
+"PIBLR2526-01968","Central Kudlugate","SRESTA NATURAL BIOPRODUCTS PRIVATE LIMITED","2025-06-17",26385985483910,"2025-06-27 09:04:07","24 Mantra Organic Peanut Chikki",75,74.99996,5625
+"252600002539","Wipro","Mayureshwar Agencies","2025-06-18",1942934477427,"2025-06-22 17:49:29","Balaji Salted Waffers 35gm",240,8.5,2040
+"252600002539","Wipro","Mayureshwar Agencies","2025-06-18",1942934477427,"2025-06-22 17:49:29","Balaji Cream & onion Wafers 35 gm",120,8.5,1020
+"252600002539","Wipro","Mayureshwar Agencies","2025-06-18",1942934477427,"2025-06-22 17:49:29","Balaji Chataka Pataka Masala 50 gm",120,8.5,1020
+"252600002539","Wipro","Mayureshwar Agencies","2025-06-18",1942934477427,"2025-06-22 17:49:29","Haldirams Roasted Crunchy Peanuts 40 Gm",120,8.5,1020
+"FY25-26/14","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-18",57361190506081,"2025-06-24 12:12:58","Potato Chips 1 kg",4,410.4975,1641.99
+"FY25-26/14","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-18",57361190506081,"2025-06-24 12:12:58","Banana Chips Salt 1 kg",2,410.5,821
+"FY25-26/14","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-18",57361190506081,"2025-06-24 12:12:58","Nippattu 1kg",1,260.5,260.5
+"FY25-26/14","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-18",57361190506081,"2025-06-24 12:12:58","Brown Channa 1kg",1,290,290
+"FY25-26/14","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-18",57361190506081,"2025-06-24 12:12:58","Bombatt Boondi Mixture 500gm",1,130,130
+"3753g","Central Kudlugate","M/s. MSQUARE","2025-06-18",77893834672098,"2025-06-24 13:40:05","Tata Coffee Grand Beans-Premium",5,971.25,4856.25
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Farmley Peri Peri Makhana 16gm",120,36.50083333,4380.1
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Farmley Tangy Tomato Makhana 16gm",120,36.50083333,4380.1
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Farmley Cream & Onion Makhana 16gm",120,36.50083333,4380.1
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Farmley Achaari Makhana 16gm",120,36.50083333,4380.1
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Farmley Panchmeva Energy Booster 21gm",280,21.90046429,6132.13
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Farmley Snack Mix Mexican Peri Peri 21gm",280,21.90046429,6132.13
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Paper Boat Lychee 150 ml",45,17.5,787.5
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Paper Boat Apple 150 ml",45,17.5,787.5
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Paper Boat Mixed Fruit 150 ml",90,17.5,1575
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Paper Boat Alphonso 150 ml",90,17.5,1575
+"AS/25-26/135","Central Kudlugate","A S Enterprises","2025-06-18",14806864254065,"2025-06-26 08:43:55","Paper Boat Orange 150 ml",90,17.5,1575
+"25LS162","Central Kudlugate","Sri Shakthi Enterprises","2025-06-18",34241285767092,"2025-06-26 08:55:35","Doritos Nacho Cheese 25 gm",960,8.199986667,7871.99
+"25LS162","Central Kudlugate","Sri Shakthi Enterprises","2025-06-18",34241285767092,"2025-06-26 08:55:35","Kurkure Masala 45 gm",750,8.199,6149.25
+"25LS162","Central Kudlugate","Sri Shakthi Enterprises","2025-06-18",34241285767092,"2025-06-26 08:55:35","Lays Chips 28 gm",1080,8.198368889,8854.24
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia Bourbon Biscuits",3500,8.299995257,29049.98
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia 50-50 Maska Chaska 70gm",1344,8.299904018,11155.07
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia Nutri Choice Digestive",768,8.299901823,6374.32
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia 50-50 Sweet & Salty 188gm",1296,8.299961574,10756.75
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia Nice Time 73 gms",225,8.299962667,1867.49
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia Goodday Cashew",180,8.30012,1494.02
+"SS-1018-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-18",77531318693360,"2025-06-26 10:07:48","Britannia Good Day Butter Cookies Rs. 10",1080,8.300087222,8964.09
+"SG/25-26/2927","Central Kudlugate","Sri Gosala Enterprises","2025-06-18",68235654126003,"2025-06-26 10:40:32","Epigamia Yogurt 90 gm",48,46.8,2246.4
+"1899","Central Kudlugate","Poorvika Enterprises","2025-06-18",1040990992012,"2025-06-27 09:09:19","Nabati Cheese Waffer",2880,8.100618056,23329.78
+"MV25-26/356","Central Kudlugate","MAGN Venture","2025-06-18",42498721814264,"2025-06-27 09:26:38","SKC Peanut Chikki Bites 45gm",105,21.5985,2267.84
+"MV25-26/356","Central Kudlugate","MAGN Venture","2025-06-18",42498721814264,"2025-06-27 09:26:38","SKC Potato Chips 30gm",50,17.9984,899.92
+"MV25-26/356","Central Kudlugate","MAGN Venture","2025-06-18",42498721814264,"2025-06-27 09:26:38","SKC Madras Mixture 30gm",200,21.6048,4320.96
+"MV25-26/356","Central Kudlugate","MAGN Venture","2025-06-18",42498721814264,"2025-06-27 09:26:38","SKC Garlic Murukku Sticks 30gm",330,21.6048,7129.58
+"MV25-26/356","Central Kudlugate","MAGN Venture","2025-06-18",42498721814264,"2025-06-27 09:26:38","SKC Spiced Peanuts 30gm",240,21.6048,5185.15
+"TN/CRU01/2526","Central Kudlugate","Tathas2 Nutri Private Limited","2025-06-18",95189738863883,"2025-07-02 08:56:19","Tathas2 Melon Mischief 250ml",40,109.2,4368
+"TN/CRU01/2526","Central Kudlugate","Tathas2 Nutri Private Limited","2025-06-18",95189738863883,"2025-07-02 08:56:19","Tathas2 Gut Guardian 250ml",40,109.2,4368
+"TN/CRU01/2526","Central Kudlugate","Tathas2 Nutri Private Limited","2025-06-18",95189738863883,"2025-07-02 08:56:19","Tathas2 Sunshine Shot 250ml",40,117.6,4704
+"TN/CRU01/2526","Central Kudlugate","Tathas2 Nutri Private Limited","2025-06-18",95189738863883,"2025-07-02 08:56:19","Tathas2 Just Beet It 250ml",40,126,5040
+"25-26/89","Central Kudlugate","Keeros Foods Pvt. Ltd.","2025-06-18",68303114223442,"2025-07-14 11:04:09","Keeros Quinoa Grain Mini Pack 23Gm",200,16.00256,3200.51
+"25-26/89","Central Kudlugate","Keeros Foods Pvt. Ltd.","2025-06-18",68303114223442,"2025-07-14 11:04:09","Keeros Multiseed Mini Pack 22gm",200,19.99872,3999.74
+"25-26/89","Central Kudlugate","Keeros Foods Pvt. Ltd.","2025-06-18",68303114223442,"2025-07-14 11:04:09","Keeros Multigrain Mini Pack 22gm",200,19.99872,3999.74
+"2171","Central Kudlugate","TSS ENTERPRISES","2025-06-19",86716450330407,"2025-06-21 07:46:51","100 Whole Wheat 400gm",4,55,220
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Bingo Original Style Cream And Onion 45gm",120,7.324166667,878.9
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Bingo Mad Angles Achari 33 gm",600,7.324133333,4394.48
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Bingo Mad Angle Tomato 36.5gm",600,7.324233333,4394.54
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Bingo Yumitos Chilli",600,8.075433333,4845.26
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Bingo Yumitos Salted Potato Chips",600,8.075433333,4845.26
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Sunfeast Dark Fantasy Chocolate milkshake 180ml",144,34.16229167,4919.37
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Sunfeast Marielight 81 gm",2160,7.299347222,15766.59
+"137094514","Central Kudlugate","ITC Limited","2025-06-19",36233888826791,"2025-06-23 13:18:21","Sunfeast Moms Magic 60 gm",5796,7.04853,40853.28
+"SS-1024-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-19",58808145250897,"2025-06-27 09:33:43","Britannia Goodday Cashew",3060,8.30008915,25398.27
+"SS-1024-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-19",58808145250897,"2025-06-27 09:33:43","Britannia Good Day Butter Cookies Rs. 10",1260,8.300091905,10458.12
+"SS-1024-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-19",58808145250897,"2025-06-27 09:33:43","Britannia Nutri Choice Digestive",1152,8.299906944,9561.49
+"SS-1024-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-19",58808145250897,"2025-06-27 09:33:43","Britannia 50-50 Sweet & Salty 188gm",2268,8.299962875,18824.32
+"SS-1024-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-19",58808145250897,"2025-06-27 09:33:43","Britannia Nice Time 73 gms",1650,8.299955515,13694.93
+"SS-1024-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-19",58808145250897,"2025-06-27 09:33:43","Britannia 50-50 Maska Chaska 70gm",576,8.299906944,4780.75
+"INV/25-26/0240","Central Kudlugate","Zenskaa Retail","2025-06-19",23385716623612,"2025-07-01 12:31:36","Svaras Khakhra African Peri Peri 50 Gm",200,33.75225,6750.45
+"INV/25-26/0240","Central Kudlugate","Zenskaa Retail","2025-06-19",23385716623612,"2025-07-01 12:31:36","Svaras Khakhra American Sour Cream & Onion 50gm",200,33.75225,6750.45
+"INV/25-26/0240","Central Kudlugate","Zenskaa Retail","2025-06-19",23385716623612,"2025-07-01 12:31:36","Svaras Khakhra Methi Thepla 50 Gm",200,33.75225,6750.45
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yum Chilli Karare 40 gm",240,8.008,1921.92
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yum Chips Kasmiri Chilli 30 gm",120,8.008,960.96
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yum Indian Masala 30 gm",120,8.008,960.96
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yum Chips ASCO 30 gm",120,8.008,960.96
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yumm All In One 33gm",100,8.008,800.8
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yumm Punjabi Tadka 42gm",150,8.008,1201.2
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yumm Moongdal 37gm",150,8.008,1201.2
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Too Yumm Bikaneri Bhujia 36gm",150,8.008,1201.2
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Tropicana Guava Juice 200 ml",60,15.008,900.48
+"798","Pune","Aaradhya Enterprises","2025-06-20",74790780878532,"2025-06-20 13:27:30","Bauli Moonfills Cake 47 gm",120,16.0008,1920.1
+"PE001543","Pune","Patil Enterprises, Pune","2025-06-20",84870800726635,"2025-06-24 21:32:13","Beyond kerala banana chips 30gm",180,16.0048,2880.86
+"P252601018","Central Kudlugate","OM MARKETING","2025-06-20",40330493869091,"2025-06-26 09:05:53","Parle Hide & Seek Chocolate 33 gm",800,8.9326,7146.08
+"P252601018","Central Kudlugate","OM MARKETING","2025-06-20",40330493869091,"2025-06-26 09:05:53","Parle Krackjack 68 gm",540,8.9326,4823.6
+"P252601018","Central Kudlugate","OM MARKETING","2025-06-20",40330493869091,"2025-06-26 09:05:53","Parle Marie Gold 65.8G G",144,8.9326,1286.29
+"P252601018","Central Kudlugate","OM MARKETING","2025-06-20",40330493869091,"2025-06-26 09:05:53","Parle Bourbon 60 gm",600,8.9326,5359.56
+"P252601018","Central Kudlugate","OM MARKETING","2025-06-20",40330493869091,"2025-06-26 09:05:53","Parle Monaco 60 gm",3996,8.9326,35694.67
+"P252601018","Central Kudlugate","OM MARKETING","2025-06-20",40330493869091,"2025-06-26 09:05:53","Parle G Royale 72 Gm",3600,9.086,32709.6
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Bourbon Biscuits",840,8.299993571,6971.99
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia 50-50 Maska Chaska 70gm",768,8.299901823,6374.32
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Good Day Butter Cookies Rs. 10",720,8.300087222,5976.06
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Milk Bikis Rs. 10",960,8.299911042,7967.91
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Little Hearts",560,8.2999725,4647.98
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Treat Croissant 45gm",240,14.999865,3599.97
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Treat Jim Jam",720,8.599921944,6191.94
+"SS-1048-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-20",77260496129736,"2025-06-27 13:03:16","Britannia Barcake",1080,12.4499287,13445.92
+"ST/2526/00187","Pune","SAGAR TRADERS","2025-06-20",77957233322835,"2025-06-27 19:28:29","Someshwar Penut Chikki",400,7.5,3000
+"1433","Wipro","Shri Krushna Enterprises","2025-06-20",50512596821304,"2025-06-27 19:36:13","Someshwar Penut Chikki",1600,7.5,12000
+"1433","Wipro","Shri Krushna Enterprises","2025-06-20",50512596821304,"2025-06-27 19:36:13","Nutritious peanut jaggery chikki 50gm",320,20,6400
+"1433","Wipro","Shri Krushna Enterprises","2025-06-20",50512596821304,"2025-06-27 19:36:13","Cadbury Dairy milk Chocolate 25.3",240,17.678,4242.72
+"1433","Wipro","Shri Krushna Enterprises","2025-06-20",50512596821304,"2025-06-27 19:36:13","Cadbury Fuse",144,18,2592
+"1433","Wipro","Shri Krushna Enterprises","2025-06-20",50512596821304,"2025-06-27 19:36:13","Cadbury 5 star 40 gm",168,17.9999,3023.98
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Minute Maid Pulpy Orange 250 ml",168,23.30357143,3915
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Fanta 250 ML",140,17.143,2400.02
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Limca 250 ml",140,17.143,2400.02
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Coke 250 Ml",140,17.143,2400.02
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Sprite 250 ML",140,17.143,2400.02
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Thums Up 250 ML",140,17.143,2400.02
+"25RY-667","Central Kudlugate","RAJ AGENCY","2025-06-20",7079204319793,"2025-07-01 11:26:24","Sunfest Dark Fantasy 75 gm",72,40,2880
+"MV25-26/367","Central Kudlugate","MAGN Venture","2025-06-20",56496852756927,"2025-07-01 12:39:50","Maa Guava Juice 140ml",200,8.96,1792
+"MV25-26/367","Central Kudlugate","MAGN Venture","2025-06-20",56496852756927,"2025-07-01 12:39:50","Maa Litchi Juice 140ml",200,8.96,1792
+"MV25-26/367","Central Kudlugate","MAGN Venture","2025-06-20",56496852756927,"2025-07-01 12:39:50","Maa mango 140ml",200,8.96,1792
+"GAL59","Central Kudlugate","Galaxy Marketing","2025-06-20",34123132508459,"2025-07-01 12:51:54","Raw Juice Coconut Water 200ml",540,52.64,28425.6
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Aamras 150 ml",45,16.02711111,721.22
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Aampanna 150 ml",45,16.02711111,721.22
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Apple 150 ml",45,20.00311111,900.14
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Lychee 150 ml",45,20.00311111,900.14
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Alphonso 150 ml",45,20.00311111,900.14
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Orange 150 ml",45,20.00311111,900.14
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Mixed Fruit 150 ml",45,20.00311111,900.14
+"HSE /25-26/654","Central Kudlugate","HRUTHIK SREE ENTERPRISES","2025-06-20",3053513882210,"2025-07-02 09:07:00","Paper Boat Chilli Guava 150 ml",45,16.02711111,721.22
+"132165","Central Kudlugate","TSS ENTERPRISES","2025-06-21",42345663083355,"2025-06-25 11:01:13","Bread Brown 450gm",55,2,110
+"132165","Central Kudlugate","TSS ENTERPRISES","2025-06-21",42345663083355,"2025-06-25 11:01:13","100 Whole Wheat 400gm",4,55,220
+"25LS169","Central Kudlugate","Sri Shakthi Enterprises","2025-06-21",34021422560222,"2025-07-01 12:46:58","Lays Chips 28 gm",1800,8.198368889,14757.06
+"25LS169","Central Kudlugate","Sri Shakthi Enterprises","2025-06-21",34021422560222,"2025-07-01 12:46:58","Kurkure Masala 45 gm",1200,8.1984,9838.08
+"P252601036","Central Kudlugate","OM MARKETING","2025-06-21",36831926454864,"2025-07-01 13:06:12","Parle Coconut Cookies 72 gm",3600,8.9326,32157.36
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia 50-50 Golmaal 57gm",72,8.496,611.71
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia Time Pass Biscuit 75gm",144,8.496,1223.42
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia Milk Bikis Rs. 10",288,8.496,2446.85
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia Bourbon Biscuits",280,8.496,2378.88
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia 50-50 Maska Chaska 70gm",96,8.496,815.62
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia Little Hearts",112,8.496,951.55
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia Tiger Krunch",200,8.496,1699.2
+"CC-269","Pune","R.K Enterprises, Pune","2025-06-23",95698609196094,"2025-06-25 08:35:39","Britannia Treat Croissant 45gm",60,15.989,959.34
+"A00593","Pune","Om Enterprises, Pune","2025-06-23",10673067920515,"2025-06-25 08:41:07","Haldirams Bhujia Sev 40 gm",264,8.48,2238.72
+"A00593","Pune","Om Enterprises, Pune","2025-06-23",10673067920515,"2025-06-25 08:41:07","Haldirams Lite Chiwda 60 gm",180,8.48,1526.4
+"A00593","Pune","Om Enterprises, Pune","2025-06-23",10673067920515,"2025-06-25 08:41:07","Haldirams Salted Peanuts 50 gm",300,8.48,2544
+"A00593","Pune","Om Enterprises, Pune","2025-06-23",10673067920515,"2025-06-25 08:41:07","Haldirams Sev Murumura 65 gm",108,8.48,915.84
+"A00593","Pune","Om Enterprises, Pune","2025-06-23",10673067920515,"2025-06-25 08:41:07","Haldirams Soyasticks 50 gm",144,8.48,1221.12
+"ST-2526-00205","Pune","SAGAR TRADERS","2025-06-23",29499173339711,"2025-06-25 08:44:48","Nutritius Peanut Butter Chikki 50gm",300,15.0003,4500.09
+"ST-2526-00205","Pune","SAGAR TRADERS","2025-06-23",29499173339711,"2025-06-25 08:44:48","Agvil Masala Khakhra 50gm",60,16.4955,989.73
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Aloo Bhujia 55 gm",252,8.4,2116.8
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Palhari chivda 55 gm",480,8.4,4032
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Soyasticks 50 gm",288,8.4,2419.2
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Tasty Nuts 50 gm",240,8.4,2016
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Bhujia Sev 40 gm",264,8.4,2217.6
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Chana Cracker",240,8.4,2016
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Chatapata Dal 50 gm",384,8.4,3225.6
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Salted Peanuts 50 gm",300,8.4,2520
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Khatta Meetha 60 gm",240,8.4,2016
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Moong Dal 40 gm",336,8.4,2822.4
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Masala Peanuts 50 gm",300,8.4,2520
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Lite Chiwda 60 gm",180,8.4,1512
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Panchratan Mix 25 gm",300,8.4,2520
+"25-26-06-02","Wipro","Yuvraj Agency","2025-06-23",67184025621846,"2025-06-28 11:50:33","Haldirams Instant Bhel 55 gm",204,8.4,1713.6
+"INV 1473","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-23",1234068879367,"2025-07-01 13:00:42","Storia Coconut water 180 ML",300,28.11898133,8435.69
+"INV 1473","Central Kudlugate","SRI KRISHNA AGENCIES","2025-06-23",1234068879367,"2025-07-01 13:00:42","Storia Banana Shake 180 ml",150,28.11901867,4217.85
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Paper Boat Aamras 150 ml",225,17.5,3937.5
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Paper Boat Lychee 150 ml",225,17.5,3937.5
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Paper Boat Apple 150 ml",225,17.5,3937.5
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Paper Boat Mixed Fruit 150 ml",225,17.5,3937.5
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Paper Boat Alphonso 150 ml",225,17.5,3937.5
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Paper Boat Orange 150 ml",225,17.5,3937.5
+"AS/25-26/143","Central Kudlugate","A S Enterprises","2025-06-23",99819459726286,"2025-07-01 13:36:34","Ocean Fruit Drink 300ml",180,28,5040
+"210/25-26","Central Kudlugate","Purposeful Food Co.","2025-06-23",57114115090689,"2025-07-07 09:03:01","Wholy Fudgy Cakes Belgian Chocolate 40gm",720,25.204,18146.88
+"210/25-26","Central Kudlugate","Purposeful Food Co.","2025-06-23",57114115090689,"2025-07-07 09:03:01","Wholy Fudgy Cakes Hazelnut Chocolate 40gm",360,28.8038,10369.37
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle G Dark 62.5gm",360,8.9285,3214.26
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle - G 80 gm",144,9.09,1308.96
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle Oats And Berries 93 Gm",72,9.09,654.48
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle G Royale 72 Gm",360,9.09,3272.4
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle Hide & Seek Chocolate 33 gm",480,8.9285,4285.68
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle Nice time",120,9.09,1090.8
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle Bourbon 60 gm",240,8.9285,2142.84
+"A000028","Wipro","Mayur Kirana & General Stores","2025-06-24",98809998082435,"2025-06-24 21:27:10","Parle Coconut Cookies 72 gm",144,8.9285,1285.7
+"132190","Central Kudlugate","TSS ENTERPRISES","2025-06-24",82401941747644,"2025-06-25 11:03:20","Bread Brown 450gm",2,55,110
+"132190","Central Kudlugate","TSS ENTERPRISES","2025-06-24",82401941747644,"2025-06-25 11:03:20","100 Whole Wheat 400gm",4,55,220
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Peanut Masala 1kg",3,310.4966667,931.49
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bhakarwadi 1kg",3,290.5033333,871.51
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Kodubale 1kg",3,260.5066667,781.52
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bennemuruku 1kg",4,310.495,1241.98
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Nippattu 1kg",4,260.505,1042.02
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Mixture 1kg",4,260.505,1042.02
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Shanker Pela 1kg",4,290.5025,1162.01
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Banana Chips Salt 1 kg",4,410.4975,1641.99
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Chakli 1 kg",4,260.505,1042.02
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Palak Chakli 1Kg",4,260.505,1042.02
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bombatt Tomato Murukku 1 Kg",4,310.495,1241.98
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Potato Chips 1 kg",4,410.4975,1641.99
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bombatt Congress Peanut 1 Kg",3,310.4966667,931.49
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bombatt Avalakki Mixture 1 kg",3,260.5066667,781.52
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bombatt Ragi Mixture 1 kg",3,310.4966667,931.49
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bombatt Fried Mixed Dal 1 Kg",3,300,900
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Banana Chips Khara 1 Kg",3,410,1230
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Kabuli Channa Masala 1kg",3,350,1050
+"FY25-26/15","Central Kudlugate","SRI SAI SARAVANA BAKERY AND CONFECTIONERY","2025-06-25",60311511787961,"2025-06-27 10:50:43","Bombatt Peanut Chikki 400gm",20,175,3500
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia Primium Rusk 400gm",54,66.39966667,3585.58
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia Bourbon 150gm",144,33.19979167,4780.77
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia 50-50 Sweet & Salty 188gm",108,33.19973704,3585.57
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia Jim Jam 150 gms",90,33.19969333,2987.97
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia Maska Chaska 300gm",42,83.00007619,3486
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia Nice Time 150 gms",120,20.75010333,2490.01
+"SS-1103-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-25",15763818407723,"2025-07-07 08:11:00","Britannia Good Day Chunkies 100gm",180,37.34988444,6722.98
+"25LS175","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",80893646799019,"2025-07-07 09:10:35","Doritos Nacho Cheese 25 gm",320,8.19994,2623.98
+"25LS175","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",80893646799019,"2025-07-07 09:10:35","Kurkure Puff Corn",200,8.1984,1639.68
+"25LS175","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",80893646799019,"2025-07-07 09:10:35","Lays Chips 28 gm",900,8.198368889,7378.53
+"25TP271","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",73268017911974,"2025-07-07 09:17:29","Tropicana Litchi Juice 200 ml",120,14,1680
+"25TP271","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",73268017911974,"2025-07-07 09:17:29","Tropicana Pomogranate Juice 200 ml",120,14,1680
+"25TP271","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",73268017911974,"2025-07-07 09:17:29","Tropicana Mixedfruit Juice 200 ml",120,14,1680
+"25TP271","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",73268017911974,"2025-07-07 09:17:29","Tropicana Guava Juice 200 ml",120,14,1680
+"25TP271","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",73268017911974,"2025-07-07 09:17:29","Tropicana Apple Juice 200 ml",120,14,1680
+"25TP271","Central Kudlugate","Sri Shakthi Enterprises","2025-06-25",73268017911974,"2025-07-07 09:17:29","Tropicana Orange Juice 200 ml",120,14,1680
+"P252601091","Central Kudlugate","OM MARKETING","2025-06-25",66181680265298,"2025-07-07 10:07:51","Parle 20-20 Butter Cookies 70 gm",3840,8.9326,34301.18
+"INV-0000018","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-25",14236729494096,"2025-07-07 10:15:25","NBO California Almond 40gm",200,38.5,7700
+"INV-0000018","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-25",14236729494096,"2025-07-07 10:15:25","NBO Roasted Pista Salted 40gm",200,42,8400
+"INV-0000018","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-25",14236729494096,"2025-07-07 10:15:25","NBO Raisins 40gm",100,24.5,2450
+"INV-0000018","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-25",14236729494096,"2025-07-07 10:15:25","NBO Cashews 40gm",200,42,8400
+"INV-0000018","Central Kudlugate","Nutrien bio organic pvt ltd","2025-06-25",14236729494096,"2025-07-07 10:15:25","NBO Dry Fruits Mix 45gm",200,35,7000
+"GNFFP2526810","Central Kudlugate","NATURO FOOD AND FRUTI PRODUCTS PVT LTD","2025-06-25",80351248268469,"2025-07-07 11:10:36","Naturo Assorted Tropical Fun Pouch 42gm",192,22.5,4320
+"GNFFP2526810","Central Kudlugate","NATURO FOOD AND FRUTI PRODUCTS PVT LTD","2025-06-25",80351248268469,"2025-07-07 11:10:36","Naturo Assorted Berry Fusion Pouch 42gm",192,22.5,4320
+"GNFFP2526810","Central Kudlugate","NATURO FOOD AND FRUTI PRODUCTS PVT LTD","2025-06-25",80351248268469,"2025-07-07 11:10:36","Naturo Mango Fruit Bar Pouch 42gm",192,22.5,4320
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Soya Chips 50gm",360,8.299168889,2987.7
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Punjabi Tadka 50 gm",612,8.299181699,5079.1
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Panchratan Mix 25 gm",900,8.2992,7469.28
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Moong Dal 40 gm",1008,8.299188889,8365.58
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Navaratna Mix 37g",720,8.299184444,5975.41
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Salted Peanuts 50 gm",900,8.2992,7469.28
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Tasty Nuts 50 gm",720,8.299184444,5975.41
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Masala Peanuts 50 gm",900,8.2992,7469.28
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Sev Murumura 65 gm",648,8.299995062,5378.4
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Instant Bhel 55 gm",612,8.299181699,5079.1
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams All in One",720,8.299184444,5975.41
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Khatta Meetha 60 gm",720,8.299184444,5975.41
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Bhujia Sev 40 gm",792,8.2992,6572.97
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Palhari chivda 55 gm",480,8.2992,3983.62
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Ratlami Sev 60 gm",684,8.299183626,5676.64
+"25SHO-148","Central Kudlugate","R N MARKETING","2025-06-25",56847696408224,"2025-07-07 12:56:50","Haldirams Soyasticks 50 gm",576,8.2992,4780.34
+"132197","Central Kudlugate","TSS ENTERPRISES","2025-06-26",20140727187448,"2025-06-28 10:06:48","Bread Brown 450gm",2,55,110
+"132197","Central Kudlugate","TSS ENTERPRISES","2025-06-26",20140727187448,"2025-06-28 10:06:48","100 Whole Wheat 400gm",4,55,220
+"I-25-26-023595","Pune","Poona Cigaratte Centre, Pune","2025-06-26",11294098951237,"2025-06-30 20:12:08","Sunfeast Dark Fantasy Choco Cream 20gm",120,8.707,1044.84
+"I-25-26-023595","Pune","Poona Cigaratte Centre, Pune","2025-06-26",11294098951237,"2025-06-30 20:12:08","Sunfest Dark Fantasy Vanilla Cream 60gm",120,8.707,1044.84
+"I-25-26-023595","Pune","Poona Cigaratte Centre, Pune","2025-06-26",11294098951237,"2025-06-30 20:12:08","Sunfeast Bourbon Bliss",240,8.5891,2061.38
+"I-25-26-023595","Pune","Poona Cigaratte Centre, Pune","2025-06-26",11294098951237,"2025-06-30 20:12:08","Bingo Mad Angles Achari 33 gm",120,8.145,977.4
+"I-25-26-023595","Pune","Poona Cigaratte Centre, Pune","2025-06-26",11294098951237,"2025-06-30 20:12:08","Bingo Tedhe Medhe Masala",240,8.144,1954.56
+"INV25/01174","Central Kudlugate","S.V.TELECOM","2025-06-26",80119610148001,"2025-07-07 10:20:50","Amul Butter Milk 1ltr",12,64.05,768.6
+"INV25/01174","Central Kudlugate","S.V.TELECOM","2025-06-26",80119610148001,"2025-07-07 10:20:50","Amul Buttermilk 180 ml",600,13.629,8177.4
+"INV-1070","Central Kudlugate","NANDEESHWARA ENTERPRISESES","2025-06-26",47973008690851,"2025-07-07 10:28:16","Town Bus Butter Murukku 45gm",720,12.00001389,8640.01
+"INV-1070","Central Kudlugate","NANDEESHWARA ENTERPRISESES","2025-06-26",47973008690851,"2025-07-07 10:28:16","Town Bus Ribbon Murukku 45gm",720,12.00001389,8640.01
+"25RY-716","Central Kudlugate","RAJ AGENCY","2025-06-26",9735163712930,"2025-07-07 10:37:31","Coca Cola Diet 300 ml",144,32.00055556,4608.08
+"25RY-716","Central Kudlugate","RAJ AGENCY","2025-06-26",9735163712930,"2025-07-07 10:37:31","Nissin Top Ramen Noodles 70 gm",600,9.00005,5400.03
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Cadbury Fuse",768,16.402,12596.74
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Cadbury Dairy milk Chocolate 25.3",480,16.402,7872.96
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Cadbury 5 star 40 gm",560,16.402,9185.12
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Cadbury Oreo Biscuit 50 gm",135,32.804,4428.54
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Bazana Roasted Salted Pistachios 15 gm",160,28,4480
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Bazana Cranberry Fusion Trail Mix 18gm",160,28,4480
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Bazana Lime And Mint Roasted Cashews 18gm",160,28,4480
+"MV25-26/398","Central Kudlugate","MAGN Venture","2025-06-26",1315131877857,"2025-07-07 10:46:31","Bazana Mystic Masala Roasted Cashews 18gm",160,28,4480
+"ADPL25-26/7247","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-26",50974698112479,"2025-07-07 12:24:31","Real Litchi Juice 1 ltr",12,100.0048,1200.06
+"ADPL25-26/7247","Central Kudlugate","ATLAS DISTRIBUTORS PVT LTD","2025-06-26",50974698112479,"2025-07-07 12:24:31","Real Fruit Juice Guava 1 ltr",12,95.9952,1151.94
+"2515/25-26","Central Kudlugate","Cosmos International","2025-06-26",4271853601725,"2025-07-07 12:27:55","Mojo Bar Choco & Almond Protiein 32 gm",810,32.4972,26322.73
+"2515/25-26","Central Kudlugate","Cosmos International","2025-06-26",4271853601725,"2025-07-07 12:27:55","Mojo Bar Orange Dark Chocolate 32 gm",810,32.4972,26322.73
+"325.","Central Kudlugate","JUGGERNAUT AND COMPANY","2025-06-26",4824939964613,"2025-07-07 12:31:43","Arcot Mani mark Peanut Chikki 16gm",24,200.004,4800.1
+"325.","Central Kudlugate","JUGGERNAUT AND COMPANY","2025-06-26",4824939964613,"2025-07-07 12:31:43","Arcot Mani mark Til Chikki 16gm",12,200.004,2400.05
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","7up Nimbooz 125ml",40,7.625,305
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","Slice Mango juice 125ml",80,7.625,610
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","Tropicana Apple 125ml",40,7.625,305
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","7 Up 250 Ml",30,18.00033333,540.01
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","Tropicana Guava Juice 200 ml",30,17.167,515.01
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","Tropicana Orange Juice 200 ml",30,17.167,515.01
+"INXZ625111774","Central Kudlugate","Sri Sai Enterprises","2025-06-26",386797733079,"2025-07-08 08:20:08","Tropicana Pomogranate Juice 200 ml",30,17.167,515.01
+"25261294","Central Kudlugate","WHOLFOOD INDIA CONFECTIONERY PVT LTD","2025-06-26",30464019467330,"2025-07-14 10:55:29","Milk Maa Coconut Cookies 200 gm",30,44.25,1327.5
+"25261294","Central Kudlugate","WHOLFOOD INDIA CONFECTIONERY PVT LTD","2025-06-26",30464019467330,"2025-07-14 10:55:29","Milk Maa Cookies Butter 200 gms",30,33.748,1012.44
+"25261294","Central Kudlugate","WHOLFOOD INDIA CONFECTIONERY PVT LTD","2025-06-26",30464019467330,"2025-07-14 10:55:29","Milk Maa Raagi Delight 150 gm",30,33.748,1012.44
+"1405","Central Kudlugate","TSS ENTERPRISES","2025-06-28",3372471731934,"2025-07-02 07:43:17","Bread Brown 450gm",2,55,110
+"1405","Central Kudlugate","TSS ENTERPRISES","2025-06-28",3372471731934,"2025-07-02 07:43:17","100 Whole Wheat 400gm",4,55,220
+"SE86/2025-26","Central Kudlugate","SHRUTI ENTERPRISES","2025-06-28",20729441688556,"2025-07-07 13:07:18","Winkies Cake 35 gm",432,8.4,3628.8
+"CC-638","Pune","Harshit Traders","2025-06-29",2281870350958,"2025-06-29 21:01:09","Parle Oats And Berries 93 Gm",216,8.201,1771.42
+"CC-638","Pune","Harshit Traders","2025-06-29",2281870350958,"2025-06-29 21:01:09","Parle G Royale 72 Gm",360,8.201,2952.36
+"CC-638","Pune","Harshit Traders","2025-06-29",2281870350958,"2025-06-29 21:01:09","Parle Hide & Seek Chocolate 33 gm",120,8.00033,960.04
+"CAD-190","Pune","A R MARKETING","2025-06-29",66492206649797,"2025-06-29 21:08:53","Cadbury Dairy milk Chocolate 25.3",480,16.6,7968
+"CAD-190","Pune","A R MARKETING","2025-06-29",66492206649797,"2025-06-29 21:08:53","Cadbury Fuse",144,16.6,2390.4
+"CAD-190","Pune","A R MARKETING","2025-06-29",66492206649797,"2025-06-29 21:08:53","Cadbury Shots 18gm",288,8.5,2448
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Aloo Bhujia 55 gm",252,8.0266,2022.7
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Khatta Meetha 60 gm",240,8.0266,1926.38
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Soyasticks 50 gm",144,8.0266,1155.83
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Tasty Nuts 50 gm",240,8.0266,1926.38
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Palhari chivda 55 gm",240,8.376,2010.24
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Instant Bhel 55 gm",204,8.376,1708.7
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Lemon Bhel",216,8.376,1809.22
+"IN-14125-2903","Pune","Vedant Trading","2025-06-29",57241083158524,"2025-06-30 20:02:10","Haldirams Moong Dal 40 gm",336,8.376,2814.34
+"SS-1141-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-29",77224140302012,"2025-07-07 13:16:24","Britannia Marie Gold 250gm",108,37.34995,4033.79
+"SS-1141-2025-26","Central Kudlugate","Sri Sai Agency","2025-06-29",77224140302012,"2025-07-07 13:16:24","Britannia Good day Chocochip Cookies 400 gm",20,124.49944,2489.99
+"1412","Central Kudlugate","TSS ENTERPRISES","2025-06-30",10278579809869,"2025-07-02 07:40:28","100 Whole Wheat 400gm",2,55,110
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Too Yum Chips Kasmiri Chilli 30 gm",240,7.504,1800.96
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Too Yum Chips ASCO 30 gm",240,7.504,1800.96
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Too Yum Chips Clasic Salted 30 gm",360,7.504,2701.44
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Too Yum Chilli Karare 40 gm",240,7.504,1800.96
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Too Yum Multigrain chips 28 gm",216,7.504,1620.86
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Storia Coffee Shake 180 ml",30,29.99,899.7
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Frooti 160 ml",200,8.4,1680
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Haldirams Mini Bhakarwadi 35gm",240,8.4896,2037.5
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Haldirams Sev Murumura 65 gm",108,8.4896,916.88
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Haldirams Lemon Bhel",216,8.4896,1833.75
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Haldirams Tasty Nuts 50 gm",240,8.4896,2037.5
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Paper Boat Pomegranate 150ml",150,14.99,2248.5
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Paper Boat Swing 250ml",150,14.99,2248.5
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Paper Boat Swing Coconut Water 250ml",150,14.99,2248.5
+"A000659","Wipro","Om Enterprises, Pune","2025-06-30",18566294696163,"2025-07-02 10:40:41","Paper Boat Mango 250ml",150,14.99,2248.5

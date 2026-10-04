@@ -33,7 +33,7 @@ router.get('/SampleCSV', auth, asyncHandler( //TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.updatebulkproduct) {
+        if (cdata.addnewemployee) {
             const j = {
                 "logicid": "",
                 "cardnumber": "",
@@ -71,7 +71,7 @@ router.post('/ExportCSV', auth, asyncHandler(//TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.bulkproductupload) {
+        if (cdata.searchandupdateemployee) {
             const query = req.body
             // console.log("🚀 ~ file: r_employee.js:76 ~ query:", query)
             
@@ -129,7 +129,7 @@ router.post('/ImportCSV', auth, upload.single("file"), asyncHandler( //TODO: WOr
            }
         const query = {role: req.user.role}
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if(cdata.bulkproductupload){
+        if (cdata.addnewemployee) {
             var path = `public/${req.file.filename}`;
             fs.createReadStream(path)
                 .pipe(csv({}))
@@ -233,7 +233,7 @@ router.get('/Table/:page/:dataperpage', auth, asyncHandler(//TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.productlist) {
+        if (cdata.employeemanage || cdata.searchandupdateemployee || cdata.addnewemployee) {
             const admin = req.user.id
             const data = await TableModel.getDataforTablePagination(page, dataperpage);
             if (data) {
@@ -259,7 +259,7 @@ router.post('/Search/:page/:dataperpage', auth, asyncHandler( //TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.productlist) {
+        if (cdata.employeemanage || cdata.searchandupdateemployee || cdata.addnewemployee) {
             const page = req.params.page
             const dataperpage = req.params.dataperpage
             const query = req.body
@@ -288,7 +288,7 @@ router.post('/', auth, asyncHandler( //TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.addnewmachine) {
+        if (cdata.addnewemployee) {
             newRow = new TableModel(req.body);
             newRow.admin = req.user._id
             // newRow.country=cdata.id
@@ -317,7 +317,7 @@ router.get('/:id', auth, asyncHandler( //TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.addnewmachine) {
+        if (cdata.addnewemployee || cdata.updateemployee) {
             const id = req.params.id
             const query = {
                 _id: id
@@ -348,7 +348,7 @@ router.put('/:id', auth, asyncHandler(//TODO: WOrking
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.addnewcompany) {
+        if (cdata.updateemployee || cdata.addnewemployee) {
             const query = { _id: req.params.id }
             const data = await TableModel.updateByQuery(query, newData);
             if (data) {
@@ -373,7 +373,7 @@ router.delete('/:id', auth, asyncHandler( //TODO: WOrking  //FIXME:need to chang
             role: req.user.role
         }
         var cdata = await TableModelPermission.getDataByQueryFilterDataOne(query);
-        if (cdata.addnewcompany) {
+        if (cdata.updateemployee) {
             const id = req.params.id;
             query = { _id: req.params.id }
             // const rdata = await TableModel.getDataByQueryFilterDataOne(query);

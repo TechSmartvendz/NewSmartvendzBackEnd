@@ -222,7 +222,12 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
             costcenter:1,
             department:1,
             admin: {
-              $toObjectId: "$admin",
+              $convert: {
+                input: "$admin",
+                to: "objectId",
+                onError: null,
+                onNull: null,
+              },
             },
             created_at: 1,
           },
@@ -235,7 +240,7 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
             as: "output",
           },
         },
-        { $unwind: "$output" },
+        { $unwind: { path: "$output", preserveNullAndEmptyArrays: true } },
         {
           $project: {
             _id: 1,
@@ -247,7 +252,7 @@ module.exports.getDataforTablePaginationWithQuery = async (page, dataperpage,que
             "manager email": "$manageremail",
             "cost center": "$costcenter",
             department: "$department",
-            "created by": "$output.user_id",
+            "created by": { $ifNull: ["$output.user_id", ""] },
             "created at": {
               $dateToString: {
                 format: "%Y-%m-%d %H:%M:%S",
@@ -308,7 +313,12 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
               costcenter:1,
               department:1,
               admin: {
-                $toObjectId: "$admin",
+                $convert: {
+                  input: "$admin",
+                  to: "objectId",
+                  onError: null,
+                  onNull: null,
+                },
               },
               created_at: 1,
             },
@@ -321,7 +331,7 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
               as: "output",
             },
           },
-          { $unwind: "$output" },
+          { $unwind: { path: "$output", preserveNullAndEmptyArrays: true } },
           {
             $project: {
               _id: 1,
@@ -333,7 +343,7 @@ module.exports.getDataforTablePagination = async (page, dataperpage) => {
               "manager email": "$manageremail",
               "cost center": "$costcenter",
               department: "$department",
-              "created by": "$output.user_id",
+              "created by": { $ifNull: ["$output.user_id", ""] },
               "created at": {
                 $dateToString: {
                   format: "%Y-%m-%d %H:%M:%S",

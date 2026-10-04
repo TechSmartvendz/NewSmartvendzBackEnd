@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -62,7 +63,8 @@ const invCustomer = require("./routes/invCustomer");
 const invUnit = require("./routes/invUnit");
 const invTDS = require("./routes/invTDS");
 const devicesMachinesRoutes = require("./routes/devicesMachinesRoutes");
-const snaxSmartRoute = require("./routes/snaxSmartAPI") 
+const snaxSmartRoute = require("./routes/snaxSmartAPI");
+const purchaseStocks = require("./routes/r_purchase_stocks");
 
 //TODO:Applying Routes As A Middleware
 app.use("/", indexRouter);
@@ -98,6 +100,7 @@ app.use("/api/invUnit", invUnit);
 app.use("/api/invTDS", invTDS);
 app.use('/api/mappings', devicesMachinesRoutes);
 app.use('/api/snaxsmart', snaxSmartRoute);
+app.use('/api', purchaseStocks);
 
 //TODO:catch 404 and forward to error handler
 app.use((req, res, next) => {
