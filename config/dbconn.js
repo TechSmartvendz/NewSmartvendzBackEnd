@@ -1,12 +1,25 @@
-const mongoose =require("mongoose");
-mongoose.set('strictQuery', false);
-// mongoose.connect("mongodb://127.0.0.1:27017/newdb_snaxsmart",{
-mongoose.connect("mongodb+srv://SmartVendz:Smartvendz@cluster0.wt4bcv3.mongodb.net/inventory?retryWrites=true&w=majority",{
-//    useCreateIndex:true,
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-}).then(()=>{
+const path = require("path");
+const mongoose = require("mongoose");
+
+require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
+
+mongoose.set("strictQuery", false);
+
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  console.error("MONGODB_URI is not set in .env");
+  process.exit(1);
+}
+
+mongoose
+  .connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
     console.log("Connected with mongodb");
-}).catch((e)=>{
+  })
+  .catch((e) => {
     console.log("No Connection");
-})
+    console.error(e.message);
+  });
